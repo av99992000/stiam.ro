@@ -13,60 +13,51 @@
 </head>
 <body>
 
-<div data-role="page">
+<div data-role="page" id="main-page">
 
-  <div data-role="header">
-    <a href="right.html" data-icon="arrow-l" class="ui-btn-left">Sursa</a>
-    <select name="category" id="category" class="ui-btn-right" data-native-menu="false">
-      <option value="Ultima ora">Toate</option>
-      <option value="Ultima ora">Ultima ora</option>
-      <option value="Stiinta">Stiinta</option>
-      <option value="Sanatate">Sanatate</option>
-      <option value="Sport">Sport</option>
-      <option value="Politica">Politica</option>
-      <option value="Monden">Monden</option>
-      <option value="Moldova">Moldova</option>
-      <option value="IT">IT</option>
-      <option value="Imobiliare">Imobiliare</option>
-      <option value="Extern">Extern</option>
-      <option value="Economie">Economie</option>
-      <option value="Cultura">Cultura</option>
-    </select>
-    <span class="ui-title" />
+  <div data-role="header" id="header">
+    <a href="#left-panel" data-icon="bars" data-iconpos="left" data-shadow="false" data-iconshadow="false">0</a>
+    <a href="#right-panel" data-icon="grid" data-iconpos="right" data-shadow="false" data-iconshadow="false">0</a>
+    <span class="ui-title">stiam.ro</span>
   </div>
 
-  <div data-role="content" class="page">
-    <div>
-      <a href="detalii.html" class="article">
-        <img class="article-thumb" src="http://stiam.ro/revista-presei/sfatulmedicului.ro/sanatate/2013-03-25/personalitatea-prin-culori/image_preview" />
-        <div class="article-body">
-          <h3>Personalitatea prin culori</h3>
-          <p>Lumea este plina de culori. De curand, specialistii au demonstrat, in urma unor studii, ca nu trebuie sa se subestimeze efectul pe care il au culorile asupra personalitatii si starii de spirit a oamenilor. Cercetarile au descoperit ca unele culori pot provoca reactii diferite in cazul a diferiti oameni. O buna intelegere a modului in care culorile interactioneaza cu starea de spirit, va poate ajuta sa decorati casa sau sa alegeti imbracamintea, potrivita pentru a fi mereu intr-o stare de spir...</p>
-        </div>
-      </a>
-      <a href="detalii.html" class="article">
-        <div class="article-body">
-          <h3>acasă la mine</h3>
-          <p>La mine acasă, la Turnu Măgurele, capitalismul ultimilor douăzeci de ani a adus numai prăpăd. Sărăcie şi disperare. Parcă a trecut&#160; pârjolul prin oraşul atât de drag sufletului meu. Combinatul chimic a...</p>
-        </div>
-      </a>
-      <a href="detalii.html" class="article">
-        <img class="article-thumb" src="http://stiam.ro/revista-presei/sfatulmedicului.ro/sanatate/2013-03-25/semnele-reactiei-alergice-la-sapun/image_preview" />
-        <div class="article-body">
-          <h3>semnele reactiei alergice la sapun</h3>
-          <p>O reactie alergica la sapun ar putea cauza o eruptie cutanata de culoare rosie insotita de senzatie de mancarime. Pielea afectata va fi de obicei uscata, iar zona se poate umfla. In cazul in care se vor inhala substantele emanate de unele dintre particulele de sapun, persoana in cauza poate experimenta usoare probleme respiratorii si disconfort ocular.</p>
-        </div>
-      </a>
-      <a href="detalii.html" class="article">
-        <img class="article-thumb" src="http://stiam.ro/revista-presei/csid.ro/sanatate/2013-03-25/inconjurati-va-de-verde-cautati/image_preview" />
-        <div class="article-body">
-          <h3>Inconjuraţi-vă de verde, căutaţi cu orice preţ sursele de energie vitală!</h3>
-          <p>Iată-ne în plină primăvară, într-o superbă infuzie de clorofilă! Păcat că tabloul este întregit însă, de atmosfera încărcată de anxietate, generată de ultimele scandaluri alimentare: lapte încărcat de aflatoxină, carne toxică, de provenienţă mai mult sau mai puţin cunoscută, dar şi plină de hormoni, legume şi fructe injectate, verdeţuri cu pesticide.</p>
-        </div>
-      </a>
+  <div data-role="content" class="page" id="body">
+    <div class="ui-grid-a">
+      <div class="ui-block-a">
+        Se incarca...
+      </div>
+      <div class="ui-block-b">
+        Se incarca...
+      </div>
     </div>
   </div>
 
+  <div data-role="panel" id="left-panel" data-theme="a">
+    <form id="left-form">
+      <fieldset data-role="controlgroup" data-iconpos="right">
+        Se incarca...
+      </fieldset>
+    </form>
+  </div>
+
+  <div data-role="panel" id="right-panel" data-display="push" data-position="right" data-theme="a">
+    <form id="right-form">
+      <fieldset data-role="controlgroup" data-iconpos="right">
+        Se incarca...
+      </fieldset>
+    </form>
+  </div>
+
+</div>
+
+<div data-role="page" id="article-page">
+  <div data-role="header">
+    <a href="#main-page" data-icon="arrow-l" data-iconpos="left" data-shadow="false" data-iconshadow="false">Inapoi</a>
+    <span class="ui-title">Detalii</span>
+  </div>
+  <div data-role="content">
+    Se incarca...
+  </div>
 </div>
 
 </body>
