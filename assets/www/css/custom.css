@@ -1,0 +1,45 @@
+.page {
+  background: #eee;
+}
+
+.page .article {
+  display: block;
+  border: none;
+  margin: 0.2em;
+  margin-bottom: 1em;
+  border: 1px solid #ccc;
+  box-shadow: 0px 0px 20px #bbb;
+  background: #fff;
+  max-width: 600px;
+  float: left;
+}
+
+.page .article,
+.page .article:active,
+.page .article:visited,
+.page .article:hover {
+  color: black;
+  text-decoration: none;
+}
+
+.page .article:hover {
+  color: #999;
+}
+
+.page .article-thumb {
+  width: 100%;
+}
+
+.page .article-body {
+  background: #fff;
+  padding: 1em;
+}
+
+.page .article-body h3 {
+  margin-top: 0;
+}
+
+.page .article-body p {
+  font-weight: normal;
+  text-align: justify;
+}

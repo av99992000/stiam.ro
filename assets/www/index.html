@@ -1,29 +1,71 @@
-<!DOCTYPE html> 
-<html> 
-<head> 
-	<title>My Page</title> 
-	<meta name="viewport" content="width=device-width, initial-scale=1"> 
-	<link rel="stylesheet" href="css/jquery.mobile-1.2.1.min.css" />
-	<script src="js/jquery-1.8.3.min.js"></script>
-	<script src="js/jquery.mobile-1.2.1.min.js"></script>
-</head> 
-<body> 
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Page</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/jquery.mobile-1.3.0.min.css" />
+  <link rel="stylesheet" href="css/custom.css" />
+  <script src="js/jquery-1.8.3.min.js"></script>
+  <script src="js/jquery.mobile-1.3.0.min.js"></script>
+  <script src="js/custom.js"></script>
+</head>
+<body>
 
 <div data-role="page">
 
-	<div data-role="header">
-		<h1>stiam.ro</h1>
-	</div>
+  <div data-role="header">
+    <a href="right.html" data-icon="arrow-l" class="ui-btn-left">Sursa</a>
+    <select name="category" id="category" class="ui-btn-right" data-native-menu="false">
+      <option value="Ultima ora">Toate</option>
+      <option value="Ultima ora">Ultima ora</option>
+      <option value="Stiinta">Stiinta</option>
+      <option value="Sanatate">Sanatate</option>
+      <option value="Sport">Sport</option>
+      <option value="Politica">Politica</option>
+      <option value="Monden">Monden</option>
+      <option value="Moldova">Moldova</option>
+      <option value="IT">IT</option>
+      <option value="Imobiliare">Imobiliare</option>
+      <option value="Extern">Extern</option>
+      <option value="Economie">Economie</option>
+      <option value="Cultura">Cultura</option>
+    </select>
+    <span class="ui-title" />
+  </div>
 
-	<div data-role="content">	
-		<ul data-role="listview" data-inset="true" data-filter="true">
-			<li><a href="#">Acura</a></li>
-			<li><a href="#">Audi</a></li>
-			<li><a href="#">BMW</a></li>
-			<li><a href="#">Cadillac</a></li>
-			<li><a href="#">Ferrari</a></li>
-		</ul>		
-	</div>
+  <div data-role="content" class="page">
+    <div>
+      <a href="detalii.html" class="article">
+        <img class="article-thumb" src="http://stiam.ro/revista-presei/sfatulmedicului.ro/sanatate/2013-03-25/personalitatea-prin-culori/image_preview" />
+        <div class="article-body">
+          <h3>Personalitatea prin culori</h3>
+          <p>Lumea este plina de culori. De curand, specialistii au demonstrat, in urma unor studii, ca nu trebuie sa se subestimeze efectul pe care il au culorile asupra personalitatii si starii de spirit a oamenilor. Cercetarile au descoperit ca unele culori pot provoca reactii diferite in cazul a diferiti oameni. O buna intelegere a modului in care culorile interactioneaza cu starea de spirit, va poate ajuta sa decorati casa sau sa alegeti imbracamintea, potrivita pentru a fi mereu intr-o stare de spir...</p>
+        </div>
+      </a>
+      <a href="detalii.html" class="article">
+        <div class="article-body">
+          <h3>acasă la mine</h3>
+          <p>La mine acasă, la Turnu Măgurele, capitalismul ultimilor douăzeci de ani a adus numai prăpăd. Sărăcie şi disperare. Parcă a trecut&#160; pârjolul prin oraşul atât de drag sufletului meu. Combinatul chimic a...</p>
+        </div>
+      </a>
+      <a href="detalii.html" class="article">
+        <img class="article-thumb" src="http://stiam.ro/revista-presei/sfatulmedicului.ro/sanatate/2013-03-25/semnele-reactiei-alergice-la-sapun/image_preview" />
+        <div class="article-body">
+          <h3>semnele reactiei alergice la sapun</h3>
+          <p>O reactie alergica la sapun ar putea cauza o eruptie cutanata de culoare rosie insotita de senzatie de mancarime. Pielea afectata va fi de obicei uscata, iar zona se poate umfla. In cazul in care se vor inhala substantele emanate de unele dintre particulele de sapun, persoana in cauza poate experimenta usoare probleme respiratorii si disconfort ocular.</p>
+        </div>
+      </a>
+      <a href="detalii.html" class="article">
+        <img class="article-thumb" src="http://stiam.ro/revista-presei/csid.ro/sanatate/2013-03-25/inconjurati-va-de-verde-cautati/image_preview" />
+        <div class="article-body">
+          <h3>Inconjuraţi-vă de verde, căutaţi cu orice preţ sursele de energie vitală!</h3>
+          <p>Iată-ne în plină primăvară, într-o superbă infuzie de clorofilă! Păcat că tabloul este întregit însă, de atmosfera încărcată de anxietate, generată de ultimele scandaluri alimentare: lapte încărcat de aflatoxină, carne toxică, de provenienţă mai mult sau mai puţin cunoscută, dar şi plină de hormoni, legume şi fructe injectate, verdeţuri cu pesticide.</p>
+        </div>
+      </a>
+    </div>
+  </div>
 
 </div>
 
