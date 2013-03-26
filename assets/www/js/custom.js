@@ -24,7 +24,8 @@ Stiam.Panel.prototype = {
 
     self.context.on( "panelclose", function(evt, ui){
       if(self.changed){
-        self.settings.button.find('.ui-btn-text').text('4');
+        var count = $('form :checked', self.context).length;
+        self.settings.button.find('.ui-btn-text').text(count);
         self.changed = false;
       }
     });
@@ -168,6 +169,8 @@ Stiam.Listing.prototype = {
 };
 
 $( document ).on( "pageinit", "#main-page", function() {
+  $('#init-page').remove();
+
   $( document ).on( "swipeleft swiperight", "#header", function( e ) {
     if ( $.mobile.activePage.jqmData( "panel" ) !== "open" ) {
       if ( e.type === "swipeleft"  ) {
