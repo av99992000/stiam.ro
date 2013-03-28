@@ -7,39 +7,72 @@
   zoom: 1.5;
 }
 
-.page .article {
+.ui-content {
+  padding: 0;
+}
+
+.article {
   display: block;
-  margin: 0.25em;
-  box-shadow: 1px 1px 1px #ccc;
+  margin: 0 0.25em 1.5em 0.25em;
+  box-shadow: 1px 2px 3px #ccc;
   background: #fff;
 }
 
-.page .article,
-.page .article:active,
-.page .article:visited,
-.page .article:hover {
+.article,
+.article:active,
+.article:visited,
+.article:hover {
   color: black;
   text-decoration: none;
 }
 
-.page .article-thumb {
+.article img.loading {
+  display: block;
+  margin: auto;
+}
+
+#article-details .article {
+  margin: 1em 0.2;
+  padding: 1em;
+}
+
+#article-details .article-thumb {
+  width: auto;
+  margin: auto;
+  display: block;
+}
+
+#article-details .details {
+  text-align: justify;
+}
+
+.page .article-inner {
+  padding: 1em;
+}
+
+.article-thumb {
   width: 100%;
 }
 
-.page .article-body {
+.article-body {
   background: #fff;
 }
 
-.page .article-body h3 {
+.article-body h3 {
   margin-top: 0;
-  padding: 1em;
   padding-bottom: 0;
+  margin-bottom: 0;
 }
 
-.page .article-body p {
+.article-body p {
   font-weight: normal;
   text-align: justify;
-  padding: 1em;
+}
+
+.documentByLine {
+  font-size: 85%;
+  display: block;
+  color: #999;
 }
 
 @media all and (max-width: 800px){

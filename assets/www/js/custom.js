@@ -1,3 +1,95 @@
+//var SERVER = 'http://192.168.1.103:16551/stiam.ro';
+var SERVER = 'http://stiam.ro';
+
+$.fn.rodate = function(options){
+  var settings = {};
+
+  var roformat = function(date){
+    var now = $('#current-time');
+    if(now.length){
+      now = new Date(now.text());
+    }else{
+      now = new Date();
+    }
+    var past = new Date(date.text());
+    var delta = (now-past)/1000;
+    if(delta < 0){
+      date.text('acum cateva secunde');
+      return;
+    }
+    // Minutes
+    if(delta < 120){
+      date.text('acum un minut');
+      return;
+    }
+    if(delta < 3300){
+      var min = parseInt(delta/60, 10);
+      date.text('acum ' + min + ' minute');
+      return;
+    }
+    // Hours
+    if(delta < 7200){
+      date.text('acum o ora');
+      return;
+    }
+    if(delta < 72000){
+      var hours = parseInt(delta / 3600, 10);
+      date.text('acum ' + hours + ' ore');
+      return;
+    }
+    // Days
+    delta = delta / 3600;
+    if(delta < 48){
+      date.text('ieri');
+      return;
+    }
+    if(delta < 160){
+      var days = parseInt(delta / 24, 10);
+      date.text('acum ' + days + ' zile');
+      return;
+    }
+    // Weeks
+    if(delta < 336){
+      date.text('saptamana trecuta');
+      return;
+    }
+    if(delta < 720){
+      var weeks = parseInt(delta/24/7, 10);
+      date.text('acum ' + weeks + ' saptamani');
+      return;
+    }
+    // Months
+    delta = delta / 24;
+    if(delta < 60){
+      date.text('acum o luna');
+      return;
+    }
+    if(delta < 360){
+      var months = parseInt(delta/30, 10);
+      date.text('acum ' + months + ' luni');
+      return;
+    }
+    // Years
+    if(delta < 720){
+      date.text('acum un an');
+      return;
+    }
+    if(delta>720){
+      var years = parseInt(delta/360, 10);
+      date.text('acum ' + years + ' ani');
+    }
+  };
+
+  return this.each(function(){
+    if(options){
+      $.extend(settings, options);
+    }
+
+    var self = $(this);
+    roformat(self);
+  });
+};
+
 if(!window.Stiam){
   var Stiam = {version: '1.0'};
 }
@@ -7,7 +99,9 @@ Stiam.Panel = function(context, options){
   self.context = context;
   self.settings = {
     button: '',
-    data_url: 'left'
+    section: 'categories',
+    server: SERVER + '/revista-presei-romanesti/app.json?callback=?',
+    dataset: []
   };
 
   if(options){
@@ -30,8 +124,40 @@ Stiam.Panel.prototype = {
       }
     });
 
+    if(!self.settings.dataset.length){
+      self.update();
+    }
+  },
+
+  update: function(){
+    var self = this;
+    $.ajax({
+      url: self.settings.server,
+      dataType: 'jsonp',
+      crossDomain: true,
+      error: function(jqXHR, textStatus, errorThrown){
+        self.error('Eroare. Va rugam verificati conexiunea la internet');
+      },
+      success: function(data, textStatus, jqXHR){
+        var section = data[self.settings.section];
+        var cid = section.properties.name;
+        self.settings.dataset = [];
+        $.each(section.items, function(idx, value){
+          self.settings.dataset.push({
+            name: cid + '-' + value,
+            title: value,
+            on: false
+          });
+        });
+        self.reload();
+      }
+    });
+  },
+
+  reload: function(){
+    var self = this;
     var html;
-    var dataset = self.dataset();
+    var dataset = self.settings.dataset;
     var fieldset = self.context.find('fieldset');
     fieldset.empty();
     $.each(dataset, function(idx, item){
@@ -47,62 +173,25 @@ Stiam.Panel.prototype = {
     });
   },
 
-  dataset: function(){
+  error: function(message){
     var self = this;
-    if(self.settings.data_url === 'left'){
-      return [
-        {
-          name: 'c4_-tiin--',
-          title: 'Ştiinţă',
-          on: false,
-        },
-        {
-          name: 'c4_Ultima-or-',
-          title: 'Ultima oră',
-          on: false,
-        },
-        {
-          name: 'c4_S-n-tate',
-          title: 'Sănătate',
-          on: false,
-        },
-        {
-          name: 'c4_Sport',
-          title: 'Sport',
-          on: false,
-        },
-        {
-          name: 'c4_Politic-',
-          title: 'Politică',
-          on: false,
-        }
-      ];
-    }else{
-      return [
-        {
-          name: 'c5_Adevarul-ro',
-          title: 'Adevarul.ro',
-          on: false,
-        },
-        {
-          name: 'c5_Bursa-ro',
-          title: 'Bursa.ro',
-          on: false,
-        },
-        {
-          name: 'c5_Cinemagia-ro',
-          title: 'Cinemagia.ro',
-          on: false,
-        }
-      ];
+    var fieldset = self.context.find('fieldset');
+    fieldset.find('.loading').remove();
+    var error = fieldset.find('.error');
+    if(!error.length){
+      error = $('<div>').addClass('error').appendTo(fieldset);
     }
+    error.html(message);
   }
-}
+};
 
 Stiam.Listing = function(context, options){
   var self = this;
   self.context = context;
   self.settings = {
+    server: SERVER + '/revista-presei-romanesti/query.json?callback=?',
+    dataset: [],
+    properties: {}
   };
 
   if(options){
@@ -115,7 +204,6 @@ Stiam.Listing = function(context, options){
 Stiam.Listing.prototype = {
   initialize: function(){
     var self = this;
-    var dataset = self.dataset();
 
     self.col1 = $('.ui-block-a', self.context);
     self.col1.empty();
@@ -123,48 +211,122 @@ Stiam.Listing.prototype = {
     self.col2 = $('.ui-block-b', self.context);
     self.col2.empty();
 
-    $.each(dataset, function(idx, item){
-      var html ='<a href="#article-page" class="article">';
-      if(item.thumbnail){
-        html += '<img class="article-thumb" src="' + item.thumbnail + '" />';
-      }
-      html += '<div class="article-body">';
-      html += '<h3>' + item.title + '</h3>';
-      html += '<p>' + item.description + '</p>';
-      html += '</div>';
-      html += '</a>';
+    self.update();
+  },
 
-      if(idx % 2 === 0){
-        $(html).appendTo(self.col1);
-      }else{
-        $(html).appendTo(self.col2);
+  update: function(){
+    var self = this;
+    $.ajax({
+      url: self.settings.server,
+      dataType: 'jsonp',
+      crossDomain: true,
+      error: function(jqXHR, textStatus, errorThrown){
+        self.error('Eroare. Va rugam verificati conexiunea la internet');
+      },
+      success: function(data, textStatus, jqXHR){
+        self.settings.dataset = data.items;
+        self.settings.properties = data.properties;
+        self.reload();
       }
     });
   },
 
-  dataset: function(){
-    return [
-      {
-        title: 'Personalitatea prin culori',
-        description: 'Lumea este plina de culori. De curand, specialistii au demonstrat, in urma unor studii, ca nu trebuie sa se subestimeze efectul pe care il au culorile asupra personalitatii si starii de spirit a oamenilor. Cercetarile au descoperit ca unele culori pot provoca reactii diferite in cazul a diferiti oameni. O buna intelegere a modului in care culorile interactioneaza cu starea de spirit, va poate ajuta sa decorati casa sau sa alegeti imbracamintea, potrivita pentru a fi mereu intr-o stare de spir...',
-        thumbnail: 'http://stiam.ro/revista-presei/sfatulmedicului.ro/sanatate/2013-03-25/personalitatea-prin-culori/image_preview'
-      },
-      {
-        title: 'Semnele reactiei alergice la sapun',
-        description: 'O reactie alergica la sapun ar putea cauza o eruptie cutanata de culoare rosie insotita de senzatie de mancarime. Pielea afectata va fi de obicei uscata, iar zona se poate umfla. In cazul in care se vor inhala substantele emanate de unele dintre particulele de sapun, persoana in cauza poate experimenta usoare probleme respiratorii si disconfort ocular.',
-        thumbnail: 'http://stiam.ro/revista-presei/sfatulmedicului.ro/sanatate/2013-03-25/semnele-reactiei-alergice-la-sapun/image_preview'
-      },
-      {
-        title: 'Acasă la mine',
-        description: 'La mine acasă, la Turnu Măgurele, capitalismul ultimilor douăzeci de ani a adus numai prăpăd. Sărăcie şi disperare. Parcă a trecut&#160; pârjolul prin oraşul atât de drag sufletului meu. Combinatul chimic a...',
-        thumbnail: ''
-      },
-      {
-        title: 'Inconjuraţi-vă de verde, căutaţi cu orice preţ sursele de energie vitală!',
-        description: 'Iată-ne în plină primăvară, într-o superbă infuzie de clorofilă! Păcat că tabloul este întregit însă, de atmosfera încărcată de anxietate, generată de ultimele scandaluri alimentare: lapte încărcat de aflatoxină, carne toxică, de provenienţă mai mult sau mai puţin cunoscută, dar şi plină de hormoni, legume şi fructe injectate, verdeţuri cu pesticide.',
-        thumbnail: 'http://stiam.ro/revista-presei/csid.ro/sanatate/2013-03-25/inconjurati-va-de-verde-cautati/image_preview'
+  reload: function(){
+    var self = this;
+    $.each(self.settings.dataset, function(idx, item){
+      var html ='<a href="#article-page" class="article">';
+      if(item.thumbnail){
+        html += '<img class="article-thumb" src="' + item.thumbnail + '" />';
       }
-    ]
+      html += '<div class="article-body"><div class="article-inner">';
+      html += '<h3>' + item.title + '</h3>';
+      html += '<div class="documentByLine">';
+      html += '<span>' + item.source + ' - </span>';
+      html += '<span class="rodate">' + item.date + '</span>';
+      html += '</div>';
+      html += '<p>' + item.description + '</p>';
+      html += '</div></div>';
+      html += '</a>';
+      html = $(html);
+
+      if(idx % 2 === 0){
+        html.appendTo(self.col1);
+      }else{
+        html.appendTo(self.col2);
+      }
+
+      html.click(function(){
+        self.click($(this), item);
+      });
+    });
+
+    $('.rodate', self.context).rodate();
+  },
+
+  error: function(message){
+    var self = this;
+    var fieldset = self.context.find('fieldset');
+    fieldset.find('.loading').remove();
+    var error = fieldset.find('.error');
+    if(!error.length){
+      error = $('<div>').addClass('error').appendTo(fieldset);
+    }
+    error.html(message);
+  },
+
+  click: function(context, options){
+    var self = this;
+    var body = $('#article-page').find('#article-details');
+    body.empty();
+    var html = "<div class='article'>";
+    html += '<div class="article-body"><div class="article-inner">';
+    html += '<h3>' + options.title + '</h3>';
+    html += '<div class="documentByLine">';
+    html += '<span>' + options.source + ' - </span>';
+    html += '<span class="rodate">' + options.date + '</span>';
+    html += '</div>';
+
+    if(options.thumbnail){
+      html += '<img class="article-thumb" src="' + options.thumbnail + '" />';
+    }
+
+    html += '<p>' + options.description + '</p>';
+    html += '</div></div></div>';
+    html += '<div class="details article">';
+    html += '<img class="loading" src="css/images/ajax-loader.gif"/>';
+    html += '</div>';
+    html = $(html);
+
+    html.appendTo(body);
+    $('.rodate', body).rodate();
+    self.details(body, options);
+  },
+
+  details: function(context, options){
+    var self = this;
+    var url = options.url + '/diffbot.json?callback=?';
+    $.ajax({
+      url: url,
+      data: {'url': options.original},
+      dataType: 'jsonp',
+      crossDomain: true,
+      error: function(jqXHR, textStatus, errorThrown){
+        self.error('Eroare. Va rugam verificati conexiunea la internet');
+      },
+      success: function(data, textStatus, jqXHR){
+        if(data.error){
+          self.error(data.error);
+        }
+        if(!data.text){
+          return;
+        }
+        var text = data.text;
+        text = text.replace(/\n/g, '</p><p>');
+        var p = jQuery('<p>').html(text);
+        context.find('.details').html(p);
+        console.log(data);
+      }
+    });
   }
 };
 
@@ -187,7 +349,7 @@ $( document ).on( "pageinit", "#main-page", function() {
   context = $("#left-panel");
   var left = new Stiam.Panel(context, {
     button: $('a[href="#left-panel"]'),
-    data_url: 'left'
+    section: 'categories'
   });
   context.data('Stiam.Panel', left);
 
@@ -195,13 +357,13 @@ $( document ).on( "pageinit", "#main-page", function() {
   context = $('#right-panel');
   var right = new Stiam.Panel(context, {
     button: $('a[href="#right-panel"]'),
-    data_url: 'right'
+    section: 'sources'
   });
   context.data('Stiam.Panel', right);
 
   // Listing
   context = $('#body');
   var center = new Stiam.Listing(context, {});
-  context.data('Stiam.Listing', center)
+  context.data('Stiam.Listing', center);
 
 });
