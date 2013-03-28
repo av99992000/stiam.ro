@@ -211,6 +211,12 @@ Stiam.Listing.prototype = {
     self.col2 = $('.ui-block-b', self.context);
     self.col2.empty();
 
+    self.col3 = $('.ui-block-c', self.context);
+    self.col3.empty();
+
+    self.col4 = $('.ui-block-d', self.context);
+    self.col4.empty();
+
     self.update();
   },
 
@@ -234,7 +240,7 @@ Stiam.Listing.prototype = {
   reload: function(){
     var self = this;
     $.each(self.settings.dataset, function(idx, item){
-      var html ='<a href="#article-page" class="article">';
+      var html ='<a href="#article-page" class="article" data-transition="flip">';
       if(item.thumbnail){
         html += '<img class="article-thumb" src="' + item.thumbnail + '" />';
       }
@@ -249,10 +255,14 @@ Stiam.Listing.prototype = {
       html += '</a>';
       html = $(html);
 
-      if(idx % 2 === 0){
+      if(idx % 4 === 0){
         html.appendTo(self.col1);
-      }else{
+      }else if (idx % 4 === 1 ){
         html.appendTo(self.col2);
+      }else if (idx % 4 === 2){
+        html.appendTo(self.col3);
+      }else {
+        html.appendTo(self.col4);
       }
 
       html.click(function(){
@@ -293,7 +303,7 @@ Stiam.Listing.prototype = {
     html += '<p>' + options.description + '</p>';
     html += '</div></div></div>';
     html += '<div class="details article">';
-    html += '<img class="loading" src="css/images/ajax-loader.gif"/>';
+    html += '<img class="loading" src="css/images/ajax-loader-2.gif"/>';
     html += '</div>';
     html = $(html);
 
@@ -324,7 +334,6 @@ Stiam.Listing.prototype = {
         text = text.replace(/\n/g, '</p><p>');
         var p = jQuery('<p>').html(text);
         context.find('.details').html(p);
-        console.log(data);
       }
     });
   }
