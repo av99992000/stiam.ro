@@ -290,7 +290,7 @@ Stiam.Listing.prototype = {
     }
 
     $.each(self.settings.dataset, function(idx, item){
-      var html ='<a href="#article-page" class="article" data-transition="flip">';
+      var html ='<a href="#article-page" class="article" data-transition="flow">';
       if(item.thumbnail){
         html += '<img class="article-thumb" src="' + item.thumbnail + '" />';
       }
