@@ -39,6 +39,7 @@
 #article-details .article-thumb {
   width: auto;
   margin: auto;
+  max-width: 100%;
   display: block;
 }
 
