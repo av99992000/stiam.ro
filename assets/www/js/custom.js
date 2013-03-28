@@ -94,6 +94,12 @@ if(!window.Stiam){
   var Stiam = {version: '1.0'};
 }
 
+Stiam.Events = {
+  query: 'stiam-query',
+  app: 'stiam-app',
+  reset: 'stiam-reset'
+}
+
 Stiam.Panel = function(context, options){
   var self = this;
   self.context = context;
@@ -118,10 +124,25 @@ Stiam.Panel.prototype = {
 
     self.context.on( "panelclose", function(evt, ui){
       if(self.changed){
-        var count = $('form :checked', self.context).length;
+        var items = $('form :checked', self.context);
+        var count = items.length;
         self.settings.button.find('.ui-btn-text').text(count);
+
+        var key = self.settings.properties.name;
+        var values = $.map(items, function(item, idx){
+          return $(item).data('value');
+        });
+
+        var query = {};
+        query[key] = values;
+        $(document).trigger(Stiam.Events.query, query);
         self.changed = false;
       }
+    });
+
+    $(document).unbind('.' + self.settings.section);
+    $(document).bind(Stiam.Events.reset + '.' + self.settings.section, function(evt, data){
+      self.reset(data);
     });
 
     if(!self.settings.dataset.length){
@@ -131,6 +152,7 @@ Stiam.Panel.prototype = {
 
   update: function(){
     var self = this;
+    $.mobile.showPageLoadingMsg();
     $.ajax({
       url: self.settings.server,
       dataType: 'jsonp',
@@ -141,6 +163,7 @@ Stiam.Panel.prototype = {
       success: function(data, textStatus, jqXHR){
         var section = data[self.settings.section];
         var cid = section.properties.name;
+        self.settings.properties = section.properties;
         self.settings.dataset = [];
         $.each(section.items, function(idx, value){
           self.settings.dataset.push({
@@ -150,6 +173,9 @@ Stiam.Panel.prototype = {
           });
         });
         self.reload();
+      },
+      complete: function(){
+        $.mobile.hidePageLoadingMsg();
       }
     });
   },
@@ -161,7 +187,7 @@ Stiam.Panel.prototype = {
     var fieldset = self.context.find('fieldset');
     fieldset.empty();
     $.each(dataset, function(idx, item){
-      html = '<input type="checkbox" name="' + item.name + '" id="' + item.name + '" data-theme="a">';
+      html = '<input type="checkbox" name="' + item.name + '" id="' + item.name + '" data-theme="a" data-value="' + item.title +'">';
       html += '<label for="' + item.name + '">' + item.title + '</label>';
       $(html).appendTo(fieldset);
     });
@@ -173,15 +199,17 @@ Stiam.Panel.prototype = {
     });
   },
 
-  error: function(message){
+  reset: function(options){
     var self = this;
-    var fieldset = self.context.find('fieldset');
-    fieldset.find('.loading').remove();
-    var error = fieldset.find('.error');
-    if(!error.length){
-      error = $('<div>').addClass('error').appendTo(fieldset);
-    }
-    error.html(message);
+    var items = $('form :checked', self.context);
+    items.attr('checked', false);
+    items.checkboxradio('refresh');
+    self.changed = true;
+    self.context.trigger('panelclose');
+  },
+
+  error: function(message){
+    $.mobile.showPageLoadingMsg('e', message);
   }
 };
 
@@ -191,7 +219,8 @@ Stiam.Listing = function(context, options){
   self.settings = {
     server: SERVER + '/revista-presei-romanesti/query.json?callback=?',
     dataset: [],
-    properties: {}
+    properties: {},
+    query: {}
   };
 
   if(options){
@@ -206,39 +235,60 @@ Stiam.Listing.prototype = {
     var self = this;
 
     self.col1 = $('.ui-block-a', self.context);
-    self.col1.empty();
-
     self.col2 = $('.ui-block-b', self.context);
-    self.col2.empty();
-
     self.col3 = $('.ui-block-c', self.context);
-    self.col3.empty();
-
     self.col4 = $('.ui-block-d', self.context);
-    self.col4.empty();
 
-    self.update();
+    self.update(true);
+
+    // Events
+    $(document).unbind('.StiamListing');
+    $(document).bind(Stiam.Events.query + '.StiamListing', function(evt, data){
+      if(data){
+        $.extend(self.settings.query, data);
+        self.update(true);
+      }
+    });
   },
 
-  update: function(){
+  refresh: function(){
     var self = this;
+    self.col1.empty();
+    self.col2.empty();
+    self.col3.empty();
+    self.col4.empty();
+  },
+
+  update: function(refresh){
+    var self = this;
+    $.mobile.showPageLoadingMsg();
     $.ajax({
       url: self.settings.server,
       dataType: 'jsonp',
       crossDomain: true,
+      traditional: true,
+      data: self.settings.query,
       error: function(jqXHR, textStatus, errorThrown){
         self.error('Eroare. Va rugam verificati conexiunea la internet');
       },
       success: function(data, textStatus, jqXHR){
         self.settings.dataset = data.items;
         self.settings.properties = data.properties;
-        self.reload();
+        self.reload(refresh);
+      },
+      complete: function(){
+        $.mobile.hidePageLoadingMsg();
       }
     });
   },
 
-  reload: function(){
+  reload: function(refresh){
     var self = this;
+
+    if(refresh){
+      self.refresh();
+    }
+
     $.each(self.settings.dataset, function(idx, item){
       var html ='<a href="#article-page" class="article" data-transition="flip">';
       if(item.thumbnail){
@@ -271,17 +321,26 @@ Stiam.Listing.prototype = {
     });
 
     $('.rodate', self.context).rodate();
+
+    // No results
+    if(refresh && !self.settings.dataset.length){
+      var html = '<div class="article">';
+      html += '<div class="article-body"><div class="article-inner">';
+      html += '<h3>Nu exista articole care sa corespunda filtrelor selectate</h3>';
+      html += '<button>Sterge toate filtrele</button>';
+      html += "</div>"
+      html = $(html);
+      html.appendTo(self.col1);
+      $('button', html).button();
+
+      $('button', html).click(function(evt){
+        $(document).trigger(Stiam.Events.reset);
+      });
+    }
   },
 
   error: function(message){
-    var self = this;
-    var fieldset = self.context.find('fieldset');
-    fieldset.find('.loading').remove();
-    var error = fieldset.find('.error');
-    if(!error.length){
-      error = $('<div>').addClass('error').appendTo(fieldset);
-    }
-    error.html(message);
+    $.mobile.showPageLoadingMsg('e', message);
   },
 
   click: function(context, options){
@@ -315,6 +374,7 @@ Stiam.Listing.prototype = {
   details: function(context, options){
     var self = this;
     var url = options.url + '/diffbot.json?callback=?';
+    $.mobile.showPageLoadingMsg();
     $.ajax({
       url: url,
       data: {'url': options.original},
@@ -332,8 +392,11 @@ Stiam.Listing.prototype = {
         }
         var text = data.text;
         text = text.replace(/\n/g, '</p><p>');
-        var p = jQuery('<p>').html(text);
+        var p = $('<p>').html(text);
         context.find('.details').html(p);
+      },
+      complete: function(){
+        $.mobile.hidePageLoadingMsg();
       }
     });
   }
