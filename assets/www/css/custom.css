@@ -1,4 +1,9 @@
 /* Custom */
+body {
+  font-size: 14px;
+  font-family: "DroidSansMonoRegular", Helvetica, Arial, sans-serif;
+}
+
 .page {
   background: #eee;
 }
@@ -12,6 +17,8 @@
 }
 
 .article {
+  font-family: "DroidSansMonoRegular", Helvetica, Arial, sans-serif;
+  font-size: 1rem;
   display: block;
   margin: 0 0.25em 1.5em 0.25em;
   box-shadow: 1px 2px 3px #ccc;
@@ -63,6 +70,11 @@ img.loading {
   margin-top: 0;
   padding-bottom: 0;
   margin-bottom: 0;
+  font-family: "DroidSansMonoRegular", Helvetica, Arial, sans-serif;
+  font-size: 1.72rem;
+  font-weight: normal;
+  border-bottom: 1px solid #CCC;
+  text-align: right;
 }
 
 .article-body p {
@@ -74,6 +86,18 @@ img.loading {
   font-size: 85%;
   display: block;
   color: #999;
+  text-align: right;
+}
+
+@font-face {
+    font-family: 'DroidSansMonoRegular';
+    src: url('DroidSansMono-webfont.eot');
+    src: url('DroidSansMono-webfont.eot?#iefix') format('embedded-opentype'),
+         url('DroidSansMono-webfont.woff') format('woff'),
+         url('DroidSansMono-webfont.ttf') format('truetype'),
+         url('DroidSansMono-webfont.svg#DroidSansMonoRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
 }
 
 @media all and (max-width: 800px){
