@@ -1,5 +1,5 @@
-bin/*.apk
 bin/*_
 *.wpu
 *.wpr
 *.bak
+*.class
