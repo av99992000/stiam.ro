@@ -90,14 +90,32 @@ img.loading {
 }
 
 @font-face {
-    font-family: 'DroidSansMonoRegular';
-    src: url('DroidSansMono-webfont.eot');
-    src: url('DroidSansMono-webfont.eot?#iefix') format('embedded-opentype'),
-         url('DroidSansMono-webfont.woff') format('woff'),
-         url('DroidSansMono-webfont.ttf') format('truetype'),
-         url('DroidSansMono-webfont.svg#DroidSansMonoRegular') format('svg');
-    font-weight: normal;
-    font-style: normal;
+  font-family: 'DroidSansMonoRegular';
+  src: url('DroidSansMono-webfont.eot');
+  src: url('DroidSansMono-webfont.eot?#iefix') format('embedded-opentype'),
+    url('DroidSansMono-webfont.woff') format('woff'),
+    url('DroidSansMono-webfont.ttf') format('truetype'),
+    url('DroidSansMono-webfont.svg#DroidSansMonoRegular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+#back-top {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  padding: 0.5em;
+  width: 108px;
+  text-align: center;
+  text-decoration: none;
+  color: #bbb;
+  cursor: pointer;
+  background: #000;
+  border-radius: 10px;
+  box-shadow: 0 0 20px #000;
+  opacity: 0.5;
+  /* transition */
+  transition: 1s;
 }
 
 @media all and (max-width: 800px){

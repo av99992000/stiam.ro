@@ -402,6 +402,30 @@ Stiam.Listing.prototype = {
   }
 };
 
+Stiam.BackToTop = {
+  initialize: function(){
+    var self = this;
+    self.button = $('<div>')
+      .attr('id', 'back-top')
+      .addClass('back-top')
+      .html('sus')
+      .hide()
+      .appendTo($('body'));
+
+    $(window).scroll(function () {
+      if ($(this).scrollTop() > 100) {
+        self.button.fadeIn('slow');
+      } else {
+        self.button.fadeOut('slow');
+      }
+    });
+
+    self.button.click(function(){
+      $('body,html').animate({scrollTop: 0}, 800);
+    });
+  }
+};
+
 $( document ).on( "pageinit", "#main-page", function() {
   $('#init-page').remove();
 
@@ -437,5 +461,7 @@ $( document ).on( "pageinit", "#main-page", function() {
   context = $('#body');
   var center = new Stiam.Listing(context, {});
   context.data('Stiam.Listing', center);
+
+  Stiam.BackToTop.initialize();
 
 });
