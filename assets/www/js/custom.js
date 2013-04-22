@@ -176,6 +176,11 @@ Stiam.Panel.prototype = {
       },
       complete: function(){
         $.mobile.hidePageLoadingMsg();
+        try{
+          navigator.splashscreen.hide();
+        }catch(err){
+          return;
+        }
       }
     });
   },
