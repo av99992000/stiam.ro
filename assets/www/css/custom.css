@@ -107,6 +107,18 @@ img.loading {
   transition: 1s;
 }
 
+a[data-icon="refresh"] {
+  position: absolute;
+  right: 4rem;
+}
+
+#left-panel legend {
+  text-align: right;
+  padding: 0.5em;
+  font-size: 1.72rem;
+  font-weight: normal;
+}
+
 @media all and (max-width: 800px){
   .ui-grid-c >:nth-child(n) {
     width: 100%;

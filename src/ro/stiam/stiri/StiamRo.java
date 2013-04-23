@@ -30,7 +30,7 @@ public class StiamRo extends DroidGap
         super.onCreate(savedInstanceState);
         super.setIntegerProperty("splashscreen", R.drawable.splash);
         // Set by <content src="index.html" /> in config.xml
-        super.loadUrl(Config.getStartUrl(), 15000);
+        super.loadUrl(Config.getStartUrl(), 30000);
         //super.loadUrl("file:///android_asset/www/index.html")
     }
 }
