@@ -98,7 +98,7 @@ Stiam.Events = {
   query: 'stiam-query',
   app: 'stiam-app',
   reset: 'stiam-reset'
-}
+};
 
 Stiam.Query = {};
 
@@ -253,11 +253,10 @@ Stiam.Listing.prototype = {
   initialize: function(){
     var self = this;
 
-    self.col1 = $('.ui-block-a', self.context);
-    self.col2 = $('.ui-block-b', self.context);
-    self.col3 = $('.ui-block-c', self.context);
-    self.col4 = $('.ui-block-d', self.context);
-
+    self.container = $('.container', self.context);
+    self.container.masonry({
+      itemSelector: '.article-brick'
+    });
     self.update(true);
 
     // Events
@@ -275,14 +274,16 @@ Stiam.Listing.prototype = {
   more: function(){
     var self = this;
     var more = $([
+      '<div class="article-brick">',
       '<div class="article more-articles">',
         '<div class="article-body">',
           '<div class="article-inner">',
             '<button>Mai multe ştiri</button>',
           '</div>',
         '</div>',
+      '</div>',
       '</div>'].join('\n'));
-    more.appendTo(self.col4);
+    more.appendTo(self.container);
 
     $('button', more).button();
     $('button', more).click(function(){
@@ -292,16 +293,15 @@ Stiam.Listing.prototype = {
         Stiam.Query.b_start += 20;
       }
       $(document).trigger(Stiam.Events.query, Stiam.Query);
-      more.remove();
+      self.container.masonry('remove', more);
     });
+
+    self.container.masonry('appended', more, true);
   },
 
   refresh: function(){
     var self = this;
-    self.col1.empty();
-    self.col2.empty();
-    self.col3.empty();
-    self.col4.empty();
+    self.container.empty();
   },
 
   update: function(refresh){
@@ -337,9 +337,11 @@ Stiam.Listing.prototype = {
     }
 
     $.each(self.settings.dataset, function(idx, item){
-      var html ='<a href="#article-page" class="article" data-transition="flow">';
+      var html ='<div class="article-brick"><a href="#article-page" class="article" data-transition="flow">';
       if(item.thumbnail){
+        html += '<div class="article-thumb-container">';
         html += '<img class="article-thumb" src="' + item.thumbnail + '" />';
+        html += '</div>';
       }
       html += '<div class="article-body"><div class="article-inner">';
       html += '<h3>' + item.title + '</h3>';
@@ -349,22 +351,18 @@ Stiam.Listing.prototype = {
       html += '</div>';
       html += '<p>' + item.description + '</p>';
       html += '</div></div>';
-      html += '</a>';
+      html += '</a></div>';
       html = $(html);
 
-      if(idx % 4 === 0){
-        html.appendTo(self.col1);
-      }else if (idx % 4 === 1 ){
-        html.appendTo(self.col2);
-      }else if (idx % 4 === 2){
-        html.appendTo(self.col3);
-      }else {
-        html.appendTo(self.col4);
-      }
+      html.appendTo(self.container);
 
       html.click(function(){
         self.click($(this), item);
       });
+
+      if(!refresh){
+        self.container.masonry('appended', html, true);
+      }
     });
 
     $('.rodate', self.context).rodate();
@@ -372,19 +370,28 @@ Stiam.Listing.prototype = {
     // No results
     if(refresh && !self.settings.dataset.length){
       var html = $([
-        '<div class="article">',
-          '<div class="article-body"><div class="article-inner">',
-          '<h3>Nu exista articole care sa corespunda filtrelor selectate</h3>',
-            '<button>Sterge toate filtrele</button>',
-        "</div>"].join('\n'));
-      html.appendTo(self.col1);
+        '<div class="article-brick">',
+          '<div class="article">',
+            '<div class="article-body"><div class="article-inner">',
+            '<h3>Nu exista articole care sa corespunda filtrelor selectate</h3>',
+              '<button>Sterge toate filtrele</button>',
+          "</div>",
+        '</div>'
+        ].join('\n'));
+      html.appendTo(self.container);
       $('button', html).button();
 
       $('button', html).click(function(evt){
         $(document).trigger(Stiam.Events.reset);
       });
+
+      self.container.masonry('appended', html, true);
     }else{
       self.more();
+    }
+
+    if(refresh){
+      self.container.masonry('reload');
     }
   },
 
@@ -484,7 +491,7 @@ Stiam.Refresh = {
       $(document).trigger(Stiam.Events.query, Stiam.Query);
     });
   }
-}
+};
 
 // jQuery mobile init
 $( document ).on( "pageinit", "#main-page", function() {
