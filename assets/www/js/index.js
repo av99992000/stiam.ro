@@ -264,7 +264,35 @@ Stiam.Listing.prototype = {
     $(document).unbind('.StiamListing');
     $(document).bind(Stiam.Events.query + '.StiamListing', function(evt, data){
       self.settings.query = data || {};
-      self.update(true);
+      var refresh = true;
+      if(self.settings.query.b_start && self.settings.query.b_start !== 0){
+        refresh = false;
+      }
+      self.update(refresh);
+    });
+  },
+
+  more: function(){
+    var self = this;
+    var more = $([
+      '<div class="article more-articles">',
+        '<div class="article-body">',
+          '<div class="article-inner">',
+            '<button>Mai multe ştiri</button>',
+          '</div>',
+        '</div>',
+      '</div>'].join('\n'));
+    more.appendTo(self.col4);
+
+    $('button', more).button();
+    $('button', more).click(function(){
+      if(!Stiam.Query.b_start){
+        Stiam.Query.b_start = 20;
+      }else{
+        Stiam.Query.b_start += 20;
+      }
+      $(document).trigger(Stiam.Events.query, Stiam.Query);
+      more.remove();
     });
   },
 
@@ -343,18 +371,20 @@ Stiam.Listing.prototype = {
 
     // No results
     if(refresh && !self.settings.dataset.length){
-      var html = '<div class="article">';
-      html += '<div class="article-body"><div class="article-inner">';
-      html += '<h3>Nu exista articole care sa corespunda filtrelor selectate</h3>';
-      html += '<button>Sterge toate filtrele</button>';
-      html += "</div>"
-      html = $(html);
+      var html = $([
+        '<div class="article">',
+          '<div class="article-body"><div class="article-inner">',
+          '<h3>Nu exista articole care sa corespunda filtrelor selectate</h3>',
+            '<button>Sterge toate filtrele</button>',
+        "</div>"].join('\n'));
       html.appendTo(self.col1);
       $('button', html).button();
 
       $('button', html).click(function(evt){
         $(document).trigger(Stiam.Events.reset);
       });
+    }else{
+      self.more();
     }
   },
 
@@ -458,7 +488,6 @@ Stiam.Refresh = {
 
 // jQuery mobile init
 $( document ).on( "pageinit", "#main-page", function() {
-
   // Events
   $( document ).on( "swipeleft swiperight", "#header", function( e ) {
     if ( $.mobile.activePage.jqmData( "panel" ) !== "open" ) {
