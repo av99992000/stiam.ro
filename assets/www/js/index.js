@@ -97,7 +97,8 @@ if(!window.Stiam){
 Stiam.Events = {
   query: 'stiam-query',
   app: 'stiam-app',
-  reset: 'stiam-reset'
+  reset: 'stiam-reset',
+  refresh: 'stiam-refresh'
 };
 
 Stiam.Query = {};
@@ -232,6 +233,106 @@ Stiam.Panel.prototype = {
   }
 };
 
+Stiam.Settings = function(context, options){
+  var self = this;
+  self.context = context;
+  self.settings = {
+    button: ''
+  };
+
+  if(options){
+    $.extend(self.settings, options);
+  }
+
+  return self.initialize();
+};
+
+Stiam.Settings.prototype = {
+  initialize: function(){
+    var self = this;
+    self.changed = [];
+
+    // Events
+    self.context.on( "panelclose", function(evt, ui){
+      var settings = $('form', self.context).serializeArray();
+      $.each(settings, function(idx, item){
+        var name = item.name;
+        var value = item.value;
+        if(Stiam.Storage[name] !== value){
+          Stiam.Storage[name] = value;
+          self.changed.push(name);
+        }
+      });
+
+      if(self.changed.length){
+        $(document).trigger(Stiam.Events.refresh, {'changed': self.changed});
+        self.changed = [];
+      }
+    });
+
+    $(document).unbind('.StiamSettings');
+    $(document).bind(Stiam.Events.refresh + '.StiamSettings', function(evt, data){
+      var changed = data ? data.changed : [];
+      self.theme(changed);
+    });
+
+    self.update();
+    self.theme(['theme']);
+  },
+
+  update: function(){
+    var self = this;
+
+    // theme
+    var value = Stiam.Storage.theme || 'a';
+    var input = $('[name="theme"]', self.context);
+    input.val(value);
+    input.selectmenu('refresh');
+
+    // showImages
+    value = Stiam.Storage.showImages || 'on';
+    var input = $('[name="showImages"]', self.context);
+    input.val(value);
+    input.slider('refresh');
+
+    // infiniteScroll
+    value = Stiam.Storage.infiniteScroll || 'on';
+    var input = $('[name="infiniteScroll"]', self.context);
+    input.val(value);
+    input.slider('refresh');
+
+  },
+
+  theme: function(changed){
+    var self = this;
+
+    // theme not changed, nothing to do
+    if($.inArray('theme', changed) === -1){
+      return;
+    }
+
+    var theme = Stiam.Storage.theme || 'a';
+
+    //reset all the buttons widgets
+    $(document).find('.ui-btn')
+           .removeClass('ui-btn-up-a ui-btn-up-b ui-btn-up-c ui-btn-up-d ui-btn-up-e ui-btn-hover-a ui-btn-hover-b ui-btn-hover-c ui-btn-hover-d ui-btn-hover-e')
+           .addClass('ui-btn-up-' + theme)
+           .attr('data-theme', theme);
+
+    //reset the header/footer widgets
+    $(document).find('.ui-header, .ui-footer')
+            .removeClass('ui-bar-a ui-bar-b ui-bar-c ui-bar-d ui-bar-e')
+            .addClass('ui-bar-' + theme)
+            .attr('data-theme', theme);
+
+    //reset the page widget
+    $(document).find('.ui-panel')
+            .removeClass('ui-body-a ui-body-b ui-body-c ui-body-d ui-body-e')
+            .addClass('ui-body-' + theme)
+            .attr('data-theme', theme);
+  }
+};
+
 Stiam.Listing = function(context, options){
   var self = this;
   self.context = context;
@@ -269,6 +370,11 @@ Stiam.Listing.prototype = {
       }
       self.update(refresh);
     });
+
+    $(document).bind(Stiam.Events.refresh + '.StiamListing', function(evt, data){
+      var changed = data ? data.changed : [];
+      self.refresh(changed);
+    });
   },
 
   more: function(){
@@ -299,9 +405,15 @@ Stiam.Listing.prototype = {
     self.container.masonry('appended', more, true);
   },
 
-  refresh: function(){
+  refresh: function(changed){
     var self = this;
-    self.container.empty();
+
+    // showImages not changed, nothing to do
+    if($.inArray('showImages', changed) === -1){
+      return;
+    }
+
+    $(document).trigger(Stiam.Events.query, Stiam.Query);
   },
 
   update: function(refresh){
@@ -323,7 +435,6 @@ Stiam.Listing.prototype = {
         self.reload(refresh);
       },
       complete: function(){
-        //alert('jquery.mobile Done');
         $.mobile.hidePageLoadingMsg();
       }
     });
@@ -333,12 +444,12 @@ Stiam.Listing.prototype = {
     var self = this;
 
     if(refresh){
-      self.refresh();
+      self.container.empty();
     }
 
     $.each(self.settings.dataset, function(idx, item){
       var html ='<div class="article-brick"><a href="#article-page" class="article" data-transition="flow">';
-      if(item.thumbnail){
+      if(item.thumbnail && Stiam.Storage.showImages === 'on'){
         html += '<div class="article-thumb-container">';
         html += '<img class="article-thumb" src="' + item.thumbnail + '" />';
         html += '</div>';
@@ -411,7 +522,7 @@ Stiam.Listing.prototype = {
     html += '<span class="rodate">' + options.date + '</span>';
     html += '</div>';
 
-    if(options.thumbnail){
+    if(options.thumbnail && Stiam.Storage.showImages === 'on'){
       html += '<img class="article-thumb" src="' + options.thumbnail + '" />';
     }
 
@@ -425,6 +536,7 @@ Stiam.Listing.prototype = {
     html.appendTo(body);
     $('.rodate', body).rodate();
     self.details(body, options);
+    self.theme(['theme']);
   },
 
   details: function(context, options){
@@ -455,6 +567,35 @@ Stiam.Listing.prototype = {
         $.mobile.hidePageLoadingMsg();
       }
     });
+  },
+
+  theme: function(changed){
+    var self = this;
+
+    // theme not changed, nothing to do
+    if($.inArray('theme', changed) === -1){
+      return;
+    }
+
+    var theme = Stiam.Storage.theme || 'a';
+
+    //reset all the buttons widgets
+    $(document).find('.ui-btn')
+           .removeClass('ui-btn-up-a ui-btn-up-b ui-btn-up-c ui-btn-up-d ui-btn-up-e ui-btn-hover-a ui-btn-hover-b ui-btn-hover-c ui-btn-hover-d ui-btn-hover-e')
+           .addClass('ui-btn-up-' + theme)
+           .attr('data-theme', theme);
+
+    //reset the header/footer widgets
+    $(document).find('.ui-header, .ui-footer')
+            .removeClass('ui-bar-a ui-bar-b ui-bar-c ui-bar-d ui-bar-e')
+            .addClass('ui-bar-' + theme)
+            .attr('data-theme', theme);
+
+    //reset the page widget
+    $(document).find('.ui-panel')
+            .removeClass('ui-body-a ui-body-b ui-body-c ui-body-d ui-body-e')
+            .addClass('ui-body-' + theme)
+            .attr('data-theme', theme);
   }
 };
 
@@ -493,10 +634,30 @@ Stiam.Refresh = {
   }
 };
 
+// Persistent Storage
+Stiam.Storage = {};
+
 // jQuery mobile init
 $( document ).on( "pageinit", "#main-page", function() {
+
+  var defaults = {
+    // Settings
+    showImages: 'on',
+    infiniteScroll: 'on',
+    theme: 'a'
+  };
+
+  if(typeof(Storage)!=="undefined"){
+    Stiam.Storage = localStorage;
+    $.each(defaults, function(key, val){
+      if(!Stiam.Storage[key]){
+        localStorage[key] = val;
+      }
+    });
+  }
+
   // Events
-  $( document ).on( "swipeleft swiperight", "#header", function( e ) {
+  $( document ).on( "swipeleft swiperight", "#main-page", function( e ) {
     if ( $.mobile.activePage.jqmData( "panel" ) !== "open" ) {
       if ( e.type === "swipeleft"  ) {
         $( "#right-panel" ).panel( "open" );
@@ -515,11 +676,19 @@ $( document ).on( "pageinit", "#main-page", function() {
   });
   context.data('Stiam.Panel', left);
 
+  // Right
+  context = $('#right-panel');
+  var right = new Stiam.Settings(context, {
+    button: $('a[href="#right-panel"]')
+  });
+  context.data('Stiam.Settings', right);
+
   // Listing
   context = $('#body');
   var center = new Stiam.Listing(context, {});
   context.data('Stiam.Listing', center);
 
+  // Buttons
   Stiam.BackToTop.initialize();
   Stiam.Refresh.initialize();
 
@@ -534,6 +703,12 @@ $(document).on("deviceready", function(){
     var back = $('a[data-rel="back"]:visible');
     if(back.length){
       return back.click();
+    }
+
+    if ( $.mobile.activePage.jqmData( "panel" ) === "open" ) {
+      $('#right-panel').panel('close');
+      $('#left-panel').panel('close');
+      return;
     }
 
     navigator.notification.confirm(

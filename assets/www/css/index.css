@@ -120,11 +120,25 @@ a[data-icon="refresh"] {
   right: 4rem;
 }
 
+.settings-header,
 #left-panel legend {
   text-align: right;
   padding: 0.5em;
   font-size: 1.72rem;
   font-weight: normal;
+}
+
+.settings-header {
+  border-bottom: 1px solid;
+  margin-bottom: 1em;
+}
+
+#right-panel label {
+  font-size: 1.5rem;
+}
+
+.formHelp {
+  font-size: 0.8rem;
 }
 
 .article-brick {
@@ -153,7 +167,7 @@ a[data-icon="refresh"] {
 }
 
 .article-brick {
-  width: 24.9%;
+  width: 400px;
 }
 
 @media all and (max-width: 639px){
@@ -171,5 +185,11 @@ a[data-icon="refresh"] {
 @media all and (min-width: 1024px) and (max-width: 1279px){
   .article-brick {
     width: 33.2%;
+  }
+}
+
+@media all and (min-width: 1280px){
+  .article-brick {
+    width: 24.9%;
   }
 }
