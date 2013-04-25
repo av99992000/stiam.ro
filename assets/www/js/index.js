@@ -565,6 +565,7 @@ Stiam.Listing.prototype = {
       },
       complete: function(){
         $.mobile.hidePageLoadingMsg();
+        self.theme(['theme']);
       }
     });
   },
