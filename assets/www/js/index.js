@@ -258,8 +258,8 @@ Stiam.Settings.prototype = {
       $.each(settings, function(idx, item){
         var name = item.name;
         var value = item.value;
-        if(Stiam.Storage[name] !== value){
-          Stiam.Storage[name] = value;
+        if(Stiam.Storage.getItem(name) !== value){
+          Stiam.Storage.setItem(name, value);
           self.changed.push(name);
         }
       });
@@ -284,20 +284,20 @@ Stiam.Settings.prototype = {
     var self = this;
 
     // theme
-    var value = Stiam.Storage.theme || 'a';
+    var value = Stiam.Storage.getItem('theme') || 'a';
     var input = $('[name="theme"]', self.context);
     input.val(value);
     input.selectmenu('refresh');
 
     // showImages
-    value = Stiam.Storage.showImages || 'on';
-    var input = $('[name="showImages"]', self.context);
+    value = Stiam.Storage.getItem('showImages') || 'on';
+    input = $('[name="showImages"]', self.context);
     input.val(value);
     input.slider('refresh');
 
     // infiniteScroll
-    value = Stiam.Storage.infiniteScroll || 'on';
-    var input = $('[name="infiniteScroll"]', self.context);
+    value = Stiam.Storage.getItem('infiniteScroll') || 'on';
+    input = $('[name="infiniteScroll"]', self.context);
     input.val(value);
     input.slider('refresh');
 
@@ -311,7 +311,7 @@ Stiam.Settings.prototype = {
       return;
     }
 
-    var theme = Stiam.Storage.theme || 'a';
+    var theme = Stiam.Storage.getItem('theme') || 'a';
 
     //reset all the buttons widgets
     $(document).find('.ui-btn')
@@ -449,7 +449,7 @@ Stiam.Listing.prototype = {
 
     $.each(self.settings.dataset, function(idx, item){
       var html ='<div class="article-brick"><a href="#article-page" class="article" data-transition="flow">';
-      if(item.thumbnail && Stiam.Storage.showImages === 'on'){
+      if(item.thumbnail && Stiam.Storage.getItem('showImages') === 'on'){
         html += '<div class="article-thumb-container">';
         html += '<img class="article-thumb" src="' + item.thumbnail + '" />';
         html += '</div>';
@@ -522,7 +522,7 @@ Stiam.Listing.prototype = {
     html += '<span class="rodate">' + options.date + '</span>';
     html += '</div>';
 
-    if(options.thumbnail && Stiam.Storage.showImages === 'on'){
+    if(options.thumbnail && Stiam.Storage.getItem('showImages') === 'on'){
       html += '<img class="article-thumb" src="' + options.thumbnail + '" />';
     }
 
@@ -578,7 +578,7 @@ Stiam.Listing.prototype = {
       return;
     }
 
-    var theme = Stiam.Storage.theme || 'a';
+    var theme = Stiam.Storage.getItem('theme') || 'a';
 
     //reset all the buttons widgets
     $(document).find('.ui-btn')
@@ -636,29 +636,119 @@ Stiam.Refresh = {
 };
 
 // Persistent Storage
-Stiam.Storage = {};
-
-// jQuery mobile init
-$( document ).on( "pageinit", "#main-page", function() {
-
-  var defaults = {
-    // Settings
+Stiam.Storage = {
+  settings: {
     showImages: 'on',
     infiniteScroll: 'on',
     theme: 'a'
-  };
+  },
 
-  if(typeof(Storage)!=="undefined"){
-    Stiam.Storage = localStorage;
-    $.each(defaults, function(key, val){
-      if(!Stiam.Storage[key]){
-        localStorage[key] = val;
+  initialize: function(callback){
+    var self = this;
+    self.db = null;
+    self.localStorage = null;
+
+    if(window.openDatabase){
+      self.db = openDatabase('stiamro', '1.0', 'stiam.ro', 2 * 1024 * 1024);
+    }
+
+    if(window.Storage){
+      self.localStorage = localStorage;
+    }
+
+    return self.reload(callback);
+  },
+
+  setItem: function(key, value){
+    var self = this;
+    self.settings[key] = value;
+    self.commit(key, value);
+  },
+
+  getItem: function(key){
+    var self = this;
+    return self.settings[key];
+  },
+
+  reload: function(callback){
+    var self = this;
+    if(!self.db){
+      return self.reloadFromLocalStorage(callback);
+    }
+
+    var error = function(err){
+      return callback();
+    };
+
+    var success = function(tx, results){
+      if(results && results.rows && results.rows.length){
+        var rows = results.rows;
+        for(i=0;i<results.rows.length;i++){
+          var item = rows.item(i);
+          self.settings[item.name] = item.value;
+        }
+      }
+      return callback();
+    };
+
+    var sql = function(tx){
+      tx.executeSql('CREATE TABLE IF NOT EXISTS SETTINGS (name unique, value)');
+      tx.executeSql('SELECT * FROM SETTINGS', [], success, error);
+    };
+
+    self.db.transaction(sql, error);
+  },
+
+  commit: function(key, value){
+    var self = this;
+    if(!self.db){
+      return self.commitInLocalStorage(key, value);
+    }
+
+    var sql = function(tx){
+      tx.executeSql('CREATE TABLE IF NOT EXISTS SETTINGS (name unique, value)');
+      tx.executeSql('INSERT OR REPLACE INTO SETTINGS (name, value) VALUES ("' + key + '", "'+ value +'")');
+    };
+
+    var error = function(err){
+      if(window.console){
+        console.log(err);
+      }
+    };
+
+    self.db.transaction(sql, error);
+  },
+
+  reloadFromLocalStorage: function(callback){
+    var self = this;
+    if(!self.localStorage){
+      return callback();
+    }
+
+    $.each(self.settings, function(key, old){
+      var value = self.localStorage.getItem(key);
+      if(value){
+        self.settings[key] = value;
       }
     });
+
+    return callback();
+  },
+
+  commitInLocalStorage: function(key, value){
+    var self = this;
+    if(self.localStorage){
+      self.localStorage.setItem(key, value);
+    }
   }
+};
+
+Stiam.initialize = function(){
+  var context;
 
   // Events
-  $( document ).on( "swipeleft swiperight", "#main-page", function( e ) {
+  $( document ).unbind('.Stiam');
+  $( document ).on( "swipeleft.Stiam swiperight.Stiam", "#header", function( e ) {
     if ( $.mobile.activePage.jqmData( "panel" ) !== "open" ) {
       if ( e.type === "swipeleft"  ) {
         $( "#right-panel" ).panel( "open" );
@@ -668,8 +758,6 @@ $( document ).on( "pageinit", "#main-page", function() {
     }
   });
 
-  var context;
-
   // Left panel
   context = $("#left-panel");
   var left = new Stiam.Panel(context, {
@@ -677,7 +765,7 @@ $( document ).on( "pageinit", "#main-page", function() {
   });
   context.data('Stiam.Panel', left);
 
-  // Right
+  // Right panel
   context = $('#right-panel');
   var right = new Stiam.Settings(context, {
     button: $('a[href="#right-panel"]')
@@ -693,13 +781,8 @@ $( document ).on( "pageinit", "#main-page", function() {
   Stiam.BackToTop.initialize();
   Stiam.Refresh.initialize();
 
-});
-
-// Cordova init
-$(document).on("deviceready", function(){
-  navigator.splashscreen.hide();
-
-  $(document).on("backbutton", function (){
+  // Device back button
+  $(document).on("backbutton.Stiam", function (){
     // Don't try to exit if the user is not on the homepage
     var back = $('a[data-rel="back"]:visible');
     if(back.length){
@@ -724,4 +807,31 @@ $(document).on("deviceready", function(){
     );
   });
 
+  // Device menu button
+  $(document).on("menubutton.Stiam", function (){
+    $('#right-panel').panel('toggle');
+  });
+
+  // Device search button
+  $(document).on("searchbutton.Stiam", function (){
+    $('#left-panel').panel('toggle');
+  });
+
+};
+
+$( document ).on( "pageinit", "#main-page", function() {
+    // are we running in native app or in browser?
+    window.isphone = false;
+    if(document.URL.indexOf("http://") == -1) {
+        window.isphone = true;
+    }
+
+    if(window.isphone) {
+      $(document).on("deviceready", function(){
+        navigator.splashscreen.hide();
+        Stiam.Storage.initialize(Stiam.initialize);
+      });
+    } else {
+        Stiam.Storage.initialize(Stiam.initialize);
+    }
 });
