@@ -101,8 +101,6 @@ Stiam.Events = {
   refresh: 'stiam-refresh'
 };
 
-Stiam.Query = {};
-
 Stiam.Panel = function(context, options){
   var self = this;
   self.context = context;
@@ -123,27 +121,10 @@ Stiam.Panel = function(context, options){
 Stiam.Panel.prototype = {
   initialize: function(){
     var self = this;
-    self.changed = false;
+    self.changed = true;
 
     self.context.on( "panelclose", function(evt, ui){
-      if(self.changed){
-        var items = $('form :checked', self.context);
-        var count = items.length;
-        self.settings.button.find('.ui-btn-text').text(count);
-
-        Stiam.Query = {};
-        $.each(items, function(idx, item){
-          var key = $(item).data('key');
-          value = $(item).data('value');
-          if(!Stiam.Query[key]){
-            Stiam.Query[key] = [];
-          }
-          Stiam.Query[key].push(value);
-        });
-
-        $(document).trigger(Stiam.Events.query, Stiam.Query);
-        self.changed = false;
-      }
+      return self.query();
     });
 
     $(document).unbind('.StiamPanel');
@@ -152,6 +133,32 @@ Stiam.Panel.prototype = {
     });
 
     self.update();
+  },
+
+  query: function(){
+    var self = this;
+    if(!self.changed){
+      return;
+    }
+
+    var form = $('form', self.context);
+    var items = $(':checked', form);
+    var count = items.length;
+    self.settings.button.find('.ui-btn-text').text(count);
+
+    var query = {};
+    $.each(items, function(idx, item){
+      var key = $(item).data('key');
+      value = $(item).data('value');
+      if(!query[key]){
+        query[key] = [];
+      }
+      query[key].push(value);
+    });
+
+    Stiam.Storage.setQuery(query);
+    $(document).trigger(Stiam.Events.query);
+    self.changed = false;
   },
 
   update: function(){
@@ -182,11 +189,13 @@ Stiam.Panel.prototype = {
     if(!section.dataset){
       section.dataset = [];
     }
+
+    var query = Stiam.Storage.getQuery();
     $.each(section.items, function(idx, value){
       section.dataset.push({
-        name: cid + '-' + value,
+        name: cid + '--' + value,
         title: value,
-        on: false
+        on: ($.inArray(value, query[cid] || []) !== -1)
       });
     });
   },
@@ -195,6 +204,7 @@ Stiam.Panel.prototype = {
     var self = this;
     self.reloadSection(self.settings.sources, 'sources');
     self.reloadSection(self.settings.categories, 'categories');
+    self.query();
   },
 
   reloadSection: function(section, sid){
@@ -207,9 +217,16 @@ Stiam.Panel.prototype = {
     fieldset.empty();
     legend.appendTo(fieldset);
     $.each(dataset, function(idx, item){
-      html = '<input type="checkbox" name="' + item.name + '" id="' + item.name + '" data-value="' + item.title +'" data-key="' + cid + '">';
+      var checked = item.on ? "checked" : null;
+      html = '<input type="checkbox" ';
+      if(item.on){
+        self.changed = true;
+        html += 'checked="checked" ';
+      }
+      html += 'name="' + item.name + '" id="' + item.name + '" data-value="' + item.title +'" data-key="' + cid + '">';
       html += '<label for="' + item.name + '">' + item.title + '</label>';
-      $(html).appendTo(fieldset);
+      html = $(html);
+      html.appendTo(fieldset);
     });
 
     self.context.find('input[type="checkbox"]').checkboxradio();
@@ -339,8 +356,7 @@ Stiam.Listing = function(context, options){
   self.settings = {
     server: SERVER + '/revista-presei-romanesti/query.json?callback=?',
     dataset: [],
-    properties: {},
-    query: {}
+    properties: {}
   };
 
   if(options){
@@ -358,14 +374,13 @@ Stiam.Listing.prototype = {
     self.container.masonry({
       itemSelector: '.article-brick'
     });
-    self.update(true);
 
     // Events
     $(document).unbind('.StiamListing');
     $(document).bind(Stiam.Events.query + '.StiamListing', function(evt, data){
-      self.settings.query = data || {};
       var refresh = true;
-      if(self.settings.query.b_start && self.settings.query.b_start !== 0){
+      var query = Stiam.Storage.getQuery();
+      if(query.b_start && query.b_start !== 0){
         refresh = false;
       }
       self.update(refresh);
@@ -393,12 +408,14 @@ Stiam.Listing.prototype = {
 
     $('button', more).button();
     $('button', more).click(function(){
-      if(!Stiam.Query.b_start){
-        Stiam.Query.b_start = 20;
+      var query = Stiam.Storage.getQuery();
+      if(!query.b_start){
+        query.b_start = 20;
       }else{
-        Stiam.Query.b_start += 20;
+        query.b_start += 20;
       }
-      $(document).trigger(Stiam.Events.query, Stiam.Query);
+      Stiam.Storage.setQuery(query);
+      $(document).trigger(Stiam.Events.query);
       self.container.masonry('remove', more);
     });
 
@@ -413,7 +430,7 @@ Stiam.Listing.prototype = {
       return;
     }
 
-    $(document).trigger(Stiam.Events.query, Stiam.Query);
+    $(document).trigger(Stiam.Events.query);
   },
 
   update: function(refresh){
@@ -424,7 +441,7 @@ Stiam.Listing.prototype = {
       dataType: 'jsonp',
       crossDomain: true,
       traditional: true,
-      data: self.settings.query,
+      data: Stiam.Storage.getQuery(),
       error: function(jqXHR, textStatus, errorThrown){
         self.error('Eroare. Va rugam verificati conexiunea la internet');
         alert('Eroare. Va rugam verificati conexiunea la internet');
@@ -630,7 +647,7 @@ Stiam.Refresh = {
     self.button = $('a[data-icon="refresh"]');
     self.button.click(function(evt){
       evt.preventDefault();
-      $(document).trigger(Stiam.Events.query, Stiam.Query);
+      $(document).trigger(Stiam.Events.query);
     });
   }
 };
@@ -640,7 +657,8 @@ Stiam.Storage = {
   settings: {
     showImages: 'on',
     infiniteScroll: 'on',
-    theme: 'a'
+    theme: 'a',
+    query: {}
   },
 
   initialize: function(callback){
@@ -657,6 +675,21 @@ Stiam.Storage = {
     }
 
     return self.reload(callback);
+  },
+
+  getQuery: function(){
+    var self = this;
+    return self.settings.query;
+  },
+
+  setQuery: function(query){
+    var self = this;
+    self.settings.query = query;
+
+    // Don't persist batch queries
+    query.b_start = 0;
+    query = escape(JSON.stringify(query));
+    self.commit("query", query);
   },
 
   setItem: function(key, value){
@@ -685,7 +718,12 @@ Stiam.Storage = {
         var rows = results.rows;
         for(i=0;i<results.rows.length;i++){
           var item = rows.item(i);
-          self.settings[item.name] = item.value;
+          if(item.name == "query"){
+            value = JSON.parse(unescape(item.value));
+          }else{
+            value = item.value;
+          }
+          self.settings[item.name] = value;
         }
       }
       return callback();
@@ -727,6 +765,9 @@ Stiam.Storage = {
 
     $.each(self.settings, function(key, old){
       var value = self.localStorage.getItem(key);
+      if(key == "query"){
+        value = JSON.parse(unescape(value));
+      }
       if(value){
         self.settings[key] = value;
       }
