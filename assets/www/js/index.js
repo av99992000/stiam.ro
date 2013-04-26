@@ -656,6 +656,12 @@ Stiam.InfiniteScroll = {
         return;
       }
 
+      // XXX Use activePage ?
+      var back = $('a[data-rel="back"]:visible');
+      if(back.length){
+        return;
+      }
+
       var batch = $('.article-brick:has(".more-articles")');
       var batchTop = batch.position();
       batchTop = batchTop ? batchTop.top : 0;
