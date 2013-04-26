@@ -682,6 +682,7 @@ Stiam.Refresh = {
     self.button = $('a[data-icon="refresh"]');
     self.button.click(function(evt){
       evt.preventDefault();
+      Stiam.Storage.settings.query.b_start = 0;
       $(document).trigger(Stiam.Events.query);
     });
   }
@@ -859,6 +860,8 @@ Stiam.initialize = function(){
   Stiam.BackToTop.initialize();
   Stiam.Refresh.initialize();
 
+  $.mobile.page.prototype.options.backBtnTheme = "c";
+
   // Device back button
   $(document).on("backbutton.Stiam", function (){
     // Don't try to exit if the user is not on the homepage
@@ -899,6 +902,8 @@ Stiam.initialize = function(){
 
 $( document ).on( "pageinit", "#main-page", function() {
     // are we running in native app or in browser?
+    $('[data-role="page"]').removeAttr('style');
+
     window.isphone = false;
     if(document.URL.indexOf("http://") == -1) {
         window.isphone = true;
