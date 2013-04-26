@@ -408,6 +408,9 @@ Stiam.Listing.prototype = {
 
     $('button', more).button();
     $('button', more).click(function(){
+      // Prevent multiple clicks
+      $(this).unbind('click');
+
       var query = Stiam.Storage.getQuery();
       if(!query.b_start){
         query.b_start = 20;
@@ -627,16 +630,48 @@ Stiam.BackToTop = {
       .hide()
       .appendTo($('body'));
 
-    $(window).scroll(function () {
+    self.button.click(function(){
+      $('body,html').animate({scrollTop: 0}, 800);
+    });
+
+    $(window).unbind('.StiamBackToTop');
+    $(window).bind('scroll.StiamBackToTop', function () {
       if ($(this).scrollTop() > 100) {
         self.button.fadeIn('slow');
       } else {
         self.button.fadeOut('slow');
       }
     });
+  }
+};
 
-    self.button.click(function(){
-      $('body,html').animate({scrollTop: 0}, 800);
+Stiam.InfiniteScroll = {
+  initialize: function(){
+    var self = this;
+
+    $(window).unbind('.StiamInfiniteScroll');
+    $(window).bind('scroll.StiamInfiniteScroll', function(){
+
+      if(Stiam.Storage.getItem('infiniteScroll') !== 'on'){
+        return;
+      }
+
+      var batch = $('.article-brick:has(".more-articles")');
+      var batchTop = batch.position();
+      batchTop = batchTop ? batchTop.top : 0;
+      if(!batchTop){
+        return;
+      }
+
+      var windowBottom = $(window).height() + $(window).scrollTop();
+
+      // Not yet
+      if((batchTop - windowBottom) > 100){
+        return;
+      }
+
+      $('button', batch).click();
+
     });
   }
 };
@@ -687,9 +722,10 @@ Stiam.Storage = {
     self.settings.query = query;
 
     // Don't persist batch queries
-    query.b_start = 0;
-    query = escape(JSON.stringify(query));
-    self.commit("query", query);
+    var newQuery = jQuery.extend({}, query);
+    newQuery.b_start = 0;
+    newQuery = escape(JSON.stringify(newQuery));
+    self.commit("query", newQuery);
   },
 
   setItem: function(key, value){
@@ -819,6 +855,7 @@ Stiam.initialize = function(){
   context.data('Stiam.Listing', center);
 
   // Buttons
+  Stiam.InfiniteScroll.initialize();
   Stiam.BackToTop.initialize();
   Stiam.Refresh.initialize();
 
