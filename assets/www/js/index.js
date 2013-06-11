@@ -721,7 +721,7 @@ Stiam.InfiniteScroll = {
       var windowBottom = $(window).height() + $(window).scrollTop();
 
       // Not yet
-      if((batchTop - windowBottom) > 100){
+      if((batchTop - windowBottom) > 300){
         return;
       }
 
