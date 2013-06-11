@@ -557,11 +557,34 @@ Stiam.Listing.prototype = {
     $('.rodate', body).rodate();
     self.details(body, options);
     self.theme(['theme']);
+
+    // Share button
+    var share = $('#article-page').find('[data-icon="star"]');
+    if(!window.isphone){
+      share.remove();
+    }else{
+      share.unbind('click');
+      share.click(function(evt){
+        evt.preventDefault();
+        window.plugins.share.show({
+          subject: options.title,
+          text: options.url},
+          function() {
+
+          }, // Success function
+          function() {
+            alert('Share failed');
+          } // Failure function
+        );
+      });
+    }
   },
 
   details: function(context, options){
     var self = this;
-    var url = options.url + '/diffbot.json?callback=?';
+
+    var index = options.url.lastIndexOf('/');
+    var url = options.url.substr(0, index) + '/diffbot.json?callback=?';
     $.mobile.showPageLoadingMsg();
     $.ajax({
       url: url,
@@ -580,8 +603,21 @@ Stiam.Listing.prototype = {
         }
         var text = data.text;
         text = text.replace(/\n/g, '</p><p>');
-        var p = $('<p>').html(text);
-        context.find('.details').html(p);
+        var div = $('<div>');
+        var a = $([
+          '<div class="documentByLine">',
+            '<span>Sursa: </span>',
+            '<a href="' + options.original + '">', options.source, '</a>',
+          '</div>'
+        ].join(''));
+
+        a.appendTo(div);
+        $(text).appendTo(div);
+        a.clone().appendTo(div);
+        div.find('a').click(function(evt){
+          return self.external(evt, $(this));
+        });
+        context.find('.details').html(div);
       },
       complete: function(){
         $.mobile.hidePageLoadingMsg();
@@ -617,6 +653,19 @@ Stiam.Listing.prototype = {
             .removeClass('ui-body-a ui-body-b ui-body-c ui-body-d ui-body-e')
             .addClass('ui-body-' + theme)
             .attr('data-theme', theme);
+  },
+
+  external: function(evt, link){
+    var self = this;
+    var url = link.attr('href');
+    if(window.isphone) {
+      evt.preventDefault();
+      navigator.app.loadUrl(url, {
+        openExternal: true
+      });
+    }else{
+      link.attr('target', '_blank');
+    }
   }
 };
 
@@ -869,6 +918,7 @@ Stiam.initialize = function(){
   $.mobile.page.prototype.options.backBtnTheme = "c";
 
   // Device back button
+  window.backs = 0;
   $(document).on("backbutton.Stiam", function (){
     // Don't try to exit if the user is not on the homepage
     var back = $('a[data-rel="back"]:visible');
@@ -882,16 +932,17 @@ Stiam.initialize = function(){
       return;
     }
 
-    navigator.notification.confirm(
-     'Sunteţi sigur că doriţi să părăsiţi aplicaţia stiam.ro?',
-       function(button){
-           if(button == "1"){
-               navigator.app.exitApp();
-           }
-       },
-       'Ieşire',
-       'Da,Nu'
-    );
+    window.backs += 1;
+    $.mobile.showPageLoadingMsg('a', "Apasă din nou Back pentru a părăsi aplicaţia", true);
+    if(window.backs > 1){
+      navigator.app.exitApp();
+    }
+
+    setTimeout(function(){
+      window.backs = 0;
+      $.mobile.hidePageLoadingMsg();
+    }, 3000);
+
   });
 
   // Device menu button

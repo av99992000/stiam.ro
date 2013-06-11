@@ -10,6 +10,7 @@ body {
 
 .ui-header {
   zoom: 1.5;
+  opacity: 0.7;
 }
 
 .ui-content {
@@ -53,6 +54,7 @@ img.loading {
 
 #article-details .details {
   text-align: justify;
+  margin-bottom: 3em;
 }
 
 .page .article-inner {
@@ -95,6 +97,12 @@ img.loading {
   display: block;
   color: #999;
   text-align: right;
+  text-transform: lowercase;
+}
+
+.documentByLine a {
+  text-decoration: none;
+  color: #7BAA0F;
 }
 
 #back-top {
