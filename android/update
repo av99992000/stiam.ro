@@ -1,0 +1,2 @@
+#!/bin/sh
+java -jar yuic index.js > ../assets/www/js/index.min.js
