@@ -101,6 +101,54 @@ Stiam.Events = {
   refresh: 'stiam-refresh'
 };
 
+Stiam.Analytics = {
+
+  initialize: function(){
+    if(!window.isphone){
+      return;
+    }
+
+    window.plugins.analytics.start("UA-10574661-4",
+      function(){
+        if(window.console){
+          console.log('Analytics started');
+        }
+      },
+      function(){
+        if(window.console){
+          console.log('Analytics failled');
+        }
+      }
+    );
+  },
+
+  trackPage: function(page, query){
+    if(!window.isphone){
+      return;
+    }
+
+    page = '/mobile-app' + page;
+    if(query){
+      query = jQuery.param(query, traditional=true);
+      query = query.replace('http://stiam.ro/', '').replace('http%3A%2F%2Fstiam.ro%2F', '');
+      page += "?" + query;
+    }
+
+    window.plugins.analytics.trackPageView(page,
+      function(){
+        if(window.console){
+          console.log('track: ' + page);
+        }
+      },
+      function(){
+        if(window.console){
+          console.log('track fail: ' + page);
+        }
+      }
+    );
+  }
+};
+
 Stiam.Panel = function(context, options){
   var self = this;
   self.context = context;
@@ -463,6 +511,9 @@ Stiam.Listing.prototype = {
   reload: function(refresh){
     var self = this;
 
+    // Analytics
+    Stiam.Analytics.trackPage('/', Stiam.Storage.getQuery());
+
     if(refresh){
       self.container.empty();
     }
@@ -532,6 +583,7 @@ Stiam.Listing.prototype = {
 
   click: function(context, options){
     var self = this;
+    Stiam.Analytics.trackPage('/article-details/', {url: options.url});
     var body = $('#article-page').find('#article-details');
     body.empty();
     var html = "<div class='article'>";
@@ -933,7 +985,7 @@ Stiam.initialize = function(){
     }
 
     window.backs += 1;
-    $.mobile.showPageLoadingMsg('a', "Apasă din nou Back pentru a părăsi aplicaţia", true);
+    $.mobile.showPageLoadingMsg('a', "Mai apasă odată pentru a ieşi", true);
     if(window.backs > 1){
       navigator.app.exitApp();
     }
@@ -955,6 +1007,8 @@ Stiam.initialize = function(){
     $('#left-panel').panel('toggle');
   });
 
+  // Google Analytics
+  Stiam.Analytics.initialize();
 };
 
 $( document ).on( "pageinit", "#main-page", function() {

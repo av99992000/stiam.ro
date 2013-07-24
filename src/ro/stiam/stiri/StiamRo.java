@@ -22,6 +22,8 @@ package ro.stiam.stiri;
 import android.os.Bundle;
 import org.apache.cordova.*;
 
+import com.google.android.apps.analytics.GoogleAnalyticsTracker;
+
 public class StiamRo extends DroidGap
 {
     @Override
@@ -32,5 +34,14 @@ public class StiamRo extends DroidGap
         // Set by <content src="index.html" /> in config.xml
         super.loadUrl(Config.getStartUrl(), 30000);
         //super.loadUrl("file:///android_asset/www/index.html")
+    }
+
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+        GoogleAnalyticsTracker tracker = com.google.android.apps.analytics.GoogleAnalyticsTracker.getInstance();
+        tracker.dispatch();
+        tracker.stopSession();
     }
 }
