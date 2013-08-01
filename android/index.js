@@ -349,7 +349,7 @@ Stiam.Settings.prototype = {
     var self = this;
 
     // theme
-    var value = Stiam.Storage.getItem('theme') || 'a';
+    var value = Stiam.Storage.getItem('theme') || 'b';
     var input = $('[name="theme"]', self.context);
     input.val(value);
     input.selectmenu('refresh');
@@ -376,7 +376,7 @@ Stiam.Settings.prototype = {
       return;
     }
 
-    var theme = Stiam.Storage.getItem('theme') || 'a';
+    var theme = Stiam.Storage.getItem('theme') || 'b';
 
     //reset all the buttons widgets
     $(document).find('.ui-btn')
@@ -519,7 +519,7 @@ Stiam.Listing.prototype = {
     }
 
     $.each(self.settings.dataset, function(idx, item){
-      var html ='<div class="article-brick"><a href="#article-page" class="article" data-transition="flow">';
+      var html ='<div class="article-brick"><a href="#article-page" class="article" data-transition="none">';
       if(item.thumbnail && Stiam.Storage.getItem('showImages') === 'on'){
         html += '<div class="article-thumb-container">';
         html += '<img class="article-thumb" src="' + item.thumbnail + '" />';
@@ -539,6 +539,10 @@ Stiam.Listing.prototype = {
       html.appendTo(self.container);
 
       html.click(function(){
+        self.click($(this), item);
+      });
+
+      html.on('swipeleft', function(){
         self.click($(this), item);
       });
 
@@ -609,6 +613,14 @@ Stiam.Listing.prototype = {
     $('.rodate', body).rodate();
     self.details(body, options);
     self.theme(['theme']);
+
+    body.unbind('swiperight');
+    body.on('swiperight', function(){
+      var back = $('a[data-rel="back"]:visible');
+      if(back.length){
+        return back.click();
+      }
+    });
 
     // Share button
     var share = $('#article-page').find('[data-icon="star"]');
@@ -686,7 +698,7 @@ Stiam.Listing.prototype = {
       return;
     }
 
-    var theme = Stiam.Storage.getItem('theme') || 'a';
+    var theme = Stiam.Storage.getItem('theme') || 'b';
 
     //reset all the buttons widgets
     $(document).find('.ui-btn')
@@ -800,7 +812,7 @@ Stiam.Storage = {
   settings: {
     showImages: 'on',
     infiniteScroll: 'on',
-    theme: 'a',
+    theme: 'b',
     query: {}
   },
 
