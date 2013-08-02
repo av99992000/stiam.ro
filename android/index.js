@@ -317,6 +317,13 @@ Stiam.Settings.prototype = {
     var self = this;
     self.changed = [];
 
+    // Theme
+    $('[name="theme"]', self.context).change(function(){
+      var theme = $(this).val();
+      Stiam.Storage.setItem('theme', theme);
+      self.theme(['theme']);
+    });
+
     // Events
     self.context.on( "panelclose", function(evt, ui){
       var settings = $('form', self.context).serializeArray();
@@ -364,6 +371,12 @@ Stiam.Settings.prototype = {
     value = Stiam.Storage.getItem('infiniteScroll') || 'on';
     input = $('[name="infiniteScroll"]', self.context);
     input.val(value);
+    input.slider('refresh');
+
+    // fontSize
+    value = Stiam.Storage.getItem('fontSize') || 100;
+    input = $('[name="fontSize"]', self.context);
+    input.val(parseInt(value, 10));
     input.slider('refresh');
 
   },
@@ -476,12 +489,11 @@ Stiam.Listing.prototype = {
   refresh: function(changed){
     var self = this;
 
-    // showImages not changed, nothing to do
-    if($.inArray('showImages', changed) === -1){
-      return;
+    // showImages or fontSize changed
+    if(($.inArray('showImages', changed) !== -1) || ($.inArray('fontSize', changed) !== -1)){
+      $(document).trigger(Stiam.Events.query);
     }
 
-    $(document).trigger(Stiam.Events.query);
   },
 
   update: function(refresh){
@@ -526,12 +538,12 @@ Stiam.Listing.prototype = {
         html += '</div>';
       }
       html += '<div class="article-body"><div class="article-inner">';
-      html += '<h3>' + item.title + '</h3>';
+      html += '<h3 class="documentFirstHeading" style="font-size:' + (parseInt(Stiam.Storage.getItem('fontSize'), 10) + 72) + '%">' + item.title + '</h3>';
       html += '<div class="documentByLine">';
       html += '<span>' + item.source + ' - </span>';
       html += '<span class="rodate">' + item.date + '</span>';
       html += '</div>';
-      html += '<p>' + item.description + '</p>';
+      html += '<p class="documentDescription" style="font-size: ' + Stiam.Storage.getItem('fontSize') + '%;">' + item.description + '</p>';
       html += '</div></div>';
       html += '</a></div>';
       html = $(html);
@@ -542,9 +554,10 @@ Stiam.Listing.prototype = {
         self.click($(this), item);
       });
 
-      html.on('swipeleft', function(){
-        self.click($(this), item);
-      });
+      // XXX Bugous
+      //html.on('swipeleft', function(){
+        //self.click($(this), item);
+      //});
 
       if(!refresh){
         self.container.masonry('appended', html, true);
@@ -559,7 +572,7 @@ Stiam.Listing.prototype = {
         '<div class="article-brick">',
           '<div class="article">',
             '<div class="article-body"><div class="article-inner">',
-            '<h3>Nu exista articole care sa corespunda filtrelor selectate</h3>',
+            '<h3 class="documentFirstHeading"  style="font-size:' + (parseInt(Stiam.Storage.getItem('fontSize'), 10) + 72) + '%">Nu exista articole care sa corespunda filtrelor selectate</h3>',
               '<button>Sterge toate filtrele</button>',
           "</div>",
         '</div>'
@@ -592,7 +605,7 @@ Stiam.Listing.prototype = {
     body.empty();
     var html = "<div class='article'>";
     html += '<div class="article-body"><div class="article-inner">';
-    html += '<h3>' + options.title + '</h3>';
+    html += '<h3 class="documentFirstHeading" style="font-size:' + (parseInt(Stiam.Storage.getItem('fontSize'), 10) + 72) + '%">' + options.title + '</h3>';
     html += '<div class="documentByLine">';
     html += '<span>' + options.source + ' - </span>';
     html += '<span class="rodate">' + options.date + '</span>';
@@ -602,7 +615,7 @@ Stiam.Listing.prototype = {
       html += '<img class="article-thumb" src="' + options.thumbnail + '" />';
     }
 
-    html += '<p>' + options.description + '</p>';
+    html += '<p class="documentDescription" style="font-size: ' + Stiam.Storage.getItem('fontSize') + '%">' + options.description + '</p>';
     html += '</div></div></div>';
     html += '<div class="details article">';
     html += '<img class="loading" src="css/images/ajax-loader-2.gif"/>';
@@ -614,13 +627,14 @@ Stiam.Listing.prototype = {
     self.details(body, options);
     self.theme(['theme']);
 
-    body.unbind('swiperight');
-    body.on('swiperight', function(){
-      var back = $('a[data-rel="back"]:visible');
-      if(back.length){
-        return back.click();
-      }
-    });
+    // XXX Bugous
+    //body.unbind('swiperight');
+    //body.on('swiperight', function(){
+      //var back = $('a[data-rel="back"]:visible');
+      //if(back.length){
+        //return back.click();
+      //}
+    //});
 
     // Share button
     var share = $('#article-page').find('[data-icon="star"]');
@@ -667,7 +681,7 @@ Stiam.Listing.prototype = {
         }
         var text = data.text;
         text = text.replace(/\n/g, '</p><p>');
-        var div = $('<div>');
+        var div = $('<div class="documentDetails" style="font-size: ' + Stiam.Storage.getItem('fontSize') + '%">');
         var a = $([
           '<div class="documentByLine">',
             '<span>Sursa: </span>',
@@ -813,6 +827,7 @@ Stiam.Storage = {
     showImages: 'on',
     infiniteScroll: 'on',
     theme: 'b',
+    fontSize: 100,
     query: {}
   },
 
