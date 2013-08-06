@@ -607,8 +607,8 @@ Stiam.Listing.prototype = {
     html += '<div class="article-body"><div class="article-inner">';
     html += '<h3 class="documentFirstHeading" style="font-size:' + (parseInt(Stiam.Storage.getItem('fontSize'), 10) + 72) + '%">' + options.title + '</h3>';
     html += '<div class="documentByLine">';
-    html += '<span>' + options.source + ' - </span>';
-    html += '<span class="rodate">' + options.date + '</span>';
+    html += '<a href="' + options.original+ '">' + options.source + '</a>';
+    html += '<span> - </span><span class="rodate">' + options.date + '</span>';
     html += '</div>';
 
     if(options.thumbnail && Stiam.Storage.getItem('showImages') === 'on'){
@@ -616,11 +616,15 @@ Stiam.Listing.prototype = {
     }
 
     html += '<p class="documentDescription" style="font-size: ' + Stiam.Storage.getItem('fontSize') + '%">' + options.description + '</p>';
-    html += '</div></div></div>';
-    html += '<div class="details article">';
+    html += '</div></div>';
+    html += '<div class="details">';
     html += '<img class="loading" src="css/images/ajax-loader-2.gif"/>';
-    html += '</div>';
+    html += '</div></div>';
     html = $(html);
+
+    html.find('a').click(function(evt){
+      return self.external(evt, $(this));
+    });
 
     html.appendTo(body);
     $('.rodate', body).rodate();
@@ -639,7 +643,8 @@ Stiam.Listing.prototype = {
     // Share button
     var share = $('#article-page').find('[data-icon="star"]');
     if(!window.isphone){
-      share.remove();
+      share.attr('target', '_blank');
+      share.attr('href', options.url);
     }else{
       share.unbind('click');
       share.click(function(evt){
@@ -683,19 +688,20 @@ Stiam.Listing.prototype = {
         text = text.replace(/\n/g, '</p><p>');
         var div = $('<div class="documentDetails" style="font-size: ' + Stiam.Storage.getItem('fontSize') + '%">');
         var a = $([
-          '<div class="documentByLine">',
-            '<span>Sursa: </span>',
-            '<a href="' + options.original + '">', options.source, '</a>',
+          '<div class="documentViewOriginal">',
+            '<a href="' + options.original + '">Vezi articolul original</a>',
           '</div>'
         ].join(''));
 
-        a.appendTo(div);
         $(text).appendTo(div);
-        a.clone().appendTo(div);
-        div.find('a').click(function(evt){
+        var details = context.find('.details');
+        details.html(div);
+
+        a.appendTo(details);
+        details.find('a').click(function(evt){
           return self.external(evt, $(this));
         });
-        context.find('.details').html(div);
+
       },
       complete: function(){
         $.mobile.hidePageLoadingMsg();

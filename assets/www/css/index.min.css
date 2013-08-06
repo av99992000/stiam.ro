@@ -49,11 +49,30 @@ img.loading {
   margin: auto;
   max-width: 100%;
   display: block;
+  padding: 2em 0 1em 0;
 }
 
-#article-details .details {
+#article-details .documentDetails {
   text-align: justify;
+  margin: 2em 0;
+  border: 1px dotted #cdcdcd;
+  padding: 1em;
+}
+
+#article-details .documentViewOriginal {
+  text-align: center;
   margin-bottom: 3em;
+  box-shadow: 1px 1px 1px #CCC;
+  border-radius: 10px;
+  padding: 1em;
+  margin: 0 1em 2em;
+  border: 1px solid #EEE;
+  background: #F5F5F5;
+}
+
+.documentViewOriginal a {
+  color: #7BAA0F;
+  text-decoration: none;
 }
 
 .page .article-inner {
@@ -99,9 +118,10 @@ img.loading {
   text-transform: lowercase;
 }
 
-.documentByLine a {
+.documentByLine a, .documentByLine a:visited, .documentByLine a:hover {
   text-decoration: none;
-  color: #7BAA0F;
+  color: #7BAA0F ! important;
+  font-weight: normal ! important;
 }
 
 #back-top {
