@@ -679,11 +679,9 @@ Stiam.Listing.prototype = {
       },
       success: function(data, textStatus, jqXHR){
         if(data.error){
-          self.error(data.error);
+          return self.error(data.error);
         }
-        if(!data.text){
-          return;
-        }
+
         var text = data.text;
         text = text.replace(/\n/g, '</p><p>');
         var div = $('<div class="documentDetails" style="font-size: ' + Stiam.Storage.getItem('fontSize') + '%">').html(text);
