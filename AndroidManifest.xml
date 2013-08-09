@@ -18,7 +18,7 @@
        under the License.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" android:windowSoftInputMode="adjustPan"
-      package="ro.stiam.stiri" android:versionName="1.3" android:versionCode="4" android:hardwareAccelerated="true" android:installLocation="preferExternal">
+      package="ro.stiam.stiri" android:versionName="1.4" android:versionCode="5" android:hardwareAccelerated="true" android:installLocation="preferExternal">
     <supports-screens
         android:largeScreens="true"
         android:normalScreens="true"

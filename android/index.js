@@ -686,16 +686,16 @@ Stiam.Listing.prototype = {
         }
         var text = data.text;
         text = text.replace(/\n/g, '</p><p>');
-        var div = $('<div class="documentDetails" style="font-size: ' + Stiam.Storage.getItem('fontSize') + '%">');
+        var div = $('<div class="documentDetails" style="font-size: ' + Stiam.Storage.getItem('fontSize') + '%">').html(text);
+
+        var details = context.find('.details');
+        details.html(div);
+
         var a = $([
           '<div class="documentViewOriginal">',
             '<a href="' + options.original + '">Vezi articolul original</a>',
           '</div>'
         ].join(''));
-
-        $(text).appendTo(div);
-        var details = context.find('.details');
-        details.html(div);
 
         a.appendTo(details);
         details.find('a').click(function(evt){
