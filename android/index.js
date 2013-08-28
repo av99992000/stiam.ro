@@ -173,7 +173,7 @@ Stiam.Message = {
     var self = this;
     self.area.fadeOut();
   }
-}
+};
 
 
 Stiam.Panel = function(context, options){
