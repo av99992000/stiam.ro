@@ -149,6 +149,33 @@ Stiam.Analytics = {
   }
 };
 
+Stiam.Message = {
+  initialize: function(options){
+    var self = this;
+    self.area = jQuery('<div>').addClass('notification').hide().appendTo($('body'));
+  },
+
+  show: function(msg, timeout){
+    var self = this;
+    timeout = timeout ? timeout : 3000;
+
+    self.area.text(msg);
+    var left = $('body').width() / 2 - self.area.width() / 2;
+    self.area.css('left', left + 'px');
+    self.area.fadeIn();
+
+    setTimeout(function(){
+      self.hide();
+    }, timeout);
+  },
+
+  hide: function(){
+    var self = this;
+    self.area.fadeOut();
+  }
+}
+
+
 Stiam.Panel = function(context, options){
   var self = this;
   self.context = context;
@@ -294,7 +321,7 @@ Stiam.Panel.prototype = {
   },
 
   error: function(message){
-    $.mobile.showPageLoadingMsg('e', message);
+    Stiam.Message.show(message, 5000);
   }
 };
 
@@ -507,7 +534,6 @@ Stiam.Listing.prototype = {
       data: Stiam.Storage.getQuery(),
       error: function(jqXHR, textStatus, errorThrown){
         self.error('Eroare. Va rugam verificati conexiunea la internet');
-        alert('Eroare. Va rugam verificati conexiunea la internet');
       },
       success: function(data, textStatus, jqXHR){
         self.settings.dataset = data.items;
@@ -534,7 +560,7 @@ Stiam.Listing.prototype = {
       var html ='<div class="article-brick"><a href="#article-page" class="article" data-transition="none">';
       if(item.thumbnail && Stiam.Storage.getItem('showImages') === 'on'){
         html += '<div class="article-thumb-container">';
-        html += '<img class="article-thumb" src="' + item.thumbnail + '" />';
+        html += '<img class="lazy article-thumb" src="css/images/grey.gif" data-original="' + item.thumbnail + '" />';
         html += '</div>';
       }
       html += '<div class="article-body"><div class="article-inner">';
@@ -566,6 +592,11 @@ Stiam.Listing.prototype = {
 
     $('.rodate', self.context).rodate();
 
+    $("img.lazy", self.context).lazyload({
+      effect : "fadeIn",
+      event: "scrollstop"
+    });
+
     // No results
     if(refresh && !self.settings.dataset.length){
       var html = $([
@@ -595,7 +626,7 @@ Stiam.Listing.prototype = {
   },
 
   error: function(message){
-    $.mobile.showPageLoadingMsg('e', message);
+    Stiam.Message.show(message, 5000);
   },
 
   click: function(context, options){
@@ -653,11 +684,12 @@ Stiam.Listing.prototype = {
           subject: options.title,
           text: options.url},
           function() {
-
-          }, // Success function
+            // Success function
+          },
           function() {
-            alert('Share failed');
-          } // Failure function
+             // Failure function
+            Stiam.Message.show('Share failed', 5000);
+          }
         );
       });
     }
@@ -974,6 +1006,9 @@ Stiam.initialize = function(){
     }
   });
 
+  // Notifications
+  Stiam.Message.initialize();
+
   // Left panel
   context = $("#left-panel");
   var left = new Stiam.Panel(context, {
@@ -1016,14 +1051,13 @@ Stiam.initialize = function(){
     }
 
     window.backs += 1;
-    $.mobile.showPageLoadingMsg('a', "Mai apasă odată pentru a ieşi", true);
+    Stiam.Message.show("Mai apasă odată pentru a ieşi", 3000);
     if(window.backs > 1){
       navigator.app.exitApp();
     }
 
     setTimeout(function(){
       window.backs = 0;
-      $.mobile.hidePageLoadingMsg();
     }, 3000);
 
   });

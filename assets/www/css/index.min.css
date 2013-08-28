@@ -205,10 +205,28 @@ a[data-icon="refresh"] {
   top: 1em;
   left: 0;
   right: 0;
-  bottom: 3em;
+  bottom: 1em;
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
+}
+
+#right-form {
+  padding-bottom: 3em;
+}
+
+.notification {
+  position: fixed;
+  background: #333;
+  bottom: 3rem;
+  left: 30%;
+  font-size: 12px;
+  padding: 0.5rem;
+  color: #eee;
+  font-weight: normal;
+  box-shadow: 0px 0px 10px #000;
+  border-radius: 3px;
+  opacity: 0.85;
 }
 
 @media all and (max-width: 639px){
