@@ -1005,6 +1005,14 @@ Stiam.initialize = function(){
     }
   });
 
+  $(document).delegate('.ui-header', 'dblclick.Stiam', function(e){
+    $('#back-top').click();
+  });
+
+  $(document).delegate('.ui-header .ui-title', 'click.Stiam', function(e){
+    $('#back-top').click();
+  });
+
   // Notifications
   Stiam.Message.initialize();
 
