@@ -593,8 +593,7 @@ Stiam.Listing.prototype = {
     $('.rodate', self.context).rodate();
 
     $("img.lazy", self.context).lazyload({
-      effect : "fadeIn",
-      event: "scrollstop"
+      effect : "fadeIn"
     });
 
     // No results
