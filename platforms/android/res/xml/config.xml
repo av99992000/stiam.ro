@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="io.cordova.helloCordova" version="2.0.0" xmlns="http://www.w3.org/ns/widgets">
+    <name>StiamRo</name>
+    <description>
+        Stiri si atat
+    </description>
+    <author email="contact@stiam.ro" href="http://stiam.ro">
+        stiam.ro
+    </author>
+    <content src="index.html" />
+    <feature name="App">
+        <param name="android-package" value="org.apache.cordova.App" />
+    </feature>
+    <feature name="NetworkStatus">
+        <param name="android-package" value="org.apache.cordova.NetworkManager" />
+    </feature>
+    <feature name="SplashScreen">
+        <param name="android-package" value="org.apache.cordova.splashscreen.SplashScreen" />
+    </feature>
+    <feature name="Share">
+        <param name="android-package" value="ro.stiam.stiri.Share" />
+    </feature>
+    <feature name="GoogleAnalyticsTracker">
+        <param name="android-package" value="com.phonegap.plugins.analytics.GoogleAnalyticsTracker" />
+    </feature>
+    <access origin="http://127.0.0.1*" />
+    <access origin="*" />
+    <preference name="useBrowserHistory" value="true" />
+    <preference name="exit-on-suspend" value="false" />
+    <preference name="phonegap-version" value="3.0.8" />
+    <preference name="target-device" value="universal" />
+    <preference name="fullscreen" value="false" />
+    <preference name="auto-hide-splash-screen" value="false" />
+    <preference name="android-installLocation" value="preferExternal" />
+</widget>
