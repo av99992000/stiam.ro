@@ -21,4 +21,8 @@
 
   <content src="index.html" />
 
+  <feature name="SplashScreen">
+    <param name="ios-package" value="CDVSplashScreen" />
+  </feature>
+
 </widget>
