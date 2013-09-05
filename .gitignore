@@ -3,3 +3,4 @@
 *.bak
 *.class
 *.apk
+.DS_Store
