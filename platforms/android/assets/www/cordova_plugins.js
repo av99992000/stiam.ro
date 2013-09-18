@@ -6,6 +6,13 @@ module.exports = [
         "clobbers": [
             "navigator.splashscreen"
         ]
+    },
+    {
+        "file": "plugins/com.phonegap.plugins.GAPlugin/www/GAPlugin.js",
+        "id": "com.phonegap.plugins.GAPlugin.GAPlugin",
+        "clobbers": [
+            "GAPlugin"
+        ]
     }
 ]
 });

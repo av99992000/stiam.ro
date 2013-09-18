@@ -15,6 +15,9 @@
         <param name="ios-package" value="CDVSplashScreen" />
         <param name="onload" value="true" />
     </feature>
+    <feature name="GAPlugin">
+        <param name="ios-package" value="GAPlugin" />
+    </feature>
     <access origin="http://127.0.0.1*" />
     <access origin="*" />
     <preference name="KeyboardDisplayRequiresUserAction" value="true" />

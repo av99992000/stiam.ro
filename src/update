@@ -1,2 +1,2 @@
 #!/bin/sh
-java -jar yuic index.js > ../www/js/index.min.js
+java -jar src/yuic src/index.js > www/js/index.min.js

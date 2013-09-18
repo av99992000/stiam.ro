@@ -128,10 +128,8 @@ Stiam.Analytics = {
       return;
     }
 
-    page = '/mobile-app' + page;
     if(query){
       query = jQuery.param(query, traditional=true);
-      query = query.replace('http://stiam.ro/', '').replace('http%3A%2F%2Fstiam.ro%2F', '');
       page += "?" + query;
     }
 
