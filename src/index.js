@@ -108,7 +108,7 @@ Stiam.Analytics = {
       return;
     }
 
-    window.plugins.analytics.start("UA-10574661-4",
+    window.plugins.gaPlugin.init(
       function(){
         if(window.console){
           console.log('Analytics started');
@@ -118,7 +118,8 @@ Stiam.Analytics = {
         if(window.console){
           console.log('Analytics failled');
         }
-      }
+      },
+      "UA-44152722-1", 10
     );
   },
 
@@ -134,7 +135,7 @@ Stiam.Analytics = {
       page += "?" + query;
     }
 
-    window.plugins.analytics.trackPageView(page,
+    window.plugins.gaPlugin.trackPage(
       function(){
         if(window.console){
           console.log('track: ' + page);
@@ -144,7 +145,8 @@ Stiam.Analytics = {
         if(window.console){
           console.log('track fail: ' + page);
         }
-      }
+      },
+      page
     );
   }
 };
