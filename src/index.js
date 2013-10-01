@@ -383,7 +383,7 @@ Stiam.Settings.prototype = {
     var self = this;
 
     // theme
-    var value = Stiam.Storage.getItem('theme') || 'b';
+    var value = Stiam.Storage.getItem('theme') || 'f';
     var input = $('[name="theme"]', self.context);
     input.val(value);
     input.selectmenu('refresh');
@@ -416,7 +416,7 @@ Stiam.Settings.prototype = {
       return;
     }
 
-    var theme = Stiam.Storage.getItem('theme') || 'b';
+    var theme = Stiam.Storage.getItem('theme') || 'f';
 
     //reset all the buttons widgets
     $(document).find('.ui-btn')
@@ -747,7 +747,7 @@ Stiam.Listing.prototype = {
       return;
     }
 
-    var theme = Stiam.Storage.getItem('theme') || 'b';
+    var theme = Stiam.Storage.getItem('theme') || 'f';
 
     //reset all the buttons widgets
     $(document).find('.ui-btn')
@@ -861,7 +861,7 @@ Stiam.Storage = {
   settings: {
     showImages: 'on',
     infiniteScroll: 'on',
-    theme: 'b',
+    theme: 'f',
     fontSize: 100,
     query: {}
   },

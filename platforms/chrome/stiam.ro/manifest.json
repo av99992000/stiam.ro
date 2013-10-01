@@ -3,7 +3,7 @@
 
   "name": "stiam.ro - Stiri Romania",
   "description": "",
-  "version": "1.0",
+  "version": "2.0",
 
   "browser_action": {
     "default_icon": "icon.png",
