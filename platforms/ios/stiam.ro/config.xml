@@ -18,6 +18,9 @@
     <feature name="GAPlugin">
         <param name="ios-package" value="GAPlugin" />
     </feature>
+    <feature name="Device">
+        <param name="ios-package" value="CDVDevice" />
+    </feature>
     <access origin="http://127.0.0.1*" />
     <access origin="*" />
     <preference name="KeyboardDisplayRequiresUserAction" value="true" />
@@ -37,7 +40,4 @@
     <preference name="fullscreen" value="false" />
     <preference name="auto-hide-splash-screen" value="false" />
     <preference name="android-installLocation" value="preferExternal" />
-    <feature name="Device">
-        <param name="ios-package" value="CDVDevice" />
-    </feature>
 </widget>

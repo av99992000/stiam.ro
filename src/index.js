@@ -672,32 +672,38 @@ Stiam.Listing.prototype = {
 
     // Share button
     var share = $('#article-page').find('[data-icon="star"]');
-    if(window.isapple){
-      var url = encodeURI(options.url);
-      window.open(url, '_blank', 'location=yes');
-      return;
-    }
-
     if(!window.isphone){
       share.attr('target', '_blank');
       share.attr('href', options.url);
       return;
     }else{
-      share.unbind('click');
-      share.click(function(evt){
-        evt.preventDefault();
-        window.plugins.share.show({
-          subject: options.title,
-          text: options.url},
-          function() {
-            // Success function
-          },
-          function() {
-             // Failure function
-            Stiam.Message.show('Share failed', 5000);
-          }
-        );
-      });
+      // iOS
+      if(window.isapple){
+        share.unbind('click');
+        share.click(function(evt){
+          evt.preventDefault();
+          var url = encodeURI(options.url);
+          window.open(url, '_blank', 'location=yes');
+        });
+
+      // Android
+      }else{
+        share.unbind('click');
+        share.click(function(evt){
+          evt.preventDefault();
+          window.plugins.share.show({
+            subject: options.title,
+            text: options.url},
+            function() {
+              // Success function
+            },
+            function() {
+               // Failure function
+              Stiam.Message.show('Share failed', 5000);
+            }
+          );
+        });
+      }
     }
   },
 
