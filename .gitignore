@@ -5,3 +5,4 @@
 *.apk
 .DS_Store
 .staging
+*.xcuserstate
