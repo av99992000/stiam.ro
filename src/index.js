@@ -672,9 +672,16 @@ Stiam.Listing.prototype = {
 
     // Share button
     var share = $('#article-page').find('[data-icon="star"]');
+    if(window.isapple){
+      var url = encodeURI(options.url);
+      window.open(url, '_blank', 'location=yes');
+      return;
+    }
+
     if(!window.isphone){
       share.attr('target', '_blank');
       share.attr('href', options.url);
+      return;
     }else{
       share.unbind('click');
       share.click(function(evt){
@@ -771,6 +778,11 @@ Stiam.Listing.prototype = {
   external: function(evt, link){
     var self = this;
     var url = link.attr('href');
+    if(window.isapple){
+      url = encodeURI(url);
+      window.open(url, '_blank', 'location=yes');
+      return;
+    }
     if(window.isphone) {
       evt.preventDefault();
       navigator.app.loadUrl(url, {
@@ -1058,7 +1070,7 @@ Stiam.initialize = function(){
     }
 
     window.backs += 1;
-    Stiam.Message.show("Mai apasă odată pentru a ieşi", 3000);
+    Stiam.Message.show(window.device.platform + ": Mai apasă odată pentru a ieşi" , 3000);
     if(window.backs > 1){
       navigator.app.exitApp();
     }
@@ -1088,8 +1100,13 @@ $( document ).on( "pageinit", "#main-page", function() {
     $('[data-role="page"]').removeAttr('style');
 
     window.isphone = false;
+    window.isapple = false;
     if(document.URL.indexOf("http://") == -1) {
         window.isphone = true;
+    }
+
+    if(window.device && window.device.platform == 'iOS'){
+      window.isapple = true;
     }
 
     if(window.isphone) {

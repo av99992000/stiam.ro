@@ -37,4 +37,7 @@
     <preference name="fullscreen" value="false" />
     <preference name="auto-hide-splash-screen" value="false" />
     <preference name="android-installLocation" value="preferExternal" />
+    <feature name="Device">
+        <param name="ios-package" value="CDVDevice" />
+    </feature>
 </widget>
