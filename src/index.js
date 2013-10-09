@@ -1076,7 +1076,7 @@ Stiam.initialize = function(){
     }
 
     window.backs += 1;
-    Stiam.Message.show(window.device.platform + ": Mai apasă odată pentru a ieşi" , 3000);
+    Stiam.Message.show("Mai apasă odată pentru a ieşi" , 3000);
     if(window.backs > 1){
       navigator.app.exitApp();
     }
