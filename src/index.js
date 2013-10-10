@@ -141,6 +141,10 @@ Stiam.Analytics = {
       index = 7;
     }else if(key === 'article'){
       index = 8;
+    }else if(key === 'exit'){
+      index = 9;
+    }else{
+      index = 10;
     }
 
     if(!index){
@@ -167,6 +171,7 @@ Stiam.Analytics = {
 
     if(query){
       query = jQuery.param(query, traditional=true);
+      query = decodeURIComponent(query);
       this.setVariable('query', query);
     }
 
@@ -182,32 +187,16 @@ Stiam.Analytics = {
   },
 
   trackArticle: function(url){
-    if(!Stiam.Device.isPhone()){
-      return;
-    }
-
-    this.trackPage('/article-details', {url: url});
-
-    window.plugins.gaPlugin.trackEvent(
-      function(){
-        Stiam.Message.log('Track article event -- ' + url);
-      },
-      function(){
-        Stiam.Message.log('Track article event -- failed: ' + url);
-      },
-      "Article",
-      "click",
-      url,
-      1
-    );
+    return this.trackPage('/article-details', {url: url});
   },
 
-  trackArticleExit: function(url){
+  trackArticleExit: function(url, original){
     if(!Stiam.Device.isPhone()){
       return;
     }
 
-    window.plugins.gaPlugin.trackEvent(
+    this.setVariable('exit', original);
+    return window.plugins.gaPlugin.trackEvent(
       function(){
         Stiam.Message.log('Track article exit event -- ' + url);
       },
@@ -226,7 +215,7 @@ Stiam.Analytics = {
       return;
     }
 
-    window.plugins.gaPlugin.trackEvent(
+    return window.plugins.gaPlugin.trackEvent(
       function(){
         Stiam.Message.log('Track share event -- ' + url);
       },
@@ -237,6 +226,41 @@ Stiam.Analytics = {
       "click",
       url,
       1
+    );
+  },
+
+  trackSettings: function(key, value){
+    if(!Stiam.Device.isPhone()){
+      return;
+    }
+
+    this.setVariable(key, value);
+    return window.plugins.gaPlugin.trackEvent(
+      function(){
+        Stiam.Message.log('Track settings event -- ' + key + ': ' + value);
+      },
+      function(){
+        Stiam.Message.log('Track settings event -- failed: ' + key + ': ' + value);
+      },
+      "Settings",
+      "change",
+      key,
+      1
+    );
+  },
+
+  exit: function(){
+    if(!Stiam.Device.isPhone()){
+      return;
+    }
+
+    return window.plugins.gaPlugin.exit(
+      function(){
+        Stiam.Message.log('Track exit');
+      },
+      function(){
+        Stiam.Message.log('Track exit -- failed');
+      }
     );
   }
 };
@@ -904,7 +928,7 @@ Stiam.Listing.prototype = {
   external: function(evt, options){
     var self = this;
     evt.preventDefault();
-    Stiam.Analytics.trackArticleExit(options.url);
+    Stiam.Analytics.trackArticleExit(options.url, options.original);
     window.open(options.original, '_system');
   }
 };
@@ -1027,7 +1051,7 @@ Stiam.Storage = {
 
   setItem: function(key, value){
     var self = this;
-    Stiam.Analytics.setVariable(key, value);
+    Stiam.Analytics.trackSettings(key, value);
     self.settings[key] = value;
     self.commit(key, value);
   },
@@ -1186,6 +1210,7 @@ Stiam.initialize = function(){
     window.backs += 1;
     Stiam.Message.show("Mai apasă odată pentru a ieşi" , 3000);
     if(window.backs > 1){
+      Stiam.Analytics.exit();
       navigator.app.exitApp();
     }
 

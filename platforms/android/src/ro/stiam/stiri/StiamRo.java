@@ -33,5 +33,6 @@ public class StiamRo extends DroidGap
         super.loadUrl(Config.getStartUrl(), 30000);
         //super.loadUrl("file:///android_asset/www/index.html")
     }
+
 }
 
