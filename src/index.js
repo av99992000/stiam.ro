@@ -104,47 +104,139 @@ Stiam.Events = {
 Stiam.Analytics = {
 
   initialize: function(){
-    if(!window.isphone){
+    if(!Stiam.Device.isPhone()){
       return;
     }
 
     window.plugins.gaPlugin.init(
       function(){
-        if(window.console){
-          console.log('Analytics started');
-        }
+        Stiam.Message.log('Analytics started');
       },
       function(){
-        if(window.console){
-          console.log('Analytics failled');
-        }
+        Stiam.Message.log('Analytics failled');
       },
       "UA-44152722-1", 10
     );
   },
 
+  setVariable: function(key, value){
+    if(!Stiam.Device.isPhone()){
+      return;
+    }
+
+    var index = 0;
+    if(key === 'theme'){
+      index = 1;
+    }else if(key === 'showImages'){
+      index = 2;
+    }else if(key === 'infiniteScroll'){
+      index = 3;
+    }else if(key === 'fontSize'){
+      index = 4;
+    }else if(key === 'categories'){
+      index = 5;
+    }else if(key === 'sources'){
+      index = 6;
+    }else if(key === 'query'){
+      index = 7;
+    }else if(key === 'article'){
+      index = 8;
+    }
+
+    if(!index){
+      Stiam.Message.log('Set -- Invalid key: ' + key);
+      return;
+    }
+
+    window.plugins.gaPlugin.setVariable(
+      function(){
+        Stiam.Message.log('Set -- ' + key + ' ' + value);
+      },
+      function(){
+        Stiam.Message.log('Set -- failed: ' + key + ' ' + value);
+      },
+      index,
+      value.toString()
+    );
+  },
+
   trackPage: function(page, query){
-    if(!window.isphone){
+    if(!Stiam.Device.isPhone()){
       return;
     }
 
     if(query){
       query = jQuery.param(query, traditional=true);
-      page += "?" + query;
+      this.setVariable('query', query);
     }
 
     window.plugins.gaPlugin.trackPage(
       function(){
-        if(window.console){
-          console.log('track: ' + page);
-        }
+        Stiam.Message.log('Track page -- ' + page);
       },
       function(){
-        if(window.console){
-          console.log('track fail: ' + page);
-        }
+        Stiam.Message.log('Track page -- failed: ' + page);
       },
       page
+    );
+  },
+
+  trackArticle: function(url){
+    if(!Stiam.Device.isPhone()){
+      return;
+    }
+
+    this.trackPage('/article-details', {url: url});
+
+    window.plugins.gaPlugin.trackEvent(
+      function(){
+        Stiam.Message.log('Track article event -- ' + url);
+      },
+      function(){
+        Stiam.Message.log('Track article event -- failed: ' + url);
+      },
+      "Article",
+      "click",
+      url,
+      1
+    );
+  },
+
+  trackArticleExit: function(url){
+    if(!Stiam.Device.isPhone()){
+      return;
+    }
+
+    window.plugins.gaPlugin.trackEvent(
+      function(){
+        Stiam.Message.log('Track article exit event -- ' + url);
+      },
+      function(){
+        Stiam.Message.log('Track article exit event -- failed: ' + url);
+      },
+      "Article",
+      "exit",
+      url,
+      1
+    );
+  },
+
+  trackShare: function(url){
+    if(!Stiam.Device.isPhone()){
+      return;
+    }
+
+    window.plugins.gaPlugin.trackEvent(
+      function(){
+        Stiam.Message.log('Track share event -- ' + url);
+      },
+      function(){
+        Stiam.Message.log('Track share event -- failed: ' + url);
+      },
+      "Share",
+      "click",
+      url,
+      1
     );
   }
 };
@@ -172,9 +264,37 @@ Stiam.Message = {
   hide: function(){
     var self = this;
     self.area.fadeOut();
+  },
+
+  log: function(msg){
+    if(window.console){
+      console.log(msg);
+    }
   }
 };
 
+Stiam.Device = {
+  isAndroid: function(){
+    if(window.device && window.device.platform.toLowerCase() == 'android'){
+      return true;
+    }
+    return false;
+  },
+
+  isApple: function(){
+    if(window.device && window.device.platform.toLowerCase() == 'ios'){
+      return true;
+    }
+    return false;
+  },
+
+  isPhone: function(){
+    if(document.URL.indexOf("http://") == -1) {
+      return true;
+    }
+    return false;
+  }
+};
 
 Stiam.Panel = function(context, options){
   var self = this;
@@ -625,12 +745,12 @@ Stiam.Listing.prototype = {
   },
 
   error: function(message){
-    Stiam.Message.show(message, 5000);
+    Stiam.Message.log(message);
   },
 
   click: function(context, options){
     var self = this;
-    Stiam.Analytics.trackPage('/article-details/', {url: options.url});
+    Stiam.Analytics.trackArticle(options.url);
     var body = $('#article-page').find('#article-details');
     body.empty();
     var html = "<div class='article'>";
@@ -653,7 +773,7 @@ Stiam.Listing.prototype = {
     html = $(html);
 
     html.find('a').click(function(evt){
-      return self.external(evt, $(this));
+      return self.external(evt, options);
     });
 
     html.appendTo(body);
@@ -672,38 +792,33 @@ Stiam.Listing.prototype = {
 
     // Share button
     var share = $('#article-page').find('[data-icon="star"]');
-    if(!window.isphone){
-      share.attr('target', '_blank');
-      share.attr('href', options.url);
-      return;
-    }else{
-      // iOS
-      if(window.isapple){
-        share.unbind('click');
-        share.click(function(evt){
-          evt.preventDefault();
-          var url = encodeURI(options.url);
-          window.open(url, '_blank', 'location=yes');
-        });
+    share.unbind('click');
+    share.click(function(evt){
+      Stiam.Analytics.trackShare(options.url);
+    });
 
-      // Android
-      }else{
-        share.unbind('click');
-        share.click(function(evt){
-          evt.preventDefault();
-          window.plugins.share.show({
-            subject: options.title,
-            text: options.url},
-            function() {
-              // Success function
-            },
-            function() {
-               // Failure function
-              Stiam.Message.show('Share failed', 5000);
-            }
-          );
-        });
-      }
+    if(Stiam.Device.isAndroid()){
+      share.click(function(evt){
+        evt.preventDefault();
+        window.plugins.share.show({
+          subject: options.title,
+          text: options.url},
+          function() {
+            // Success function
+            Stiam.Message.log('Shared: ' + options.url);
+          },
+          function() {
+             // Failure function
+            Stiam.Message.show('Share failed', 5000);
+          }
+        );
+      });
+    }else{
+      // XXX iOS share
+      share.click(function(evt){
+        evt.preventDefault();
+        window.open(options.url, '_system');
+      });
     }
   },
 
@@ -722,16 +837,7 @@ Stiam.Listing.prototype = {
         self.error('Eroare. Va rugam verificati conexiunea la internet');
       },
       success: function(data, textStatus, jqXHR){
-        if(data.error){
-          return self.error(data.error);
-        }
-
-        var text = data.text;
-        text = text.replace(/\n/g, '</p><p>');
-        var div = $('<div class="documentDetails" style="font-size: ' + Stiam.Storage.getItem('fontSize') + '%">').html(text);
-
         var details = context.find('.details');
-        details.html(div);
 
         var a = $([
           '<div class="documentViewOriginal">',
@@ -739,9 +845,23 @@ Stiam.Listing.prototype = {
           '</div>'
         ].join(''));
 
+        if(data.error){
+          details.html('');
+          a.appendTo(details);
+          details.find('a').click(function(evt){
+            return self.external(evt, options);
+          });
+          return self.error(data.error);
+        }
+
+        var text = data.text;
+        text = text.replace(/\n/g, '</p><p>');
+        var div = $('<div class="documentDetails" style="font-size: ' + Stiam.Storage.getItem('fontSize') + '%">').html(text);
+        details.html(div);
+
         a.appendTo(details);
         details.find('a').click(function(evt){
-          return self.external(evt, $(this));
+          return self.external(evt, options);
         });
 
       },
@@ -781,22 +901,11 @@ Stiam.Listing.prototype = {
             .attr('data-theme', theme);
   },
 
-  external: function(evt, link){
+  external: function(evt, options){
     var self = this;
-    var url = link.attr('href');
-    if(window.isapple){
-      url = encodeURI(url);
-      window.open(url, '_blank', 'location=yes');
-      return;
-    }
-    if(window.isphone) {
-      evt.preventDefault();
-      navigator.app.loadUrl(url, {
-        openExternal: true
-      });
-    }else{
-      link.attr('target', '_blank');
-    }
+    evt.preventDefault();
+    Stiam.Analytics.trackArticleExit(options.url);
+    window.open(options.original, '_system');
   }
 };
 
@@ -918,6 +1027,7 @@ Stiam.Storage = {
 
   setItem: function(key, value){
     var self = this;
+    Stiam.Analytics.setVariable(key, value);
     self.settings[key] = value;
     self.commit(key, value);
   },
@@ -973,9 +1083,7 @@ Stiam.Storage = {
     };
 
     var error = function(err){
-      if(window.console){
-        console.log(err);
-      }
+      Stiam.Message.log(err);
     };
 
     self.db.transaction(sql, error);
@@ -1105,17 +1213,7 @@ $( document ).on( "pageinit", "#main-page", function() {
     // are we running in native app or in browser?
     $('[data-role="page"]').removeAttr('style');
 
-    window.isphone = false;
-    window.isapple = false;
-    if(document.URL.indexOf("http://") == -1) {
-        window.isphone = true;
-    }
-
-    if(window.device && window.device.platform == 'iOS'){
-      window.isapple = true;
-    }
-
-    if(window.isphone) {
+    if(Stiam.Device.isPhone()) {
       $(document).on("deviceready", function(){
         navigator.splashscreen.hide();
         Stiam.Storage.initialize(Stiam.initialize);

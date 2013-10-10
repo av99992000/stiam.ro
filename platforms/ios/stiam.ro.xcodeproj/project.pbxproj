@@ -50,6 +50,7 @@
 		6658875AA20244E282CEFAD6 /* GoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 583AA206573D4E369E38EE34 /* GoogleAnalytics.a */; };
 		348FEA6803F24A8BB1E9B281 /* CoreData.framework in Resources */ = {isa = PBXBuildFile; fileRef = 0AEDB0267077472BAE710E3C /* CoreData.framework */; };
 		8082465D76FB46BE8C6111D5 /* CDVDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = CC181030181745549E3AE003 /* CDVDevice.m */; };
+		98EBCFAB9FB0455DB9057D95 /* CDVInAppBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = F225ABA687ED4B309751323E /* CDVInAppBrowser.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -129,6 +130,8 @@
 		0AEDB0267077472BAE710E3C /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "CoreData.framework"; path = "System/Library/Frameworks/CoreData.framework"; sourceTree = SDKROOT; fileEncoding = 4; };
 		CC181030181745549E3AE003 /* CDVDevice.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "CDVDevice.m"; path = "org.apache.cordova.device/CDVDevice.m"; sourceTree = "<group>"; fileEncoding = 4; };
 		83EF276227054B96924E088E /* CDVDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CDVDevice.h"; path = "org.apache.cordova.device/CDVDevice.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		F225ABA687ED4B309751323E /* CDVInAppBrowser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "CDVInAppBrowser.m"; path = "org.apache.cordova.inappbrowser/CDVInAppBrowser.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		98D6EA2ABC7F4921B69BDF61 /* CDVInAppBrowser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CDVInAppBrowser.h"; path = "org.apache.cordova.inappbrowser/CDVInAppBrowser.h"; sourceTree = "<group>"; fileEncoding = 4; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -290,6 +293,8 @@
 				56EDA074728042689D582C4A /* GAPlugin.h */,
 				CC181030181745549E3AE003 /* CDVDevice.m */,
 				83EF276227054B96924E088E /* CDVDevice.h */,
+				F225ABA687ED4B309751323E /* CDVInAppBrowser.m */,
+				98D6EA2ABC7F4921B69BDF61 /* CDVInAppBrowser.h */,
 			);
 			name = Plugins;
 			path = stiam.ro/Plugins;
@@ -461,6 +466,7 @@
 				B94EF7B7A4914BC995268707 /* GAPlugin.m in Sources */,
 				224F90E461384D47AF421A70 /* GoogleAnalytics.a in Frameworks */,
 				8082465D76FB46BE8C6111D5 /* CDVDevice.m in Sources */,
+				98EBCFAB9FB0455DB9057D95 /* CDVInAppBrowser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

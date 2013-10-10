@@ -26,6 +26,9 @@
     <feature name="Device">
         <param name="android-package" value="org.apache.cordova.device.Device" />
     </feature>
+    <feature name="InAppBrowser">
+        <param name="android-package" value="org.apache.cordova.inappbrowser.InAppBrowser" />
+    </feature>
     <access origin="http://127.0.0.1*" />
     <access origin="*" />
     <preference name="useBrowserHistory" value="true" />
