@@ -27,6 +27,13 @@ module.exports = [
         "clobbers": [
             "window.open"
         ]
+    },
+    {
+        "file": "plugins/com.phonegap.TapToScroll/www/taptoscroll.js",
+        "id": "com.phonegap.TapToScroll.TapToScroll",
+        "clobbers": [
+            "window.TapToScroll"
+        ]
     }
 ]
 });

@@ -1152,6 +1152,11 @@ Stiam.initialize = function(){
     }
   });
 
+  window.addEventListener("statusTap", function() {
+    alert("status tap");
+    Stiam.BackToTop.click();
+  });
+
   $(document).delegate('.ui-header', 'dblclick.Stiam', function(e){
     Stiam.BackToTop.click();
   });

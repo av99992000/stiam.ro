@@ -24,6 +24,9 @@
     <feature name="InAppBrowser">
         <param name="ios-package" value="CDVInAppBrowser" />
     </feature>
+    <feature name="TapToScroll">
+        <param name="ios-package" value="TapToScroll" />
+    </feature>
     <access origin="http://127.0.0.1*" />
     <access origin="*" />
     <preference name="KeyboardDisplayRequiresUserAction" value="true" />

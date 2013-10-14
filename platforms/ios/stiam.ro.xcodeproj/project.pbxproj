@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		1D3623260D0F684500981E51 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* AppDelegate.m */; };
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
@@ -52,6 +51,7 @@
 		B94EF7B7A4914BC995268707 /* GAPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = A002C8DF59764C479E3B65EA /* GAPlugin.m */; };
 		D4A0D8761607E02300AEF8BB /* Default-568h@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = D4A0D8751607E02300AEF8BB /* Default-568h@2x~iphone.png */; };
 		F840E1F1165FE0F500CFE078 /* config.xml in Resources */ = {isa = PBXBuildFile; fileRef = F840E1F0165FE0F500CFE078 /* config.xml */; };
+		E4E843CF37774FFBA7443F71 /* TapToScroll.m in Sources */ = {isa = PBXBuildFile; fileRef = E8F04D2755984ADABC3356C5 /* TapToScroll.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -143,6 +143,8 @@
 		F2D814852AA8489D854AD08B /* GAITracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAITracker.h; path = com.phonegap.plugins.GAPlugin/GAITracker.h; sourceTree = "<group>"; };
 		F48AA0F59E1C4E35B0A0A9C6 /* GAI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAI.h; path = com.phonegap.plugins.GAPlugin/GAI.h; sourceTree = "<group>"; };
 		F840E1F0165FE0F500CFE078 /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = config.xml; path = stiam.ro/config.xml; sourceTree = "<group>"; };
+		E8F04D2755984ADABC3356C5 /* TapToScroll.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "TapToScroll.m"; path = "com.phonegap.TapToScroll/TapToScroll.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		CCCBABAE99DB476CB907C3FB /* TapToScroll.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "TapToScroll.h"; path = "com.phonegap.TapToScroll/TapToScroll.h"; sourceTree = "<group>"; fileEncoding = 4; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -316,6 +318,8 @@
 				83EF276227054B96924E088E /* CDVDevice.h */,
 				F225ABA687ED4B309751323E /* CDVInAppBrowser.m */,
 				98D6EA2ABC7F4921B69BDF61 /* CDVInAppBrowser.h */,
+				E8F04D2755984ADABC3356C5 /* TapToScroll.m */,
+				CCCBABAE99DB476CB907C3FB /* TapToScroll.h */,
 			);
 			name = Plugins;
 			path = stiam.ro/Plugins;
@@ -488,6 +492,7 @@
 				224F90E461384D47AF421A70 /* GoogleAnalytics.a in Sources */,
 				8082465D76FB46BE8C6111D5 /* CDVDevice.m in Sources */,
 				98EBCFAB9FB0455DB9057D95 /* CDVInAppBrowser.m in Sources */,
+				E4E843CF37774FFBA7443F71 /* TapToScroll.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
