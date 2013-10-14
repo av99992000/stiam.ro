@@ -13,13 +13,17 @@ body {
 }
 
 .ui-header-fixed .ui-btn-left, .ui-header-fixed .ui-btn-right, .ui-header-fixed>.ui-btn-icon-notext {
-  top: 1rem;
-  padding: 0.3rem;
+  top: 1.3rem;
+  padding: 0.2rem;
+}
+
+.ui-btn-inner {
+  border: none !important;
 }
 
 .ui-header .ui-title {
   cursor: pointer;
-  margin-top: 1.3rem;
+  margin-top: 1.5rem;
   font-size: 18pt;
 }
 
