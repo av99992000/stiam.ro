@@ -317,6 +317,13 @@ Stiam.Device = {
       return true;
     }
     return false;
+  },
+
+  version: function(){
+    if(window.device){
+      return parseFloat(device.version);
+    }
+    return 0;
   }
 };
 
@@ -1141,6 +1148,13 @@ Stiam.initialize = function(){
   var context;
 
   // Events
+  $.event.special.swipe.horizontalDistanceThreshold = 100;
+
+  // Handle ios 7
+  if(Stiam.Device.isApple() && Stiam.Device.version() >= 7){
+    $('[data-role="header"]').addClass('ui-header7');
+  }
+
   $( document ).unbind('.Stiam');
   $( document ).on( "swipeleft.Stiam swiperight.Stiam", "#body", function( e ) {
     if ( $.mobile.activePage.jqmData( "panel" ) !== "open" ) {
