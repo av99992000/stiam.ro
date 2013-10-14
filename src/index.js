@@ -1142,7 +1142,7 @@ Stiam.initialize = function(){
 
   // Events
   $( document ).unbind('.Stiam');
-  $( document ).on( "swipeleft.Stiam swiperight.Stiam", "#main-page", function( e ) {
+  $( document ).on( "swipeleft.Stiam swiperight.Stiam", "#body", function( e ) {
     if ( $.mobile.activePage.jqmData( "panel" ) !== "open" ) {
       if ( e.type === "swipeleft"  ) {
         $( "#right-panel" ).panel( "open" );
@@ -1152,8 +1152,14 @@ Stiam.initialize = function(){
     }
   });
 
+  $( document).on( "swiperight.Stiam", "#article-details", function( e ) {
+    var back = $('a[data-rel="back"]:visible');
+    if(back.length){
+      return back.click();
+    }
+  });
+
   window.addEventListener("statusTap", function() {
-    alert("status tap");
     Stiam.BackToTop.click();
   });
 
