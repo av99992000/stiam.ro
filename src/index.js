@@ -342,6 +342,14 @@ Stiam.Panel.prototype = {
     var self = this;
     self.changed = true;
 
+    var header = $('#header').outerHeight();
+    var panel = self.context.height();
+    var panelheight = panel - header;
+    self.context.css({
+      'top': header,
+      'min-height': panelheight
+    });
+
     self.context.on( "panelclose", function(evt, ui){
       return self.query();
     });
@@ -487,6 +495,14 @@ Stiam.Settings.prototype = {
   initialize: function(){
     var self = this;
     self.changed = [];
+
+    var header = $('#header').outerHeight();
+    var panel = self.context.height();
+    var panelheight = panel - header;
+    self.context.css({
+      'top': header,
+      'min-height': panelheight
+    });
 
     // Theme
     $('[name="theme"]', self.context).change(function(){
@@ -934,27 +950,8 @@ Stiam.Listing.prototype = {
 };
 
 Stiam.BackToTop = {
-  initialize: function(){
-    var self = this;
-    self.button = $('<div>')
-      .attr('id', 'back-top')
-      .addClass('back-top')
-      .html('sus')
-      .hide()
-      .appendTo($('body'));
-
-    self.button.click(function(){
-      $('body,html').animate({scrollTop: 0}, 800);
-    });
-
-    $(window).unbind('.StiamBackToTop');
-    $(window).bind('scroll.StiamBackToTop', function () {
-      if ($(this).scrollTop() > 100) {
-        self.button.fadeIn('slow');
-      } else {
-        self.button.fadeOut('slow');
-      }
-    });
+  click: function(){
+    $('body,html').animate({scrollTop: 0}, 800);
   }
 };
 
@@ -1145,7 +1142,7 @@ Stiam.initialize = function(){
 
   // Events
   $( document ).unbind('.Stiam');
-  $( document ).on( "swipeleft.Stiam swiperight.Stiam", "#header", function( e ) {
+  $( document ).on( "swipeleft.Stiam swiperight.Stiam", "#main-page", function( e ) {
     if ( $.mobile.activePage.jqmData( "panel" ) !== "open" ) {
       if ( e.type === "swipeleft"  ) {
         $( "#right-panel" ).panel( "open" );
@@ -1156,11 +1153,11 @@ Stiam.initialize = function(){
   });
 
   $(document).delegate('.ui-header', 'dblclick.Stiam', function(e){
-    $('#back-top').click();
+    Stiam.BackToTop.click();
   });
 
   $(document).delegate('.ui-header .ui-title', 'click.Stiam', function(e){
-    $('#back-top').click();
+    Stiam.BackToTop.click();
   });
 
   // Notifications
@@ -1187,7 +1184,6 @@ Stiam.initialize = function(){
 
   // Buttons
   Stiam.InfiniteScroll.initialize();
-  Stiam.BackToTop.initialize();
   Stiam.Refresh.initialize();
 
   $.mobile.page.prototype.options.backBtnTheme = "c";
