@@ -99,8 +99,9 @@ Stiam.Events = {
   app: 'stiam-app',
   reset: 'stiam-reset',
   refresh: 'stiam-refresh',
-  listingReloaded: 'stiam-listing-refreshed',
-  listingUpdated: 'stiam-listing-updated'
+  listingUpdated: 'stiam-listing-updated',
+  panelUpdated: 'stiam-panel-updated',
+  articleUpdated: 'stiam-article-updated'
 };
 
 Stiam.Analytics = {
@@ -428,7 +429,6 @@ Stiam.Panel.prototype = {
 
   update: function(){
     var self = this;
-    $.mobile.showPageLoadingMsg();
     $.ajax({
       url: self.settings.server,
       dataType: 'jsonp',
@@ -443,7 +443,7 @@ Stiam.Panel.prototype = {
         self.reload();
       },
       complete: function(){
-        $.mobile.hidePageLoadingMsg();
+        $(document).trigger(Stiam.Events.panelUpdated);
       }
     });
   },
@@ -678,24 +678,6 @@ Stiam.Listing.prototype = {
     });
   },
 
-  more: function(){
-    var self = this;
-
-    //$('button', more).click(function(){
-      //// Prevent multiple clicks
-      //$(this).unbind('click');
-
-      //var query = Stiam.Storage.getQuery();
-      //if(!query.b_start){
-        //query.b_start = 20;
-      //}else{
-        //query.b_start += 20;
-      //}
-      //Stiam.Storage.setQuery(query);
-      //$(document).trigger(Stiam.Events.query);
-    //});
-  },
-
   refresh: function(changed){
     var self = this;
 
@@ -708,7 +690,6 @@ Stiam.Listing.prototype = {
 
   update: function(refresh){
     var self = this;
-    $.mobile.showPageLoadingMsg();
     $.ajax({
       url: self.settings.server,
       dataType: 'jsonp',
@@ -724,7 +705,7 @@ Stiam.Listing.prototype = {
         self.reload(refresh);
       },
       complete: function(){
-        $.mobile.hidePageLoadingMsg();
+        $(document).trigger(Stiam.Events.listingUpdated);
       }
     });
   },
@@ -776,7 +757,8 @@ Stiam.Listing.prototype = {
     $('.rodate', self.context).rodate();
 
     $("img.lazy", self.context).lazyload({
-      effect : "fadeIn"
+      effect : "fadeIn",
+      container: '#body'
     });
 
     // No results
@@ -798,8 +780,6 @@ Stiam.Listing.prototype = {
       });
 
       self.container.masonry('appended', html, true);
-    }else{
-      self.more();
     }
 
     if(refresh){
@@ -890,7 +870,6 @@ Stiam.Listing.prototype = {
 
     var index = options.url.lastIndexOf('/');
     var url = options.url.substr(0, index) + '/diffbot.json?callback=?';
-    $.mobile.showPageLoadingMsg();
     $.ajax({
       url: url,
       data: {'url': options.original},
@@ -929,7 +908,7 @@ Stiam.Listing.prototype = {
 
       },
       complete: function(){
-        $.mobile.hidePageLoadingMsg();
+        $(document).trigger(Stiam.Events.articleUpdated);
         self.theme(['theme']);
       }
     });
@@ -973,8 +952,8 @@ Stiam.Listing.prototype = {
 };
 
 Stiam.BackToTop = {
-  click: function(){
-    $('body,html').animate({scrollTop: 0}, 800);
+  click: function(page){
+    page.find('[data-iscroll]').iscrollview('scrollTo', 0, 0, 1000, false);
   }
 };
 
@@ -1018,23 +997,40 @@ Stiam.InfiniteScroll = {
 Stiam.Refresh = {
   initialize: function(){
     var self = this;
+
     $(".iscroll-wrapper").bind({
-      "iscroll_onpulldown" : function(e, d){
-        Stiam.Message.log(e);
-        Stiam.Message.log(d);
+      iscroll_onpulldown : function(e, d){
+        Stiam.Storage.settings.query.b_start = 0;
+        $(document).trigger(Stiam.Events.query);
       },
-      "iscroll_onpullup"   : function(e, d){
-        Stiam.Message.log(e);
-        Stiam.Message.log(d);
+      iscroll_onpullup   : function(e, d){
+        var query = Stiam.Storage.getQuery();
+        if(!query.b_start){
+          query.b_start = 20;
+        }else{
+          query.b_start += 20;
+        }
+        Stiam.Storage.setQuery(query);
+        $(document).trigger(Stiam.Events.query);
+      },
+      iscroll_onscrollend: function(e, d){
+        $(e.target).trigger('scroll');
       }
     });
 
-    //self.button = $('a[data-icon="refresh"]');
-    //self.button.click(function(evt){
-      //evt.preventDefault();
-      //Stiam.Storage.settings.query.b_start = 0;
-      //$(document).trigger(Stiam.Events.query);
-    //});
+    // Events
+    $(document).unbind('.StiamRefresh');
+    $(document).bind(Stiam.Events.listingUpdated + '.StiamRefresh', function(evt, data){
+      $('#body').iscrollview('refresh', 1000);
+    });
+
+    $(document).bind(Stiam.Events.panelUpdated + '.StiamRefresh', function(evt, data){
+      $('#left-form').iscrollview('refresh', 1000);
+    });
+
+    $(document).bind(Stiam.Events.articleUpdated + '.StiamRefresh', function(evt, data){
+      $('#article-details').iscrollview('refresh', 1000);
+    });
   }
 };
 
@@ -1201,15 +1197,15 @@ Stiam.initialize = function(){
   });
 
   window.addEventListener("statusTap", function() {
-    Stiam.BackToTop.click();
+    Stiam.BackToTop.click($.mobile.activePage);
   });
 
   $(document).delegate('.ui-header', 'dblclick.Stiam', function(e){
-    Stiam.BackToTop.click();
+    Stiam.BackToTop.click($.mobile.activePage);
   });
 
   $(document).delegate('.ui-header .ui-title', 'click.Stiam', function(e){
-    Stiam.BackToTop.click();
+    Stiam.BackToTop.click($.mobile.activePage);
   });
 
   // Notifications

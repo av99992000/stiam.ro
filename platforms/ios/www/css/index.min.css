@@ -153,24 +153,6 @@ img.loading {
   font-weight: normal ! important;
 }
 
-#back-top {
-  position: fixed;
-  bottom: 10px;
-  right: 10px;
-  padding: 0.5em;
-  width: 108px;
-  text-align: center;
-  text-decoration: none;
-  color: #bbb;
-  cursor: pointer;
-  background: #000;
-  border-radius: 10px;
-  box-shadow: 0 0 20px #000;
-  opacity: 0.5;
-  /* transition */
-  transition: 1s;
-}
-
 a[data-icon="refresh"] {
   position: absolute;
   right: 2.5rem;
@@ -229,20 +211,6 @@ a[data-icon="refresh"] {
 .ui-panel.ui-panel-open {
     position:fixed;
 }
-.ui-panel-inner {
-  position: absolute;
-  top: 1em;
-  left: 0;
-  right: 0;
-  bottom: 1em;
-  overflow-y: auto;
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;
-}
-
-#right-form {
-  padding-bottom: 3em;
-}
 
 .notification {
   position: fixed;
@@ -256,6 +224,15 @@ a[data-icon="refresh"] {
   box-shadow: 0px 0px 10px #000;
   border-radius: 3px;
   opacity: 0.85;
+}
+
+.ui-panel-inner {
+  padding: 0;
+  margin: 0;
+}
+
+#left-form, #right-form {
+  padding: 15px;
 }
 
 @media all and (max-width: 639px){
