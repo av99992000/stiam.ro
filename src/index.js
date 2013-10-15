@@ -1,4 +1,3 @@
-//var SERVER = 'http://192.168.1.103:16551/stiam.ro';
 var SERVER = 'http://stiam.ro';
 
 $.fn.rodate = function(options){
@@ -957,40 +956,10 @@ Stiam.BackToTop = {
   }
 };
 
+// XXX Deprecated
 Stiam.InfiniteScroll = {
   initialize: function(){
     var self = this;
-
-    //$(window).unbind('.StiamInfiniteScroll');
-    //$(window).bind('scroll.StiamInfiniteScroll', function(){
-
-      //if(Stiam.Storage.getItem('infiniteScroll') !== 'on'){
-        //return;
-      //}
-
-      //// XXX Use activePage ?
-      //var back = $('a[data-rel="back"]:visible');
-      //if(back.length){
-        //return;
-      //}
-
-      //var batch = $('.article-brick:has(".more-articles")');
-      //var batchTop = batch.position();
-      //batchTop = batchTop ? batchTop.top : 0;
-      //if(!batchTop){
-        //return;
-      //}
-
-      //var windowBottom = $(window).height() + $(window).scrollTop();
-
-      //// Not yet
-      //if((batchTop - windowBottom) > 300){
-        //return;
-      //}
-
-      //$('button', batch).click();
-
-    //});
   }
 };
 
