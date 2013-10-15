@@ -98,7 +98,9 @@ Stiam.Events = {
   query: 'stiam-query',
   app: 'stiam-app',
   reset: 'stiam-reset',
-  refresh: 'stiam-refresh'
+  refresh: 'stiam-refresh',
+  listingReloaded: 'stiam-listing-refreshed',
+  listingUpdated: 'stiam-listing-updated'
 };
 
 Stiam.Analytics = {
@@ -678,35 +680,20 @@ Stiam.Listing.prototype = {
 
   more: function(){
     var self = this;
-    var more = $([
-      '<div class="article-brick">',
-      '<div class="article more-articles">',
-        '<div class="article-body">',
-          '<div class="article-inner">',
-            '<button>Mai multe ştiri</button>',
-          '</div>',
-        '</div>',
-      '</div>',
-      '</div>'].join('\n'));
-    more.appendTo(self.container);
 
-    $('button', more).button();
-    $('button', more).click(function(){
-      // Prevent multiple clicks
-      $(this).unbind('click');
+    //$('button', more).click(function(){
+      //// Prevent multiple clicks
+      //$(this).unbind('click');
 
-      var query = Stiam.Storage.getQuery();
-      if(!query.b_start){
-        query.b_start = 20;
-      }else{
-        query.b_start += 20;
-      }
-      Stiam.Storage.setQuery(query);
-      $(document).trigger(Stiam.Events.query);
-      self.container.masonry('remove', more);
-    });
-
-    self.container.masonry('appended', more, true);
+      //var query = Stiam.Storage.getQuery();
+      //if(!query.b_start){
+        //query.b_start = 20;
+      //}else{
+        //query.b_start += 20;
+      //}
+      //Stiam.Storage.setQuery(query);
+      //$(document).trigger(Stiam.Events.query);
+    //});
   },
 
   refresh: function(changed){
