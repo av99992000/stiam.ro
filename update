@@ -1,0 +1,10 @@
+#!/bin/sh
+java -jar src/yuic src/index.js > www/js/index.min.js
+
+echo "Running cordova build"
+cordova build
+
+echo "Running browser platform update"
+rm -rf platforms/browser/assets/www
+cp -avr www platforms/browser/assets/
+cp -avr src/browser/assets/www platforms/browser/assets/

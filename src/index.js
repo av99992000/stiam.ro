@@ -104,26 +104,24 @@ Stiam.Events = {
 Stiam.Analytics = {
 
   initialize: function(){
+    // Browser
     if(!Stiam.Device.isPhone()){
       return;
+    // Mobile
+    }else{
+      window.plugins.gaPlugin.init(
+        function(){
+          Stiam.Message.log('Analytics started');
+        },
+        function(){
+          Stiam.Message.log('Analytics failled');
+        },
+        "UA-44152722-1", 10
+      );
     }
-
-    window.plugins.gaPlugin.init(
-      function(){
-        Stiam.Message.log('Analytics started');
-      },
-      function(){
-        Stiam.Message.log('Analytics failled');
-      },
-      "UA-44152722-1", 10
-    );
   },
 
   setVariable: function(key, value){
-    if(!Stiam.Device.isPhone()){
-      return;
-    }
-
     var index = 0;
     if(key === 'theme'){
       index = 1;
@@ -152,6 +150,11 @@ Stiam.Analytics = {
       return;
     }
 
+    // Browser
+    if(!Stiam.Device.isPhone()){
+      return "dimension" + index;
+    }
+
     window.plugins.gaPlugin.setVariable(
       function(){
         Stiam.Message.log('Set -- ' + key + ' ' + value);
@@ -162,28 +165,37 @@ Stiam.Analytics = {
       index,
       value.toString()
     );
+
+    return index;
   },
 
   trackPage: function(page, query){
-    if(!Stiam.Device.isPhone()){
-      return;
-    }
-
+    var index;
     if(query){
       query = jQuery.param(query, traditional=true);
       query = decodeURIComponent(query);
-      this.setVariable('query', query);
+      index = this.setVariable('query', query);
     }
 
-    window.plugins.gaPlugin.trackPage(
-      function(){
-        Stiam.Message.log('Track page -- ' + page);
-      },
-      function(){
-        Stiam.Message.log('Track page -- failed: ' + page);
-      },
-      page
-    );
+    if(!Stiam.Device.isPhone()){
+      // Browser
+      var options = {page: page};
+      if(index){
+        options[index] = query;
+      }
+      ga('send', 'pageview', options);
+    }else{
+      // Mobile app
+      window.plugins.gaPlugin.trackPage(
+        function(){
+          Stiam.Message.log('Track page -- ' + page);
+        },
+        function(){
+          Stiam.Message.log('Track page -- failed: ' + page);
+        },
+        page
+      );
+    }
   },
 
   trackArticle: function(url){
@@ -191,62 +203,79 @@ Stiam.Analytics = {
   },
 
   trackArticleExit: function(url, original){
-    if(!Stiam.Device.isPhone()){
-      return;
-    }
+    var index = this.setVariable('exit', original);
 
-    this.setVariable('exit', original);
-    return window.plugins.gaPlugin.trackEvent(
-      function(){
-        Stiam.Message.log('Track article exit event -- ' + url);
-      },
-      function(){
-        Stiam.Message.log('Track article exit event -- failed: ' + url);
-      },
-      "Article",
-      "exit",
-      url,
-      1
-    );
+    if(!Stiam.Device.isPhone()){
+      // Browser
+      var options = {eventLabel: url, eventValue: 1};
+      if(index){
+        options[index] = original.toString();
+      }
+      ga('send', 'event', 'Article', 'exit', options);
+    }else{
+      // Mobile app
+      return window.plugins.gaPlugin.trackEvent(
+        function(){
+          Stiam.Message.log('Track article exit event -- ' + url);
+        },
+        function(){
+          Stiam.Message.log('Track article exit event -- failed: ' + url);
+        },
+        "Article",
+        "exit",
+        url,
+        1
+      );
+    }
   },
 
   trackShare: function(url){
     if(!Stiam.Device.isPhone()){
-      return;
+      // Browser
+      var options = {eventLabel: url, eventValue: 1};
+      ga('send', 'event', 'Article', 'share', options);
+    }else{
+      // Mobile app
+      return window.plugins.gaPlugin.trackEvent(
+        function(){
+          Stiam.Message.log('Track share event -- ' + url);
+        },
+        function(){
+          Stiam.Message.log('Track share event -- failed: ' + url);
+        },
+        "Article",
+        "share",
+        url,
+        1
+      );
     }
-
-    return window.plugins.gaPlugin.trackEvent(
-      function(){
-        Stiam.Message.log('Track share event -- ' + url);
-      },
-      function(){
-        Stiam.Message.log('Track share event -- failed: ' + url);
-      },
-      "Share",
-      "click",
-      url,
-      1
-    );
   },
 
   trackSettings: function(key, value){
-    if(!Stiam.Device.isPhone()){
-      return;
-    }
+    var index = this.setVariable(key, value);
 
-    this.setVariable(key, value);
-    return window.plugins.gaPlugin.trackEvent(
-      function(){
-        Stiam.Message.log('Track settings event -- ' + key + ': ' + value);
-      },
-      function(){
-        Stiam.Message.log('Track settings event -- failed: ' + key + ': ' + value);
-      },
-      "Settings",
-      "change",
-      key,
-      1
-    );
+    if(!Stiam.Device.isPhone()){
+      // Browser
+      var options = {eventLabel: key, eventValue: 1};
+      if(index){
+        options[index] = value.toString();
+      }
+      ga('send', 'event', 'Settings', 'change', options);
+    }else{
+      // Mobile app
+      return window.plugins.gaPlugin.trackEvent(
+        function(){
+          Stiam.Message.log('Track settings event -- ' + key + ': ' + value);
+        },
+        function(){
+          Stiam.Message.log('Track settings event -- failed: ' + key + ': ' + value);
+        },
+        "Settings",
+        "change",
+        key,
+        1
+      );
+    }
   },
 
   exit: function(){
@@ -966,48 +995,59 @@ Stiam.InfiniteScroll = {
   initialize: function(){
     var self = this;
 
-    $(window).unbind('.StiamInfiniteScroll');
-    $(window).bind('scroll.StiamInfiniteScroll', function(){
+    //$(window).unbind('.StiamInfiniteScroll');
+    //$(window).bind('scroll.StiamInfiniteScroll', function(){
 
-      if(Stiam.Storage.getItem('infiniteScroll') !== 'on'){
-        return;
-      }
+      //if(Stiam.Storage.getItem('infiniteScroll') !== 'on'){
+        //return;
+      //}
 
-      // XXX Use activePage ?
-      var back = $('a[data-rel="back"]:visible');
-      if(back.length){
-        return;
-      }
+      //// XXX Use activePage ?
+      //var back = $('a[data-rel="back"]:visible');
+      //if(back.length){
+        //return;
+      //}
 
-      var batch = $('.article-brick:has(".more-articles")');
-      var batchTop = batch.position();
-      batchTop = batchTop ? batchTop.top : 0;
-      if(!batchTop){
-        return;
-      }
+      //var batch = $('.article-brick:has(".more-articles")');
+      //var batchTop = batch.position();
+      //batchTop = batchTop ? batchTop.top : 0;
+      //if(!batchTop){
+        //return;
+      //}
 
-      var windowBottom = $(window).height() + $(window).scrollTop();
+      //var windowBottom = $(window).height() + $(window).scrollTop();
 
-      // Not yet
-      if((batchTop - windowBottom) > 300){
-        return;
-      }
+      //// Not yet
+      //if((batchTop - windowBottom) > 300){
+        //return;
+      //}
 
-      $('button', batch).click();
+      //$('button', batch).click();
 
-    });
+    //});
   }
 };
 
 Stiam.Refresh = {
   initialize: function(){
     var self = this;
-    self.button = $('a[data-icon="refresh"]');
-    self.button.click(function(evt){
-      evt.preventDefault();
-      Stiam.Storage.settings.query.b_start = 0;
-      $(document).trigger(Stiam.Events.query);
+    $(".iscroll-wrapper").bind({
+      "iscroll_onpulldown" : function(e, d){
+        Stiam.Message.log(e);
+        Stiam.Message.log(d);
+      },
+      "iscroll_onpullup"   : function(e, d){
+        Stiam.Message.log(e);
+        Stiam.Message.log(d);
+      }
     });
+
+    //self.button = $('a[data-icon="refresh"]');
+    //self.button.click(function(evt){
+      //evt.preventDefault();
+      //Stiam.Storage.settings.query.b_start = 0;
+      //$(document).trigger(Stiam.Events.query);
+    //});
   }
 };
 

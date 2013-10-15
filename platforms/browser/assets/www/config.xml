@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="ro.stiam.stiri" version="2.1" versionCode="9" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+    <name>stiam.ro</name>
+    <description>
+    Stiri si atat
+  </description>
+    <author email="contact@stiam.ro" href="http://stiam.ro">
+    stiam.ro
+  </author>
+
+  <preference name="phonegap-version" value="3.0.8" />
+  <preference name="target-device" value="universal" />
+  <preference name="fullscreen" value="false" />
+  <preference name="auto-hide-splash-screen" value="false" />
+  <feature name="http://api.phonegap.com/1.0/network" />
+  <gap:plugin name="com.adobe.plugins.gaplugin" />
+  <preference name="android-installLocation" value="preferExternal" />
+
+  <access origin="http://127.0.0.1*"/> <!-- allow local pages -->
+  <access origin="*"/>
+
+  <content src="index.html" />
+
+</widget>

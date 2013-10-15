@@ -1,3 +1,0 @@
-#!/bin/sh
-java -jar src/yuic src/index.js > www/js/index.min.js
-cordova build
