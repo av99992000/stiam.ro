@@ -234,15 +234,20 @@ a[data-icon="refresh"] {
   padding: 15px;
 }
 
-@media all and (max-width: 639px){
+.iscroll-pulldown, .iscroll-pullup {
+  text-align: center;
+}
+
+
+@media all and (max-width: 599px){
   .article-brick {
     width: 95%;
   }
 }
 
-@media all and (min-width: 640px) and (max-width: 1023px){
+@media all and (min-width: 600px) and (max-width: 1023px){
   .article-brick {
-    width: 47.5%;
+    width: 47%;
   }
 }
 
