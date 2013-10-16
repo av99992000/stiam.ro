@@ -8,3 +8,9 @@ echo "Running browser platform update"
 rm -rf platforms/browser/assets/www
 cp -avr www platforms/browser/assets/
 cp -avr src/browser/assets/www platforms/browser/assets/
+
+if [ "$1" = "debug" ]
+then
+  echo "Debug src/index.js"
+  cp src/index.js platforms/browser/assets/www/js/index.min.js
+fi

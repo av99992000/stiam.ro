@@ -9,7 +9,6 @@ body {
 }
 
 .ui-header {
-  height: 2.7rem;
 }
 
 .ui-header7 {
@@ -46,11 +45,10 @@ body {
   font-family: Helvetica, Arial, sans-serif;
   font-size: 1rem;
   display: block;
-  margin: 14px 7px 0 7px;
+  margin: 7px;
   background: #fff;
   border: 1px solid #ccc;
   border-bottom: 2px solid #ccc;
-  border-radius: 3px;
 }
 
 .article,
@@ -121,6 +119,7 @@ img.loading {
 .article-body {
   background: #fff;
   border-radius: 3px;
+  padding: 1em;
 }
 
 .article-body h3 {
@@ -237,24 +236,24 @@ a[data-icon="refresh"] {
 
 @media all and (max-width: 639px){
   .article-brick {
-    width: 99.5%;
+    width: 95%;
   }
 }
 
 @media all and (min-width: 640px) and (max-width: 1023px){
   .article-brick {
-    width: 49.5%;
+    width: 47.5%;
   }
 }
 
 @media all and (min-width: 1024px) and (max-width: 1279px){
   .article-brick {
-    width: 33.2%;
+    width: 31%;
   }
 }
 
 @media all and (min-width: 1280px){
   .article-brick {
-    width: 24.9%;
+    width: 23.5%;
   }
 }

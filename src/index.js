@@ -380,13 +380,13 @@ Stiam.Panel.prototype = {
     var self = this;
     self.changed = true;
 
-    var header = $('#header').outerHeight();
-    var panel = self.context.height();
-    var panelheight = panel - header;
-    self.context.css({
-      'top': header,
-      'min-height': panelheight
-    });
+    //var header = $('#header').outerHeight();
+    //var panel = self.context.height();
+    //var panelheight = panel - header;
+    //self.context.css({
+      //'top': header,
+      //'min-height': panelheight
+    //});
 
     self.context.on( "panelclose", function(evt, ui){
       return self.query();
@@ -533,13 +533,13 @@ Stiam.Settings.prototype = {
     var self = this;
     self.changed = [];
 
-    var header = $('#header').outerHeight();
-    var panel = self.context.height();
-    var panelheight = panel - header;
-    self.context.css({
-      'top': header,
-      'min-height': panelheight
-    });
+    //var header = $('#header').outerHeight();
+    //var panel = self.context.height();
+    //var panelheight = panel - header;
+    //self.context.css({
+      //'top': header,
+      //'min-height': panelheight
+    //});
 
     // Theme
     $('[name="theme"]', self.context).change(function(){
@@ -720,21 +720,21 @@ Stiam.Listing.prototype = {
     }
 
     $.each(self.settings.dataset, function(idx, item){
-      var html ='<div class="article-brick"><a href="#article-page" class="article" data-transition="none">';
+      var html ='<a href="#article-page" class="article article-brick" data-transition="none">';
       if(item.thumbnail && Stiam.Storage.getItem('showImages') === 'on'){
         html += '<div class="article-thumb-container">';
         html += '<img class="lazy article-thumb" src="css/images/grey.gif" data-original="' + item.thumbnail + '" />';
         html += '</div>';
       }
-      html += '<div class="article-body"><div class="article-inner">';
+      html += '<div class="article-body">';
       html += '<h3 class="documentFirstHeading" style="font-size:' + (parseInt(Stiam.Storage.getItem('fontSize'), 10) + 72) + '%">' + item.title + '</h3>';
       html += '<div class="documentByLine">';
       html += '<span>' + item.source + ' - </span>';
       html += '<span class="rodate">' + item.date + '</span>';
       html += '</div>';
       html += '<p class="documentDescription" style="font-size: ' + Stiam.Storage.getItem('fontSize') + '%;">' + item.description + '</p>';
-      html += '</div></div>';
-      html += '</a></div>';
+      html += '</div>';
+      html += '</a>';
       html = $(html);
 
       html.appendTo(self.container);
@@ -763,13 +763,12 @@ Stiam.Listing.prototype = {
     // No results
     if(refresh && !self.settings.dataset.length){
       var html = $([
-        '<div class="article-brick">',
           '<div class="article">',
-            '<div class="article-body"><div class="article-inner">',
+            '<div class="article-body">',
             '<h3 class="documentFirstHeading"  style="font-size:' + (parseInt(Stiam.Storage.getItem('fontSize'), 10) + 72) + '%">Nu exista articole care sa corespunda filtrelor selectate</h3>',
-              '<button>Sterge toate filtrele</button>',
-          "</div>",
-        '</div>'
+            '<button>Şterge toate filtrele</button>',
+            '</div>',
+          '</div>'
         ].join('\n'));
       html.appendTo(self.container);
       $('button', html).button();
@@ -793,10 +792,10 @@ Stiam.Listing.prototype = {
   click: function(context, options){
     var self = this;
     Stiam.Analytics.trackArticle(options.url);
-    var body = $('#article-page').find('#article-details');
+    var body = $('#article-page').find('#article-details .container');
     body.empty();
     var html = "<div class='article'>";
-    html += '<div class="article-body"><div class="article-inner">';
+    html += '<div class="article-body">';
     html += '<h3 class="documentFirstHeading" style="font-size:' + (parseInt(Stiam.Storage.getItem('fontSize'), 10) + 72) + '%">' + options.title + '</h3>';
     html += '<div class="documentByLine">';
     html += '<a href="' + options.original+ '">' + options.source + '</a>';
@@ -808,7 +807,7 @@ Stiam.Listing.prototype = {
     }
 
     html += '<p class="documentDescription" style="font-size: ' + Stiam.Storage.getItem('fontSize') + '%">' + options.description + '</p>';
-    html += '</div></div>';
+    html += '</div>';
     html += '<div class="details">';
     html += '<img class="loading" src="css/images/ajax-loader-2.gif"/>';
     html += '</div></div>';
@@ -952,7 +951,7 @@ Stiam.Listing.prototype = {
 
 Stiam.BackToTop = {
   click: function(page){
-    page.find('[data-iscroll]').iscrollview('scrollTo', 0, 0, 1000, false);
+    page.find('[data-iscroll]').iscrollview('scrollTo', 0, 0, 200, false);
   }
 };
 
@@ -994,11 +993,15 @@ Stiam.Refresh = {
     });
 
     $(document).bind(Stiam.Events.panelUpdated + '.StiamRefresh', function(evt, data){
-      $('#left-form').iscrollview('refresh', 1000);
+      $('#left-form').iscrollview('refresh');
     });
 
     $(document).bind(Stiam.Events.articleUpdated + '.StiamRefresh', function(evt, data){
-      $('#article-details').iscrollview('refresh', 1000);
+      $('#article-details').iscrollview('refresh', 200,
+        null,
+        function(){
+          $('#article-details').iscrollview('scrollTo', 0, 0, 0, false);
+        });
     });
   }
 };
