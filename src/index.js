@@ -300,6 +300,7 @@ Stiam.Message = {
   initialize: function(options){
     var self = this;
     self.area = jQuery('<div>').addClass('notification').hide().appendTo($('body'));
+    self.loading = jQuery('<span>').addClass('title-loading-icon');
   },
 
   show: function(msg, timeout){
@@ -325,6 +326,21 @@ Stiam.Message = {
     if(window.console){
       console.log(msg);
     }
+  },
+
+  startLoading: function(where){
+    var self = this;
+    if(!where){
+      where = $.mobile.activePage.find('.ui-title');
+    }
+    self.loading.clone().appendTo(where);
+  },
+
+  stopLoading: function(where){
+    if(!where){
+      where = $.mobile.activePage.find('.ui-title');
+    }
+    where.find('.title-loading-icon').remove();
   }
 };
 
@@ -689,6 +705,8 @@ Stiam.Listing.prototype = {
 
   update: function(refresh){
     var self = this;
+    var where = $('#header-title');
+    Stiam.Message.startLoading(where);
     $.ajax({
       url: self.settings.server,
       dataType: 'jsonp',
@@ -704,7 +722,8 @@ Stiam.Listing.prototype = {
         self.reload(refresh);
       },
       complete: function(){
-        $(document).trigger(Stiam.Events.listingUpdated);
+        Stiam.Message.stopLoading(where);
+        $(document).trigger(Stiam.Events.listingUpdated, {where: self.container});
       }
     });
   },
@@ -720,7 +739,7 @@ Stiam.Listing.prototype = {
     }
 
     $.each(self.settings.dataset, function(idx, item){
-      var html ='<a href="#article-page" class="article article-brick" data-transition="none">';
+      var html ='<a href="#article-page" class="article article-brick" data-transition="slidefade">';
       if(item.thumbnail && Stiam.Storage.getItem('showImages') === 'on'){
         html += '<div class="article-thumb-container">';
         html += '<img class="lazy article-thumb" src="css/images/grey.gif" data-original="' + item.thumbnail + '" />';
@@ -791,6 +810,7 @@ Stiam.Listing.prototype = {
 
   click: function(context, options){
     var self = this;
+
     Stiam.Analytics.trackArticle(options.url);
     var body = $('#article-page').find('#article-details .container');
     body.empty();
@@ -818,9 +838,17 @@ Stiam.Listing.prototype = {
     });
 
     html.appendTo(body);
+
     $('.rodate', body).rodate();
     self.details(body, options);
     self.theme(['theme']);
+
+    try{
+      $(document).trigger(Stiam.Events.articleUpdated);
+      $('#article-details').iscrollview('scrollTo', 0, 0, 0, false);
+    }catch(err){
+      Stiam.Message.log(err);
+    }
 
     // XXX Bugous
     //body.unbind('swiperight');
@@ -868,6 +896,8 @@ Stiam.Listing.prototype = {
 
     var index = options.url.lastIndexOf('/');
     var url = options.url.substr(0, index) + '/diffbot.json?callback=?';
+    var where = $('#article-header-titlte');
+    Stiam.Message.startLoading(where);
     $.ajax({
       url: url,
       data: {'url': options.original},
@@ -908,6 +938,7 @@ Stiam.Listing.prototype = {
       complete: function(){
         $(document).trigger(Stiam.Events.articleUpdated);
         self.theme(['theme']);
+        Stiam.Message.stopLoading(where);
       }
     });
   },
@@ -989,7 +1020,10 @@ Stiam.Refresh = {
     // Events
     $(document).unbind('.StiamRefresh');
     $(document).bind(Stiam.Events.listingUpdated + '.StiamRefresh', function(evt, data){
-      $('#body').iscrollview('refresh', 1000);
+      data.where.trigger('scroll');
+      $('#body').iscrollview('refresh');
+      $('#body').iscrollview('refresh', 500);
+      $('#body').iscrollview('refresh', 2000);
     });
 
     $(document).bind(Stiam.Events.panelUpdated + '.StiamRefresh', function(evt, data){
@@ -997,11 +1031,13 @@ Stiam.Refresh = {
     });
 
     $(document).bind(Stiam.Events.articleUpdated + '.StiamRefresh', function(evt, data){
-      $('#article-details').iscrollview('refresh', 200,
-        null,
-        function(){
-          $('#article-details').iscrollview('scrollTo', 0, 0, 0, false);
-        });
+      $('#article-details').iscrollview('refresh', 200);
+    });
+
+    $(window).bind('orientationchange.StiamRefresh', function(evt, data){
+      $('#body').iscrollview('refresh');
+      $('#body').iscrollview('refresh', 500);
+      $('#body').iscrollview('refresh', 2000);
     });
   }
 };

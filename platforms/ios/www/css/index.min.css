@@ -19,9 +19,9 @@ body {
   top: 1.3rem;
 }
 
-.ui-header-fixed .ui-btn-left, .ui-header-fixed .ui-btn-right, .ui-header-fixed>.ui-btn-icon-notext {
-  padding: 0.2rem;
-}
+/*.ui-header-fixed .ui-btn-left, .ui-header-fixed .ui-btn-right, .ui-header-fixed>.ui-btn-icon-notext {*/
+  /*padding: 0.2rem;*/
+/*}*/
 
 .ui-btn-inner {
   border: none !important;
@@ -34,7 +34,7 @@ body {
 
 .ui-header .ui-title {
   cursor: pointer;
-  font-size: 14pt;
+  /*font-size: 14pt;*/
 }
 
 .ui-content {
@@ -238,6 +238,56 @@ a[data-icon="refresh"] {
   text-align: center;
 }
 
+.title-loading-icon {
+  background: transparent url(../img/ajax-loader-white.gif) no-repeat;
+  background-position: center center;
+  width: 100%;
+  height: 15px;
+  display: block;
+}
+
+.ui-bar-a .title-loading-icon {
+  background-image: url(../img/ajax-loader-a.gif);
+}
+
+.ui-bar-b .title-loading-icon {
+  background-image: url(../img/ajax-loader-b.gif);
+}
+
+.ui-bar-c .title-loading-icon {
+  background-image: url(../img/ajax-loader-c.gif);
+}
+
+.ui-bar-d .title-loading-icon {
+  background-image: url(../img/ajax-loader-d.gif);
+}
+
+.ui-bar-e .title-loading-icon {
+  background-image: url(../img/ajax-loader-e.gif);
+}
+
+.ui-bar-f .title-loading-icon {
+  background-image: url(../img/ajax-loader-f.gif);
+}
+
+.ui-header .ui-btn-left, .ui-header .ui-btn-right {
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  top: 0;
+  padding: 6px;
+  height: 100%;
+}
+
+.ui-header .ui-btn-left {
+  left: 0;
+  border-right: 1px solid #fff;
+}
+
+.ui-header .ui-btn-right {
+  right: 0;
+  border-left: 1px solid #fff;
+}
 
 @media all and (max-width: 599px){
   .article-brick {
