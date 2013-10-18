@@ -11,25 +11,12 @@ body {
 .ui-header {
 }
 
-.ui-header7 {
-  height: 4rem;
+.ui-ios7 {
+  margin-top: 1.2rem;
 }
-
-.ui-header7 .ui-btn-left, .ui-header7 .ui-btn-right, .ui-header7>.ui-btn-icon-notext {
-  top: 1.3rem;
-}
-
-/*.ui-header-fixed .ui-btn-left, .ui-header-fixed .ui-btn-right, .ui-header-fixed>.ui-btn-icon-notext {*/
-  /*padding: 0.2rem;*/
-/*}*/
 
 .ui-btn-inner {
   border: none !important;
-}
-
-.ui-header7 .ui-title {
-  margin-top: 1.5rem;
-  font-size: 18pt;
 }
 
 .ui-header .ui-title {

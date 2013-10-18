@@ -1171,7 +1171,8 @@ Stiam.initialize = function(){
 
   // Handle ios 7
   if(Stiam.Device.isApple() && Stiam.Device.version() >= 7){
-    $('[data-role="header"]').addClass('ui-header7');
+    $('[data-role="header"]').addClass('ui-ios7');
+    $('[data-role="panel"]').addClass('ui-ios7');
   }
 
   $( document ).unbind('.Stiam');
