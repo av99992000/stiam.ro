@@ -78,6 +78,10 @@ img.loading {
   padding: 2em 0 1em 0;
 }
 
+#article-details .details {
+  padding: 1em;
+}
+
 #article-details .documentDetails {
   text-align: justify;
   margin: 2em 0;
@@ -136,6 +140,10 @@ img.loading {
 .article-body p {
   font-weight: normal;
   text-align: justify;
+}
+
+.documentDescription.ui-li-desc {
+  margin: 1em 0;
 }
 
 .documentByLine {
@@ -270,13 +278,22 @@ a[data-icon="refresh"] {
   background-image: url(../img/ajax-loader-f.gif);
 }
 
+.ui-header {
+  background-image: none;
+}
+
 .ui-header .ui-btn-left, .ui-header .ui-btn-right {
   border: none;
   box-shadow: none;
   border-radius: 0;
   top: 0;
-  padding: 6px;
   height: 100%;
+  background-image: none;
+}
+
+.ui-header .ui-btn-left .ui-btn-inner, .ui-header .ui-btn-right .ui-btn-inner {
+  padding-top: 6px;
+  margin-top: 4px;
 }
 
 .ui-header .ui-btn-left {
@@ -288,6 +305,20 @@ a[data-icon="refresh"] {
   right: 0;
   border-left: 1px solid #fff;
 }
+
+.ui-icon {
+  background-color: transparent !important;
+}
+
+.ui-btn-icon-notext {
+  min-width: 40px;
+}
+
+.ui-btn-icon-notext .ui-icon {
+  width: 40px;
+  height: 40px;
+}
+
 
 @media all and (max-width: 599px){
   .article-brick {

@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="css/jquery.mobile.min.css" />
   <link rel="stylesheet" href="css/jquery.mobile.iscrollview.css"/>
   <link rel="stylesheet" href="css/jquery.mobile.iscrollview-pull.css"/>
+  <link rel="stylesheet" href="css/jqm-icon-pack-fa.css"/>
   <link rel="stylesheet" href="css/index.min.css" />
 </head>
 <body>
@@ -15,8 +16,8 @@
 <div data-role="page" id="main-page" style="display: none">
 
   <div data-role="header" id="header" class="ui-bar-c" data-tap-toggle="false">
-    <a href="#left-panel" data-shadow="false" data-icon="bars" data-iconpos="left" data-iconshadow="false">0</a>
-    <a href="#right-panel" data-shadow="false" data-icon="gear" data-iconpos="right" data-iconshadow="false">&Xi;</a>
+    <a href="#left-panel" data-shadow="false" data-icon="reorder" data-iconpos="left" data-iconshadow="false">0</a>
+    <a href="#right-panel" data-shadow="false" data-icon="cogs" data-iconpos="notext" data-iconshadow="false">setări</a>
     <span class="ui-title" id="header-title"></span>
   </div>
 
@@ -82,14 +83,31 @@
 
 </div>
 
-<div data-role="page" id="article-page" data-add-back-btn="true" data-back-btn-text="înapoi" style="display: none">
+<div data-role="page" id="article-page" style="display: none">
   <div data-role="header" id="article-header" class="ui-bar-c" data-tap-toggle="false">
-    <a href="#" data-shadow="false" data-icon="arrow-r" data-iconpos="right" data-iconshadow="false" class="ui-btn-right">distribuie</a>
+    <a href="#" id="article-back" data-rel="back" data-shadow="false" data-icon="reply" data-iconpos="notext" data-iconshadow="false" class="ui-btn-left">înapoi</a>
+    <a href="#" id="article-share" data-shadow="false" data-icon="share-alt" data-iconpos="notext" data-iconshadow="false" class="ui-btn-right">distribuie</a>
     <span class="ui-title" id="article-header-titlte"></span>
   </div>
   <div data-role="content" id="article-details" data-iscroll>
+    <div class="iscroll-pulldown">
+      <span class="iscroll-pull-icon"></span>
+      <span class="iscroll-pull-label"
+        data-iscroll-pulled-text="Înapoi la prima pagină"
+        data-iscroll-loading-text="Se încarcă...">
+        Trage pentru a închide articolul
+      </span>
+    </div>
     <div class="container" data-role="listview">
       <img class="loading" src="css/images/ajax-loader-2.gif" alt="Se incarca..." title="Se incarca..."/>
+    </div>
+    <div class="iscroll-pullup">
+      <span class="iscroll-pull-icon"></span>
+      <span class="iscroll-pull-label"
+        data-iscroll-pulled-text="Vezi articolul original"
+        data-iscroll-loading-text="Se încarcă...">
+        Trage pentru articolul original
+      </span>
     </div>
   </div>
 </div>

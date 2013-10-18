@@ -762,11 +762,6 @@ Stiam.Listing.prototype = {
         self.click($(this), item);
       });
 
-      // XXX Bugous
-      //html.on('swipeleft', function(){
-        //self.click($(this), item);
-      //});
-
       if(!refresh){
         self.container.masonry('appended', html, true);
       }
@@ -850,17 +845,8 @@ Stiam.Listing.prototype = {
       Stiam.Message.log(err);
     }
 
-    // XXX Bugous
-    //body.unbind('swiperight');
-    //body.on('swiperight', function(){
-      //var back = $('a[data-rel="back"]:visible');
-      //if(back.length){
-        //return back.click();
-      //}
-    //});
-
     // Share button
-    var share = $('#article-page').find('[data-icon="star"]');
+    var share = $('#article-page').find('#article-share');
     share.unbind('click');
     share.click(function(evt){
       Stiam.Analytics.trackShare(options.url);
@@ -909,18 +895,8 @@ Stiam.Listing.prototype = {
       success: function(data, textStatus, jqXHR){
         var details = context.find('.details');
 
-        var a = $([
-          '<div class="documentViewOriginal">',
-            '<a href="' + options.original + '">Vezi articolul original</a>',
-          '</div>'
-        ].join(''));
-
         if(data.error){
           details.html('');
-          a.appendTo(details);
-          details.find('a').click(function(evt){
-            return self.external(evt, options);
-          });
           return self.error(data.error);
         }
 
@@ -928,11 +904,6 @@ Stiam.Listing.prototype = {
         text = text.replace(/\n/g, '</p><p>');
         var div = $('<div class="documentDetails" style="font-size: ' + Stiam.Storage.getItem('fontSize') + '%">').html(text);
         details.html(div);
-
-        a.appendTo(details);
-        details.find('a').click(function(evt){
-          return self.external(evt, options);
-        });
 
       },
       complete: function(){
@@ -997,7 +968,8 @@ Stiam.Refresh = {
   initialize: function(){
     var self = this;
 
-    $(".iscroll-wrapper").bind({
+    // Main page
+    $("#main-page").find(".page.iscroll-wrapper").bind({
       iscroll_onpulldown : function(e, d){
         Stiam.Storage.settings.query.b_start = 0;
         $(document).trigger(Stiam.Events.query);
@@ -1015,6 +987,22 @@ Stiam.Refresh = {
       iscroll_onscrollend: function(e, d){
         $(e.target).trigger('scroll');
       }
+    });
+
+    // Article details
+    $("#article-page").delegate("#article-details.iscroll-wrapper", 'iscroll_onpulldown', function(e, d){
+      var back = $('a[data-rel="back"]:visible');
+      if(back.length){
+        return back.click();
+      }
+    });
+
+    $("#article-page").delegate("#article-details.iscroll-wrapper", 'iscroll_onpullup', function(e, d){
+      var original = $.mobile.activePage.find('.documentByLine a');
+      if(original.length){
+        original.click();
+      }
+      d.iscrollview.refresh();
     });
 
     // Events
@@ -1201,6 +1189,13 @@ Stiam.initialize = function(){
     var back = $('a[data-rel="back"]:visible');
     if(back.length){
       return back.click();
+    }
+  });
+
+  $( document).on( "swipeleft.Stiam", "#article-details", function( e ) {
+    var share = $('#article-share:visible');
+    if(share.length){
+      return share.click();
     }
   });
 
