@@ -1193,12 +1193,13 @@ Stiam.initialize = function(){
     }
   });
 
-  $( document).on( "swipeleft.Stiam", "#article-details", function( e ) {
-    var share = $('#article-share:visible');
-    if(share.length){
-      return share.click();
-    }
-  });
+  // Share not implemented yet on ios
+  //$( document).on( "swipeleft.Stiam", "#article-details", function( e ) {
+    //var share = $('#article-share:visible');
+    //if(share.length){
+      //return share.click();
+    //}
+  //});
 
   window.addEventListener("statusTap", function() {
     Stiam.BackToTop.click($.mobile.activePage);

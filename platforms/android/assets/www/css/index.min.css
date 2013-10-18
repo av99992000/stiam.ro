@@ -65,14 +65,9 @@ img.loading {
   padding: 2em 0 1em 0;
 }
 
-#article-details .details {
-  padding: 1em;
-}
-
 #article-details .documentDetails {
   text-align: justify;
-  margin: 2em 0;
-  border: 1px dotted #cdcdcd;
+  border-top: 1px dotted #cdcdcd;
   padding: 1em;
 }
 
