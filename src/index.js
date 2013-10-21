@@ -633,19 +633,19 @@ Stiam.Settings.prototype = {
 
     //reset all the buttons widgets
     $(document).find('.ui-btn')
-           .removeClass('ui-btn-up-a ui-btn-up-b ui-btn-up-c ui-btn-up-d ui-btn-up-e ui-btn-hover-a ui-btn-hover-b ui-btn-hover-c ui-btn-hover-d ui-btn-hover-e')
+           .removeClass('ui-btn-up-a ui-btn-up-b ui-btn-up-c ui-btn-up-d ui-btn-up-e ui-btn-up-f ui-btn-hover-a ui-btn-hover-b ui-btn-hover-c ui-btn-hover-d ui-btn-hover-e ui-btn-hover-f')
            .addClass('ui-btn-up-' + theme)
            .attr('data-theme', theme);
 
     //reset the header/footer widgets
     $(document).find('.ui-header, .ui-footer')
-            .removeClass('ui-bar-a ui-bar-b ui-bar-c ui-bar-d ui-bar-e')
+            .removeClass('ui-bar-a ui-bar-b ui-bar-c ui-bar-d ui-bar-e ui-bar-f')
             .addClass('ui-bar-' + theme)
             .attr('data-theme', theme);
 
     //reset the page widget
     $(document).find('.ui-panel')
-            .removeClass('ui-body-a ui-body-b ui-body-c ui-body-d ui-body-e')
+            .removeClass('ui-body-a ui-body-b ui-body-c ui-body-d ui-body-e ui-body-f')
             .addClass('ui-body-' + theme)
             .attr('data-theme', theme);
   }
@@ -926,19 +926,19 @@ Stiam.Listing.prototype = {
 
     //reset all the buttons widgets
     $(document).find('.ui-btn')
-           .removeClass('ui-btn-up-a ui-btn-up-b ui-btn-up-c ui-btn-up-d ui-btn-up-e ui-btn-hover-a ui-btn-hover-b ui-btn-hover-c ui-btn-hover-d ui-btn-hover-e')
+           .removeClass('ui-btn-up-a ui-btn-up-b ui-btn-up-c ui-btn-up-d ui-btn-up-e ui-btn-up-f ui-btn-hover-a ui-btn-hover-b ui-btn-hover-c ui-btn-hover-d ui-btn-hover-e ui-btn-hover-f')
            .addClass('ui-btn-up-' + theme)
            .attr('data-theme', theme);
 
     //reset the header/footer widgets
     $(document).find('.ui-header, .ui-footer')
-            .removeClass('ui-bar-a ui-bar-b ui-bar-c ui-bar-d ui-bar-e')
+            .removeClass('ui-bar-a ui-bar-b ui-bar-c ui-bar-d ui-bar-e ui-bar-f')
             .addClass('ui-bar-' + theme)
             .attr('data-theme', theme);
 
     //reset the page widget
     $(document).find('.ui-panel')
-            .removeClass('ui-body-a ui-body-b ui-body-c ui-body-d ui-body-e')
+            .removeClass('ui-body-a ui-body-b ui-body-c ui-body-d ui-body-e ui-body-f')
             .addClass('ui-body-' + theme)
             .attr('data-theme', theme);
   },
@@ -990,13 +990,6 @@ Stiam.Refresh = {
     });
 
     // Article details
-    $("#article-page").delegate("#article-details.iscroll-wrapper", 'iscroll_onpulldown', function(e, d){
-      var back = $('a[data-rel="back"]:visible');
-      if(back.length){
-        return back.click();
-      }
-    });
-
     $("#article-page").delegate("#article-details.iscroll-wrapper", 'iscroll_onpullup', function(e, d){
       var original = $.mobile.activePage.find('.documentByLine a');
       if(original.length){
