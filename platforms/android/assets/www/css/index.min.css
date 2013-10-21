@@ -197,10 +197,6 @@ a[data-icon="refresh"] {
   width: 400px;
 }
 
-.ui-panel.ui-panel-open {
-    position:fixed;
-}
-
 .notification {
   position: fixed;
   background: #333;
