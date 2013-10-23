@@ -855,13 +855,14 @@ Stiam.Listing.prototype = {
     if(Stiam.Device.isPhone()){
       share.click(function(evt){
         evt.preventDefault();
+        Stiam.Message.show('Sharing...');
         window.plugins.shareSocial.share(options.title, options.thumbnail, options.url, 'Distribuie',
-        function(){
-          Stiam.Message.log('Articolul a fost distribuit');
-        },
-        function(){
-          Stiam.Message.show('Articolul nu a fost distribuit');
-        }
+          function(){
+            Stiam.Message.log('Articolul a fost distribuit');
+          },
+          function(){
+            Stiam.Message.show('Articolul nu a fost distribuit');
+          }
         );
       });
     }else{

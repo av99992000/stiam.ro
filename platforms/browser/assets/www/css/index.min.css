@@ -21,7 +21,6 @@ body {
 
 .ui-header .ui-title {
   cursor: pointer;
-  /*font-size: 14pt;*/
 }
 
 .ui-content {
@@ -256,16 +255,12 @@ a[data-icon="refresh"] {
   background-image: url(../img/ajax-loader-f.gif);
 }
 
-/*.ui-header {*/
-  /*background-image: none;*/
-/*}*/
-
 .ui-header .ui-btn-left, .ui-header .ui-btn-right {
   border: none;
   box-shadow: none;
   border-radius: 0;
-  top: 0;
-  height: 100%;
+  top: 1px;
+  height: 38px;
   background-image: none;
   background: transparent;
 }
