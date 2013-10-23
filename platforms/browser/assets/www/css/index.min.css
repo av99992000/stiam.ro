@@ -35,6 +35,7 @@ body {
   background: #fff;
   border: 1px solid #ccc;
   border-bottom: 2px solid #ccc;
+  -webkit-transform:translate3d(0,0,0);
 }
 
 .article,

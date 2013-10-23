@@ -299,6 +299,7 @@ Stiam.Analytics = {
 Stiam.Message = {
   initialize: function(options){
     var self = this;
+    self.days = ['Duminică', 'Luni', 'Marţi', 'Miercuri', 'Joi', 'Vineri', 'Sâmbătă'];
     self.area = jQuery('<div>').addClass('notification').hide().appendTo($('body'));
     self.loading = jQuery('<span>').addClass('title-loading-icon');
   },
@@ -328,19 +329,32 @@ Stiam.Message = {
     }
   },
 
+  checkTime: function(i){
+    if (i<10){
+      i="0" + i;
+    }
+    return i;
+  },
+
   startLoading: function(where){
     var self = this;
     if(!where){
       where = $.mobile.activePage.find('.ui-title');
     }
-    self.loading.clone().appendTo(where);
+    where.html(self.loading.clone());
   },
 
-  stopLoading: function(where){
+  stopLoading: function(where, date){
+    var self = this;
     if(!where){
       where = $.mobile.activePage.find('.ui-title');
     }
-    where.find('.title-loading-icon').remove();
+    var now = date ? new Date(date) : new Date();
+    var day = self.days[now.getDay()];
+    var hour = self.checkTime(now.getHours());
+    var min = self.checkTime(now.getMinutes());
+    var text = $('<span>').text(day + " " + hour + ":" + min);
+    where.html(text);
   }
 };
 
@@ -906,7 +920,7 @@ Stiam.Listing.prototype = {
       complete: function(){
         $(document).trigger(Stiam.Events.articleUpdated);
         self.theme(['theme']);
-        Stiam.Message.stopLoading(where);
+        Stiam.Message.stopLoading(where, options.date);
       }
     });
   },
