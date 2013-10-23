@@ -857,10 +857,10 @@ Stiam.Listing.prototype = {
         evt.preventDefault();
         window.plugins.shareSocial.share(options.title, options.thumbnail, options.url, 'Distribuie',
         function(){
-          Stiam.Message.show('Articol distribuit cu succes');
+          Stiam.Message.log('Articolul a fost distribuit');
         },
         function(){
-          Stiam.Message.show('Articol nu a putut fi distribuit');
+          Stiam.Message.show('Articolul nu a fost distribuit');
         }
         );
       });
