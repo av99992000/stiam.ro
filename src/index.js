@@ -344,16 +344,19 @@ Stiam.Message = {
     where.html(self.loading.clone());
   },
 
-  stopLoading: function(where, date){
+  stopLoading: function(where, text){
     var self = this;
     if(!where){
       where = $.mobile.activePage.find('.ui-title');
     }
-    var now = date ? new Date(date) : new Date();
-    var day = self.days[now.getDay()];
-    var hour = self.checkTime(now.getHours());
-    var min = self.checkTime(now.getMinutes());
-    var text = $('<span>').text(day + " " + hour + ":" + min);
+    if(!text){
+      var now = new Date();
+      var day = self.days[now.getDay()];
+      var hour = self.checkTime(now.getHours());
+      var min = self.checkTime(now.getMinutes());
+      text = $('<span>').text(day + " " + hour + ":" + min);
+    }
+
     where.html(text);
   }
 };
@@ -827,8 +830,8 @@ Stiam.Listing.prototype = {
     html += '<div class="article-body">';
     html += '<h3 class="documentFirstHeading" style="font-size:' + (parseInt(Stiam.Storage.getItem('fontSize'), 10) + 72) + '%">' + options.title + '</h3>';
     html += '<div class="documentByLine">';
-    html += '<a href="' + options.original+ '">' + options.source + '</a>';
-    html += '<span> - </span><span class="rodate">' + options.date + '</span>';
+    html += '<a href="' + options.original+ '">' + options.source + '</a><span> - </span>';
+    html += '<span class="rodate">' + options.date + '</span>';
     html += '</div>';
 
     if(options.thumbnail && Stiam.Storage.getItem('showImages') === 'on'){
@@ -920,7 +923,7 @@ Stiam.Listing.prototype = {
       complete: function(){
         $(document).trigger(Stiam.Events.articleUpdated);
         self.theme(['theme']);
-        Stiam.Message.stopLoading(where, options.date);
+        Stiam.Message.stopLoading(where, options.source.toLowerCase());
       }
     });
   },
