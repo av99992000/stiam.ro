@@ -566,19 +566,15 @@ Stiam.Settings.prototype = {
     var self = this;
     self.changed = [];
 
-    //var header = $('#header').outerHeight();
-    //var panel = self.context.height();
-    //var panelheight = panel - header;
-    //self.context.css({
-      //'top': header,
-      //'min-height': panelheight
-    //});
-
     // Theme
     $('[name="theme"]', self.context).change(function(){
       var theme = $(this).val();
       Stiam.Storage.setItem('theme', theme);
       self.theme(['theme']);
+    });
+
+    self.context.on( "panelopen", function(evt, ui){
+      self.context.find('#right-form').iscrollview('refresh');
     });
 
     // Events
