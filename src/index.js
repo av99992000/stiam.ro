@@ -852,20 +852,16 @@ Stiam.Listing.prototype = {
       Stiam.Analytics.trackShare(options.url);
     });
 
-    if(Stiam.Device.isAndroid()){
+    if(Stiam.Device.isPhone()){
       share.click(function(evt){
         evt.preventDefault();
-        window.plugins.share.show({
-          subject: options.title,
-          text: options.url},
-          function() {
-            // Success function
-            Stiam.Message.log('Shared: ' + options.url);
-          },
-          function() {
-             // Failure function
-            Stiam.Message.show('Share failed', 5000);
-          }
+        window.plugins.shareSocial.share(options.title, options.thumbnail, options.url, 'Distribuie',
+        function(){
+          Stiam.Message.show('Articol distribuit cu succes');
+        },
+        function(){
+          Stiam.Message.show('Articol nu a putut fi distribuit');
+        }
         );
       });
     }else{
@@ -1250,7 +1246,7 @@ Stiam.initialize = function(){
     }
 
     window.backs += 1;
-    Stiam.Message.show("Mai apasă odată pentru a ieşi" , 3000);
+    Stiam.Message.show("Mai apasă odată pentru a ieşi");
     if(window.backs > 1){
       Stiam.Analytics.exit();
       navigator.app.exitApp();

@@ -52,6 +52,8 @@
 		D4A0D8761607E02300AEF8BB /* Default-568h@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = D4A0D8751607E02300AEF8BB /* Default-568h@2x~iphone.png */; };
 		F840E1F1165FE0F500CFE078 /* config.xml in Resources */ = {isa = PBXBuildFile; fileRef = F840E1F0165FE0F500CFE078 /* config.xml */; };
 		E4E843CF37774FFBA7443F71 /* TapToScroll.m in Sources */ = {isa = PBXBuildFile; fileRef = E8F04D2755984ADABC3356C5 /* TapToScroll.m */; };
+		7CF9D90AF7D444DF884B0CB6 /* ShareSocial.m in Sources */ = {isa = PBXBuildFile; fileRef = CF8B464892FB40F5B99BB4E8 /* ShareSocial.m */; };
+		C9C5F8AB6EE142C7B94AFD51 /* Social.framework in Resources */ = {isa = PBXBuildFile; fileRef = 2D8C924073094C62AF9E1AB7 /* Social.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -145,6 +147,9 @@
 		F840E1F0165FE0F500CFE078 /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = config.xml; path = stiam.ro/config.xml; sourceTree = "<group>"; };
 		E8F04D2755984ADABC3356C5 /* TapToScroll.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "TapToScroll.m"; path = "com.phonegap.TapToScroll/TapToScroll.m"; sourceTree = "<group>"; fileEncoding = 4; };
 		CCCBABAE99DB476CB907C3FB /* TapToScroll.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "TapToScroll.h"; path = "com.phonegap.TapToScroll/TapToScroll.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		CF8B464892FB40F5B99BB4E8 /* ShareSocial.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "ShareSocial.m"; path = "me.apla.cordova.share-social/ShareSocial.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		98EF741CC79C462BA9D83772 /* ShareSocial.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "ShareSocial.h"; path = "me.apla.cordova.share-social/ShareSocial.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		2D8C924073094C62AF9E1AB7 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "Social.framework"; path = "System/Library/Frameworks/Social.framework"; sourceTree = SDKROOT; fileEncoding = 4; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -172,6 +177,7 @@
 				30E5649213A7FCAF007403D8 /* CoreMedia.framework in Frameworks */,
 				6658875AA20244E282CEFAD6 /* GoogleAnalytics.a in Frameworks */,
 				348FEA6803F24A8BB1E9B281 /* CoreData.framework in Frameworks */,
+				C9C5F8AB6EE142C7B94AFD51 /* Social.framework in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -289,6 +295,7 @@
 				30E5649113A7FCAF007403D8 /* CoreMedia.framework */,
 				583AA206573D4E369E38EE34 /* GoogleAnalytics.a */,
 				0AEDB0267077472BAE710E3C /* CoreData.framework */,
+				2D8C924073094C62AF9E1AB7 /* Social.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -320,6 +327,8 @@
 				98D6EA2ABC7F4921B69BDF61 /* CDVInAppBrowser.h */,
 				E8F04D2755984ADABC3356C5 /* TapToScroll.m */,
 				CCCBABAE99DB476CB907C3FB /* TapToScroll.h */,
+				CF8B464892FB40F5B99BB4E8 /* ShareSocial.m */,
+				98EF741CC79C462BA9D83772 /* ShareSocial.h */,
 			);
 			name = Plugins;
 			path = stiam.ro/Plugins;
@@ -493,6 +502,7 @@
 				8082465D76FB46BE8C6111D5 /* CDVDevice.m in Sources */,
 				98EBCFAB9FB0455DB9057D95 /* CDVInAppBrowser.m in Sources */,
 				E4E843CF37774FFBA7443F71 /* TapToScroll.m in Sources */,
+				7CF9D90AF7D444DF884B0CB6 /* ShareSocial.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

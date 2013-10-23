@@ -1,0 +1,11 @@
+{
+    "version": "0.1.0",
+    "name": "me.apla.cordova.share-social",
+    "cordova_name": "Social Share",
+    "description": "Cordova social sharing plugin",
+    "license": "Apache",
+    "keywords": [
+        "cordova",
+        "social"
+    ]
+}

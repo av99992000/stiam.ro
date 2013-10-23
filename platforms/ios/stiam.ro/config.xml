@@ -27,6 +27,9 @@
     <feature name="TapToScroll">
         <param name="ios-package" value="TapToScroll" />
     </feature>
+    <feature name="ShareSocial">
+        <param name="ios-package" value="ShareSocial" />
+    </feature>
     <access origin="http://127.0.0.1*" />
     <access origin="*" />
     <preference name="KeyboardDisplayRequiresUserAction" value="true" />

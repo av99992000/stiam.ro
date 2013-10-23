@@ -29,6 +29,9 @@
     <feature name="InAppBrowser">
         <param name="android-package" value="org.apache.cordova.inappbrowser.InAppBrowser" />
     </feature>
+    <feature name="ShareSocial" value="me.apla.cordova.ShareSocial">
+        <param name="android-package" value="me.apla.cordova.ShareSocial" />
+    </feature>
     <access origin="http://127.0.0.1*" />
     <access origin="*" />
     <preference name="useBrowserHistory" value="true" />

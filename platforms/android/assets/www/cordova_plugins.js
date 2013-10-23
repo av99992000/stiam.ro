@@ -34,6 +34,13 @@ module.exports = [
         "clobbers": [
             "window.TapToScroll"
         ]
+    },
+    {
+        "file": "plugins/me.apla.cordova.share-social/www/share-social.js",
+        "id": "me.apla.cordova.share-social.shareSocial",
+        "clobbers": [
+            "plugins"
+        ]
     }
 ]
 });

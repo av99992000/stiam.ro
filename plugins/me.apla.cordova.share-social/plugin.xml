@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin xmlns="http://cordova.apache.org/ns/plugins/1.0"
+           id="me.apla.cordova.share-social"
+      version="0.1.0">
+    <name>Social Share</name>
+    <description>Cordova social sharing plugin</description>
+    <license>Apache</license>
+    <keywords>cordova,social</keywords>
+
+    <!-- android -->
+    <platform name="android">
+        <js-module src="www/share-social.js" name="shareSocial">
+            <clobbers target="plugins" />
+        </js-module>
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="ShareSocial" value="me.apla.cordova.ShareSocial">
+                <param name="android-package" value="me.apla.cordova.ShareSocial"/>
+            </feature>
+        </config-file>
+
+        <source-file src="src/android/ShareSocial.java" target-dir="src/me/apla/cordova" />
+core" />
+    </platform>
+       
+   <!-- ios -->
+   <platform name="ios">    
+        <js-module src="www/share-social.js" name="shareSocial">
+            <clobbers target="plugins" />
+        </js-module>
+        <config-file target="config.xml" parent="/*">
+            <feature name="ShareSocial">
+                <param name="ios-package" value="ShareSocial" /> 
+            </feature>
+        </config-file>
+        <header-file src="src/ios/ShareSocial.h" />
+        <source-file src="src/ios/ShareSocial.m" />
+
+        <framework src="Social.framework" />
+    </platform>
+
+    <!-- blackberry -->
+    <!--
+    from: https://github.com/blackberry/BB10-WebWorks-Samples/tree/master/ShareTargets
+var request = {
+    action: 'bb.action.SHARE',
+    uri: 'file://' + path,
+    target_type: ["APPLICATION", "VIEWER", "CARD"]
+};
+Display the "Share Card"
+
+blackberry.invoke.card.invokeTargetPicker(request, "Your Title",
+
+    // success callback
+    function() {
+        console.log('success');
+    },
+
+    // error callback
+    function(e) {
+        console.log('error: ' + e);
+    }
+);
+     -->
+
+    <platform name="blackberry10">
+        <source-file src="src/blackberry10/index.js" />
+        <js-module src="src/blackberry10/share-social.js" name="shareSocial">
+            <clobbers target="plugins" />
+        </js-module>
+
+        <config-file target="www/config.xml" parent="/widget">
+            <feature name="com.blackberry.invoke.card" value="com.blackberry.invoke.card" />
+        </config-file>
+    </platform>
+</plugin>
