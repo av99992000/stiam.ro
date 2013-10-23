@@ -337,6 +337,10 @@ a[data-icon="refresh"] {
   background-color: transparent !important;
 }
 
+.ui-ios7 .ui-icon-checkbox-on, .ui-ios7 .ui-icon-arrow-d {
+  background-image: url('images/icons-18-white-pack.png') !important;
+}
+
 .ui-btn-icon-notext {
   min-width: 40px;
 }
