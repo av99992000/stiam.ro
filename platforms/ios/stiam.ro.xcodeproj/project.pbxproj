@@ -52,6 +52,7 @@
 		98EBCFAB9FB0455DB9057D95 /* CDVInAppBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = F225ABA687ED4B309751323E /* CDVInAppBrowser.m */; };
 		B94EF7B7A4914BC995268707 /* GAPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = A002C8DF59764C479E3B65EA /* GAPlugin.m */; };
 		C729A63D18184AB9005F1E27 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C729A63C18184AB9005F1E27 /* StoreKit.framework */; };
+		C77E1FF91819914700647C8A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C77E1FF81819914700647C8A /* Images.xcassets */; };
 		C9C5F8AB6EE142C7B94AFD51 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D8C924073094C62AF9E1AB7 /* Social.framework */; };
 		D4A0D8761607E02300AEF8BB /* Default-568h@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = D4A0D8751607E02300AEF8BB /* Default-568h@2x~iphone.png */; };
 		E4E843CF37774FFBA7443F71 /* TapToScroll.m in Sources */ = {isa = PBXBuildFile; fileRef = E8F04D2755984ADABC3356C5 /* TapToScroll.m */; };
@@ -148,6 +149,18 @@
 		C72F845218083ED100B83B41 /* spotlight-50@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "spotlight-50@2x.png"; path = "stiam.ro/Resources/icons/spotlight-50@2x.png"; sourceTree = "<group>"; };
 		C72F845318083EE300B83B41 /* spotlight-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "spotlight-50.png"; path = "stiam.ro/Resources/icons/spotlight-50.png"; sourceTree = "<group>"; };
 		C72F845418083EF200B83B41 /* spotlight-40@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "spotlight-40@2x.png"; path = "stiam.ro/Resources/icons/spotlight-40@2x.png"; sourceTree = "<group>"; };
+		C77E1FF81819914700647C8A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = stiam.ro/Images.xcassets; sourceTree = SOURCE_ROOT; };
+		C7F621071819AF1700C24958 /* spotlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = spotlight.png; path = stiam.ro/Resources/icons/spotlight.png; sourceTree = "<group>"; };
+		C7F621081819AF1700C24958 /* spotlight-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "spotlight-50.png"; path = "stiam.ro/Resources/icons/spotlight-50.png"; sourceTree = "<group>"; };
+		C7F621091819AF1700C24958 /* spotlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = spotlight.png; path = stiam.ro/Resources/icons/spotlight.png; sourceTree = "<group>"; };
+		C7F6210A1819AF1700C24958 /* spotlight-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "spotlight-50.png"; path = "stiam.ro/Resources/icons/spotlight-50.png"; sourceTree = "<group>"; };
+		C7F6210B1819AF1700C24958 /* icon-76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-76.png"; path = "stiam.ro/Resources/icons/icon-76.png"; sourceTree = "<group>"; };
+		C7F6210C1819AF1700C24958 /* icon-76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-76.png"; path = "stiam.ro/Resources/icons/icon-76.png"; sourceTree = "<group>"; };
+		C7F6210D1819AF1700C24958 /* icon-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-120.png"; path = "stiam.ro/Resources/icons/icon-120.png"; sourceTree = "<group>"; };
+		C7F6210E1819AF1700C24958 /* spotlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = spotlight.png; path = stiam.ro/Resources/icons/spotlight.png; sourceTree = "<group>"; };
+		C7F6210F1819AF1700C24958 /* spotlight-40.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "spotlight-40.png"; path = "stiam.ro/Resources/icons/spotlight-40.png"; sourceTree = "<group>"; };
+		C7F621101819AF1700C24958 /* spotlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = spotlight.png; path = stiam.ro/Resources/icons/spotlight.png; sourceTree = "<group>"; };
+		C7F621111819AF1700C24958 /* spotlight-40@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "spotlight-40@2x.png"; path = "stiam.ro/Resources/icons/spotlight-40@2x.png"; sourceTree = "<group>"; };
 		CC181030181745549E3AE003 /* CDVDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDVDevice.m; path = org.apache.cordova.device/CDVDevice.m; sourceTree = "<group>"; };
 		CCCBABAE99DB476CB907C3FB /* TapToScroll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TapToScroll.h; path = com.phonegap.TapToScroll/TapToScroll.h; sourceTree = "<group>"; };
 		CF8B464892FB40F5B99BB4E8 /* ShareSocial.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ShareSocial.m; path = "me.apla.cordova.share-social/ShareSocial.m"; sourceTree = "<group>"; };
@@ -232,6 +245,17 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				C7F621111819AF1700C24958 /* spotlight-40@2x.png */,
+				C7F621101819AF1700C24958 /* spotlight.png */,
+				C7F6210F1819AF1700C24958 /* spotlight-40.png */,
+				C7F6210E1819AF1700C24958 /* spotlight.png */,
+				C7F6210D1819AF1700C24958 /* icon-120.png */,
+				C7F6210C1819AF1700C24958 /* icon-76.png */,
+				C7F6210B1819AF1700C24958 /* icon-76.png */,
+				C7F6210A1819AF1700C24958 /* spotlight-50.png */,
+				C7F621091819AF1700C24958 /* spotlight.png */,
+				C7F621081819AF1700C24958 /* spotlight-50.png */,
+				C7F621071819AF1700C24958 /* spotlight.png */,
 				C729A64118184E42005F1E27 /* Default-Landscape@2x.png */,
 				C729A64018184E28005F1E27 /* Default-Landscape.png */,
 				C729A63F18184E01005F1E27 /* Default~ipad.png */,
@@ -272,6 +296,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C77E1FF81819914700647C8A /* Images.xcassets */,
 				30A0434214DC770100060A13 /* de.lproj */,
 				30A0434514DC770100060A13 /* se.lproj */,
 				1F766FDB13BBADB100FB74C0 /* en.lproj */,
@@ -481,6 +506,7 @@
 				302D95F214D2391D003F00A1 /* MainViewController.xib in Resources */,
 				30A0434814DC770100060A13 /* Localizable.strings in Resources */,
 				30A0434914DC770100060A13 /* Localizable.strings in Resources */,
+				C77E1FF91819914700647C8A /* Images.xcassets in Resources */,
 				3088BBBD154F3926009F9C59 /* Default-Landscape@2x~ipad.png in Resources */,
 				3088BBBE154F3926009F9C59 /* Default-Landscape~ipad.png in Resources */,
 				3088BBBF154F3926009F9C59 /* Default-Portrait@2x~ipad.png in Resources */,
@@ -579,6 +605,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -610,7 +638,7 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = stiam.ro;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "6680866F-F8B4-4C9D-8C3E-E3AA2D532204";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -619,6 +647,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -648,7 +678,7 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = stiam.ro;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "6680866F-F8B4-4C9D-8C3E-E3AA2D532204";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
