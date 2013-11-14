@@ -905,8 +905,18 @@ Stiam.Listing.prototype = {
       success: function(data, textStatus, jqXHR){
         var details = context.find('.details');
 
+         var a = $([
+          '<div class="documentViewOriginal">',
+            '<a href="' + options.original + '">Vezi articolul original</a>',
+          '</div>'
+        ].join(''));
+
         if(data.error){
           details.html('');
+          a.appendTo(details);
+          details.find('a').click(function(evt){
+            return self.external(evt, options);
+          });
           return self.error(data.error);
         }
 
@@ -914,6 +924,11 @@ Stiam.Listing.prototype = {
         text = text.replace(/\n/g, '</p><p>');
         var div = $('<div class="documentDetails" style="font-size: ' + Stiam.Storage.getItem('fontSize') + '%">').html(text);
         details.html(div);
+
+        a.appendTo(details);
+        details.find('a').click(function(evt){
+          return self.external(evt, options);
+        });
 
       },
       complete: function(){
@@ -999,14 +1014,14 @@ Stiam.Refresh = {
       }
     });
 
-    // Article details
-    $("#article-page").delegate("#article-details.iscroll-wrapper", 'iscroll_onpullup', function(e, d){
-      var original = $.mobile.activePage.find('.documentByLine a');
-      if(original.length){
-        original.click();
-      }
-      d.iscrollview.refresh();
-    });
+    //// Article details
+    //$("#article-page").delegate("#article-details.iscroll-wrapper", 'iscroll_onpullup', function(e, d){
+      //var original = $.mobile.activePage.find('.documentByLine a');
+      //if(original.length){
+        //original.click();
+      //}
+      //d.iscrollview.refresh();
+    //});
 
     // Events
     $(document).unbind('.StiamRefresh');
@@ -1195,14 +1210,6 @@ Stiam.initialize = function(){
       return back.click();
     }
   });
-
-  // Share not implemented yet on ios
-  //$( document).on( "swipeleft.Stiam", "#article-details", function( e ) {
-    //var share = $('#article-share:visible');
-    //if(share.length){
-      //return share.click();
-    //}
-  //});
 
   window.addEventListener("statusTap", function() {
     Stiam.BackToTop.click($.mobile.activePage);
