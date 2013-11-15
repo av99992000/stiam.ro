@@ -209,6 +209,10 @@ a[data-icon="refresh"] {
   opacity: 0.6;
 }
 
+.ui-checkbox input, .ui-radio input {
+  visibility: hidden;
+}
+
 .article-brick {
   width: 400px;
 }
