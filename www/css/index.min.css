@@ -205,12 +205,6 @@ a[data-icon="refresh"] {
   opacity: 1;
 }
 
-.ui-checkbox-on.ui-btn, .ui-checkbox-off.ui-btn,
-.ui-checkbox-on.ui-btn:hover, .ui-checkbox-off.ui-btn:hover,
-.ui-checkbox-on.ui-btn:active, .ui-checkbox-off.ui-btn:active {
-  opacity: 1;
-}
-
 .ui-checkbox input, .ui-radio input {
   visibility: hidden;
 }
@@ -355,7 +349,7 @@ a[data-icon="refresh"] {
   color: #fff;
 }
 
-.ui-btn {
+.ui-header  .ui-btn {
   -webkit-transition: opacity .3s ease-in-out;
      -moz-transition: opacity .3s ease-in-out;
       -ms-transition: opacity .3s ease-in-out;
@@ -363,11 +357,11 @@ a[data-icon="refresh"] {
           transition: opacity .3s ease-in-out;
 }
 
-.ui-btn:hover {
+.ui-header .ui-btn:hover {
   opacity: 0.6;
 }
 
-.ui-btn:active {
+.ui-header .ui-btn:active {
   opacity: 0.3;
 }
 
