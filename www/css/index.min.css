@@ -35,7 +35,7 @@ body {
   background: #fff;
   border: 1px solid #ccc;
   border-bottom: 2px solid #ccc;
-  -webkit-transform:translate3d(0,0,0);
+  -webkit-transform: translateZ(0);
 }
 
 .article,
@@ -205,21 +205,8 @@ a[data-icon="refresh"] {
   opacity: 1;
 }
 
-.masonry,
-.masonry .masonry-brick {
-  -webkit-transition-duration: 1s;
-     -moz-transition-duration: 1s;
-      -ms-transition-duration: 1s;
-       -o-transition-duration: 1s;
-          transition-duration: 1s;
-}
-
-.masonry .masonry-brick {
-  -webkit-transition-property: opacity;
-     -moz-transition-property: opacity;
-      -ms-transition-property: opacity;
-       -o-transition-property: opacity;
-          transition-property: opacity;
+.ui-checkbox-on {
+  opacity: 0.6;
 }
 
 .article-brick {
