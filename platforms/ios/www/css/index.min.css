@@ -205,8 +205,10 @@ a[data-icon="refresh"] {
   opacity: 1;
 }
 
-.ui-checkbox-on {
-  opacity: 0.6;
+.ui-checkbox-on.ui-btn, .ui-checkbox-off.ui-btn,
+.ui-checkbox-on.ui-btn:hover, .ui-checkbox-off.ui-btn:hover,
+.ui-checkbox-on.ui-btn:active, .ui-checkbox-off.ui-btn:active {
+  opacity: 1;
 }
 
 .ui-checkbox input, .ui-radio input {
