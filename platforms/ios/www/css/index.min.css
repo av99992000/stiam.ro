@@ -38,10 +38,10 @@ body {
   -webkit-transform: translateZ(0);
 }
 
-.article,
-.article:active,
-.article:visited,
-.article:hover {
+html body .article,
+html body .article:active,
+html body .article:visited,
+html body .article:hover {
   color: black;
   text-decoration: none;
 }
