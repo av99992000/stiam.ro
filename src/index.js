@@ -644,6 +644,11 @@ Stiam.Settings.prototype = {
 
     var theme = Stiam.Storage.getItem('theme') || 'f';
 
+    $(document).find('.ui-page')
+      .removeClass('ui-page-theme-a ui-page-theme-b ui-page-theme-c ui-page-theme-d ui-page-theme-e ui-page-theme-f')
+      .addClass('ui-page-theme-' + theme)
+      .attr('data-theme', theme)
+
     //reset all the buttons widgets
     $(document).find('.ui-btn')
            .removeClass('ui-btn-up-a ui-btn-up-b ui-btn-up-c ui-btn-up-d ui-btn-up-e ui-btn-up-f ui-btn-hover-a ui-btn-hover-b ui-btn-hover-c ui-btn-hover-d ui-btn-hover-e ui-btn-hover-f')
@@ -948,6 +953,11 @@ Stiam.Listing.prototype = {
     }
 
     var theme = Stiam.Storage.getItem('theme') || 'f';
+
+    $(document).find('.ui-page')
+      .removeClass('ui-page-theme-a ui-page-theme-b ui-page-theme-c ui-page-theme-d ui-page-theme-e ui-page-theme-f')
+      .addClass('ui-page-theme-' + theme)
+      .attr('data-theme', theme)
 
     //reset all the buttons widgets
     $(document).find('.ui-btn')
