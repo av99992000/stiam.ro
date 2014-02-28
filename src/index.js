@@ -143,6 +143,12 @@ Stiam.Analytics = {
       index = 8;
     }else if(key === 'exit'){
       index = 9;
+    }else if(key === 'showImagesArticle'){
+      index = 11;
+    }else if(key === 'fontSizeArticle'){
+      index = 12;
+    }else if(key === 'fontSizeDescription'){
+      index = 13;
     }else{
       index = 10;
     }
@@ -397,8 +403,8 @@ Stiam.Panel = function(context, options){
   self.settings = {
     button: '',
     server: SERVER + '/revista-presei-romanesti/app.json?callback=?',
-    categories: {},
-    sources: {}
+    categories: Stiam.Storage.getCategories(),
+    sources: Stiam.Storage.getSources()
   };
 
   if(options){
@@ -413,14 +419,6 @@ Stiam.Panel.prototype = {
     var self = this;
     self.changed = true;
 
-    //var header = $('#header').outerHeight();
-    //var panel = self.context.height();
-    //var panelheight = panel - header;
-    //self.context.css({
-      //'top': header,
-      //'min-height': panelheight
-    //});
-
     self.context.on( "panelclose", function(evt, ui){
       return self.query();
     });
@@ -430,6 +428,7 @@ Stiam.Panel.prototype = {
       self.reset(data);
     });
 
+    self.reload();
     self.update();
   },
 
@@ -470,8 +469,8 @@ Stiam.Panel.prototype = {
       },
       success: function(data, textStatus, jqXHR){
         $.extend(self.settings, data);
-        self.updateSection(self.settings.sources);
-        self.updateSection(self.settings.categories);
+        self.updateSection(self.settings.sources, 'sources');
+        self.updateSection(self.settings.categories, 'categories');
         self.reload();
       },
       complete: function(){
@@ -480,7 +479,7 @@ Stiam.Panel.prototype = {
     });
   },
 
-  updateSection: function(section){
+  updateSection: function(section, sid){
     var self = this;
     var cid = section.properties.name;
     if(!section.dataset){
@@ -495,6 +494,12 @@ Stiam.Panel.prototype = {
         on: ($.inArray(value, query[cid] || []) !== -1)
       });
     });
+
+    if(sid == 'categories'){
+      Stiam.Storage.setCategories(section);
+    }else{
+      Stiam.Storage.setSources(section);
+    }
   },
 
   reload: function(){
@@ -506,6 +511,10 @@ Stiam.Panel.prototype = {
 
   reloadSection: function(section, sid){
     var self = this;
+    if(!section.properties){
+      return;
+    }
+
     var html;
     var dataset = section.dataset;
     var cid = section.properties.name;
@@ -620,6 +629,12 @@ Stiam.Settings.prototype = {
     input.val(value);
     input.slider('refresh');
 
+    // showImagesArticle
+    value = Stiam.Storage.getItem('showImagesArticle') || 'on';
+    input = $('[name="showImagesArticle"]', self.context);
+    input.val(value);
+    input.slider('refresh');
+
     // infiniteScroll
     value = Stiam.Storage.getItem('infiniteScroll') || 'on';
     input = $('[name="infiniteScroll"]', self.context);
@@ -629,6 +644,18 @@ Stiam.Settings.prototype = {
     // fontSize
     value = Stiam.Storage.getItem('fontSize') || 100;
     input = $('[name="fontSize"]', self.context);
+    input.val(parseInt(value, 10));
+    input.slider('refresh');
+
+    // fontSizeArticle
+    value = Stiam.Storage.getItem('fontSizeArticle') || 100;
+    input = $('[name="fontSizeArticle"]', self.context);
+    input.val(parseInt(value, 10));
+    input.slider('refresh');
+
+    // fontSizeDescription
+    value = Stiam.Storage.getItem('fontSizeDescription') || 100;
+    input = $('[name="fontSizeDescription"]', self.context);
     input.val(parseInt(value, 10));
     input.slider('refresh');
 
@@ -710,9 +737,11 @@ Stiam.Listing.prototype = {
     var self = this;
 
     // showImages or fontSize changed
-    if(($.inArray('showImages', changed) !== -1) || ($.inArray('fontSize', changed) !== -1)){
+    if(($.inArray('showImages', changed) !== -1) || ($.inArray('fontSize', changed) !== -1) || ($.inArray('fontSizeDescription', changed) !== -1)){
       $(document).trigger(Stiam.Events.query);
     }
+
+    //
 
   },
 
@@ -764,7 +793,7 @@ Stiam.Listing.prototype = {
       html += '<span>' + item.source + ' - </span>';
       html += '<span class="rodate">' + item.date + '</span>';
       html += '</div>';
-      html += '<p class="documentDescription" style="font-size: ' + Stiam.Storage.getItem('fontSize') + '%;">' + item.description + '</p>';
+      html += '<p class="documentDescription" style="font-size: ' + Stiam.Storage.getItem('fontSizeDescription') + '%;">' + item.description + '</p>';
       html += '</div>';
       html += '</a>';
       html = $(html);
@@ -830,11 +859,11 @@ Stiam.Listing.prototype = {
     html += '<span class="rodate">' + options.date + '</span>';
     html += '</div>';
 
-    if(options.thumbnail && Stiam.Storage.getItem('showImages') === 'on'){
+    if(options.thumbnail && Stiam.Storage.getItem('showImagesArticle') === 'on'){
       html += '<img class="article-thumb" src="' + options.thumbnail + '" />';
     }
 
-    html += '<p class="documentDescription" style="font-size: ' + Stiam.Storage.getItem('fontSize') + '%">' + options.description + '</p>';
+    html += '<p class="documentDescription" style="font-size: ' + Stiam.Storage.getItem('fontSizeDescription') + '%">' + options.description + '</p>';
     html += '</div>';
     html += '<div class="details">';
     html += '<img class="loading" src="css/images/ajax-loader-2.gif"/>';
@@ -922,7 +951,7 @@ Stiam.Listing.prototype = {
 
         var text = data.text;
         text = text.replace(/\n/g, '</p><p>');
-        var div = $('<div class="documentDetails" style="font-size: ' + Stiam.Storage.getItem('fontSize') + '%">').html(text);
+        var div = $('<div class="documentDetails" style="font-size: ' + Stiam.Storage.getItem('fontSizeArticle') + '%">').html(text);
         details.html(div);
 
         a.appendTo(details);
@@ -1052,10 +1081,15 @@ Stiam.Refresh = {
 Stiam.Storage = {
   settings: {
     showImages: 'on',
+    showImagesArticle: 'on',
     infiniteScroll: 'on',
     theme: 'f',
     fontSize: 100,
-    query: {}
+    fontSizeArticle: 100,
+    fontSizeDescription: 100,
+    query: {},
+    categories: {},
+    sources: {}
   },
 
   initialize: function(callback){
@@ -1090,6 +1124,34 @@ Stiam.Storage = {
     self.commit("query", newQuery);
   },
 
+  getCategories: function(){
+    var self = this;
+    return self.settings.categories;
+  },
+
+  setCategories: function(categories){
+    var self = this;
+    self.settings.categories = categories;
+
+    var newCategories = jQuery.extend({}, categories);
+    newCategories = escape(JSON.stringify(newCategories));
+    self.commit('categories', newCategories);
+  },
+
+  getSources: function(){
+    var self = this;
+    return self.settings.sources;
+  },
+
+  setSources: function(sources){
+    var self = this;
+    self.settings.sources = sources;
+
+    var newSources = jQuery.extend({}, sources);
+    newSources = escape(JSON.stringify(newSources));
+    self.commit('sources', newSources);
+  },
+
   setItem: function(key, value){
     var self = this;
     Stiam.Analytics.trackSettings(key, value);
@@ -1117,7 +1179,7 @@ Stiam.Storage = {
         var rows = results.rows;
         for(i=0;i<results.rows.length;i++){
           var item = rows.item(i);
-          if(item.name == "query"){
+          if(item.name == "query" || item.name == 'categories' || item.name == 'sources'){
             value = JSON.parse(unescape(item.value));
           }else{
             value = item.value;
@@ -1162,7 +1224,7 @@ Stiam.Storage = {
 
     $.each(self.settings, function(key, old){
       var value = self.localStorage.getItem(key);
-      if(key == "query"){
+      if(key == "query" || key == 'sources' || key == 'categories'){
         value = JSON.parse(unescape(value));
       }
       if(value){
