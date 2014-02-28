@@ -277,9 +277,13 @@ a[data-icon="refresh"] {
   box-shadow: none;
   border-radius: 0;
   top: 1px;
-  height: 38px;
+  min-height: 35px;
   background-image: none;
   background: transparent;
+}
+
+.ui-icon-bars {
+  min-height: 0 ! important;
 }
 
 .ui-header .ui-btn-left .ui-btn-inner, .ui-header .ui-btn-right .ui-btn-inner {
@@ -381,7 +385,6 @@ a[data-icon="refresh"] {
   width: 40px;
   height: 40px;
 }
-
 
 @media all and (max-width: 599px){
   .article-brick {
