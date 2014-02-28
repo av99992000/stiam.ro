@@ -1,13 +1,9 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="io.cordova.helloCordova" version="2.0.0" xmlns="http://www.w3.org/ns/widgets">
+<widget id="ro.stiam.stiri" version="3.0" versionCode="10" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
     <name>StiamRo</name>
     <description>
         Stiri si atat
     </description>
-    <author email="contact@stiam.ro" href="http://stiam.ro">
-        stiam.ro
-    </author>
-    <content src="index.html" />
     <feature name="App">
         <param name="android-package" value="org.apache.cordova.App" />
     </feature>
@@ -32,6 +28,16 @@
     <feature name="ShareSocial" value="me.apla.cordova.ShareSocial">
         <param name="android-package" value="me.apla.cordova.ShareSocial" />
     </feature>
+    <name>stiam.ro</name>
+    <description>
+    Stiri si atat
+  </description>
+    <author email="contact@stiam.ro" href="http://stiam.ro">
+    stiam.ro
+  </author>
+    <feature name="http://api.phonegap.com/1.0/network" />
+    <gap:plugin name="com.adobe.plugins.gaplugin" />
+    <content src="index.html" />
     <access origin="http://127.0.0.1*" />
     <access origin="*" />
     <preference name="useBrowserHistory" value="true" />
