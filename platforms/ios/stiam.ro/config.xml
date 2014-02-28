@@ -1,28 +1,23 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="io.cordova.helloCordova" version="2.0.0" xmlns="http://www.w3.org/ns/widgets">
-    <name>Hello Cordova</name>
-    <description>
-        A sample Apache Cordova application that responds to the deviceready event.
-    </description>
-    <author email="dev@cordova.apache.org" href="http://cordova.io">
-        Apache Cordova Team
-    </author>
-    <content src="index.html" />
+<widget id="ro.stiam.stiri" version="2.3" versionCode="11" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+    <preference name="AllowInlineMediaPlayback" value="false" />
+    <preference name="AutoHideSplashScreen" value="true" />
+    <preference name="BackupWebStorage" value="cloud" />
+    <preference name="DisallowOverscroll" value="false" />
+    <preference name="EnableViewportScale" value="false" />
+    <preference name="FadeSplashScreen" value="true" />
+    <preference name="FadeSplashScreenDuration" value=".25" />
+    <preference name="KeyboardDisplayRequiresUserAction" value="true" />
+    <preference name="MediaPlaybackRequiresUserAction" value="false" />
+    <preference name="ShowSplashScreenSpinner" value="true" />
+    <preference name="SuppressesIncrementalRendering" value="false" />
+    <preference name="TopActivityIndicator" value="gray" />
+    <preference name="GapBetweenPages" value="0" />
+    <preference name="PageLength" value="0" />
+    <preference name="PaginationBreakingMode" value="page" />
+    <preference name="PaginationMode" value="unpaginated" />
     <feature name="LocalStorage">
         <param name="ios-package" value="CDVLocalStorage" />
-    </feature>
-    <feature name="SplashScreen">
-        <param name="ios-package" value="CDVSplashScreen" />
-        <param name="onload" value="true" />
-    </feature>
-    <feature name="GAPlugin">
-        <param name="ios-package" value="GAPlugin" />
-    </feature>
-    <feature name="Device">
-        <param name="ios-package" value="CDVDevice" />
-    </feature>
-    <feature name="InAppBrowser">
-        <param name="ios-package" value="CDVInAppBrowser" />
     </feature>
     <feature name="TapToScroll">
         <param name="ios-package" value="TapToScroll" />
@@ -30,23 +25,27 @@
     <feature name="ShareSocial">
         <param name="ios-package" value="ShareSocial" />
     </feature>
-    <access origin="http://127.0.0.1*" />
-    <access origin="*" />
-    <preference name="KeyboardDisplayRequiresUserAction" value="true" />
-    <preference name="SuppressesIncrementalRendering" value="false" />
-    <preference name="UIWebViewBounce" value="true" />
-    <preference name="TopActivityIndicator" value="gray" />
-    <preference name="EnableLocation" value="false" />
-    <preference name="EnableViewportScale" value="false" />
-    <preference name="AutoHideSplashScreen" value="true" />
-    <preference name="ShowSplashScreenSpinner" value="true" />
-    <preference name="MediaPlaybackRequiresUserAction" value="false" />
-    <preference name="AllowInlineMediaPlayback" value="false" />
-    <preference name="OpenAllWhitelistURLsInWebView" value="false" />
-    <preference name="BackupWebStorage" value="cloud" />
+    <feature name="Device">
+        <param name="ios-package" value="CDVDevice" />
+    </feature>
+    <feature name="InAppBrowser">
+        <param name="ios-package" value="CDVInAppBrowser" />
+    </feature>
+    <name>stiam.ro</name>
+    <description>
+    Stiri si atat
+  </description>
+    <author email="contact@stiam.ro" href="http://stiam.ro">
+    stiam.ro
+  </author>
     <preference name="phonegap-version" value="3.0.8" />
     <preference name="target-device" value="universal" />
     <preference name="fullscreen" value="false" />
     <preference name="auto-hide-splash-screen" value="false" />
+    <feature name="http://api.phonegap.com/1.0/network" />
+    <gap:plugin name="com.adobe.plugins.gaplugin" />
     <preference name="android-installLocation" value="preferExternal" />
+    <access origin="http://127.0.0.1*" />
+    <access origin="*" />
+    <content src="index.html" />
 </widget>

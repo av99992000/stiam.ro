@@ -1,4 +1,4 @@
-cordova.define("me.apla.cordova.share-social.shareSocial", function(require, exports, module) {//
+cordova.define("me.apla.cordova.share-social.shareSocial", function(require, exports, module) { //
 //  social.js
 //
 //  Ivan Baktsheev, 2013, plugin.xml, merging android and ios
@@ -42,4 +42,5 @@ ShareSocial.install = function() {
     return window.plugins.shareSocial;
 };
 
-cordova.addConstructor(ShareSocial.install);});
+cordova.addConstructor(ShareSocial.install);
+});
