@@ -842,8 +842,12 @@ Stiam.Listing.prototype = {
     }
   },
 
-  error: function(message){
-    Stiam.Message.show(message);
+  error: function(message, debug){
+    if(debug){
+      Stiam.Message.log(message);
+    }else{
+      Stiam.Message.show(message);
+    }
   },
 
   click: function(context, options){
@@ -947,7 +951,7 @@ Stiam.Listing.prototype = {
           details.find('a').click(function(evt){
             return self.external(evt, options);
           });
-          return self.error(data.error);
+          return self.error(data.error, true);
         }
 
         var text = data.text;
