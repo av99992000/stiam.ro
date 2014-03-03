@@ -428,7 +428,7 @@ Stiam.Panel.prototype = {
       self.reset(data);
     });
 
-    self.reload();
+    self.reload(true);
     self.update();
   },
 
@@ -464,8 +464,9 @@ Stiam.Panel.prototype = {
       url: self.settings.server,
       dataType: 'jsonp',
       crossDomain: true,
+      timeout: 5000,
       error: function(jqXHR, textStatus, errorThrown){
-        self.error('Eroare. Va rugam verificati conexiunea la internet');
+        self.error('Verificati conexiunea la internet');
       },
       success: function(data, textStatus, jqXHR){
         $.extend(self.settings, data);
@@ -502,11 +503,13 @@ Stiam.Panel.prototype = {
     }
   },
 
-  reload: function(){
+  reload: function(offline){
     var self = this;
     self.reloadSection(self.settings.sources, 'sources');
     self.reloadSection(self.settings.categories, 'categories');
-    self.query();
+    if(!offline){
+      self.query();
+    }
   },
 
   reloadSection: function(section, sid){
@@ -552,7 +555,7 @@ Stiam.Panel.prototype = {
   },
 
   error: function(message){
-    Stiam.Message.show(message, 5000);
+    Stiam.Message.show(message, 10000);
   }
 };
 
@@ -740,9 +743,6 @@ Stiam.Listing.prototype = {
     if(($.inArray('showImages', changed) !== -1) || ($.inArray('fontSize', changed) !== -1) || ($.inArray('fontSizeDescription', changed) !== -1)){
       $(document).trigger(Stiam.Events.query);
     }
-
-    //
-
   },
 
   update: function(refresh){
@@ -754,9 +754,10 @@ Stiam.Listing.prototype = {
       dataType: 'jsonp',
       crossDomain: true,
       traditional: true,
+      timeout: 30000,
       data: Stiam.Storage.getQuery(),
       error: function(jqXHR, textStatus, errorThrown){
-        self.error('Eroare. Va rugam verificati conexiunea la internet');
+        self.error('Verificati conexiunea la internet');
       },
       success: function(data, textStatus, jqXHR){
         self.settings.dataset = data.items;
@@ -842,7 +843,7 @@ Stiam.Listing.prototype = {
   },
 
   error: function(message){
-    Stiam.Message.log(message);
+    Stiam.Message.show(message);
   },
 
   click: function(context, options){
@@ -929,7 +930,7 @@ Stiam.Listing.prototype = {
       dataType: 'jsonp',
       crossDomain: true,
       error: function(jqXHR, textStatus, errorThrown){
-        self.error('Eroare. Va rugam verificati conexiunea la internet');
+        self.error('Verificati conexiunea la internet');
       },
       success: function(data, textStatus, jqXHR){
         var details = context.find('.details');
