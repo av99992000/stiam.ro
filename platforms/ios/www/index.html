@@ -58,19 +58,34 @@
     <form id="right-form" data-iscroll>
       <div class="settings-header">Setări</div>
 
-      <label for="showImages">Afişează imaginile</label>
-      <div class="formHelp">Această opţiune este utilă dacă sunteţi conectat la internet prin 3G şi doriţi să limitaţi traficul de date</div>
+      <label for="showImages">Imagini în listă</label>
+      <div class="formHelp">Util dacă sunteţi conectat la internet prin 3G şi doriţi să limitaţi traficul de date</div>
       <select name="showImages" id="showImages" data-role="slider">
         <option value="off">Nu</option>
         <option value="on" selected="">Da</option>
       </select>
 
-      <label for="fontSize">Zoom</label>
-      <div class="formHelp">Această opţiune vă permite să ajustaţi mărimea fontului (în %)</div>
+      <label for="showImages">Imagini în articol</label>
+      <div class="formHelp">Util dacă sunteţi conectat la internet prin 3G şi doriţi să limitaţi traficul de date</div>
+      <select name="showImagesArticle" id="showImagesArticle" data-role="slider">
+        <option value="off">Nu</option>
+        <option value="on" selected="">Da</option>
+      </select>
+
+      <label for="fontSize">Font titlu</label>
+      <div class="formHelp">Ajustaţi mărimea fontului titlului articolului (în %)</div>
       <input type="number" data-type="range" name="fontSize" id="fontSize" value="100" min="50" max="200" step="10" data-highlight="true"/>
 
+      <label for="fontSize">Font descriere</label>
+      <div class="formHelp">Ajustaţi mărimea fontului sumarului articolului (în %)</div>
+      <input type="number" data-type="range" name="fontSizeDescription" id="fontSizeDescription" value="100" min="50" max="200" step="10" data-highlight="true"/>
+
+      <label for="fontSize">Font conţinut</label>
+      <div class="formHelp">Ajustaţi mărimea fontului conţinutului articolului (în %)</div>
+      <input type="number" data-type="range" name="fontSizeArticle" id="fontSizeArticle" value="100" min="50" max="200" step="10" data-highlight="true"/>
+
       <label for="theme" class="select">Temă</label>
-      <div class="formHelp">Această opţiune vă permite să schimbaţi tema de culori a aplicaţiei</div>
+      <div class="formHelp">Schimbaţi tema de culori a aplicaţiei</div>
       <select name="theme" id="theme" data-native-menu="false">
           <option value="a">Neagră</option>
           <option value="b">Albastră</option>
