@@ -3,6 +3,7 @@ gen/*
 .classpath
 .project
 .settings
+.idea
 *.wpu
 *.wpr
 *.bak

@@ -1,135 +1,29 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>ştiam.ro</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <meta name="format-detection" content="telephone=no" />
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="shortcut icon" href="img/favicon.ico" />
-  <link rel="stylesheet" href="css/ro.stiam.stiri.min.css" />
-  <link rel="stylesheet" href="css/jquery.mobile.structure-1.3.2.min.css" />
-  <link rel="stylesheet" href="css/jquery.mobile.iscrollview.css"/>
-  <link rel="stylesheet" href="css/jquery.mobile.iscrollview-pull.css"/>
-  <link rel="stylesheet" href="css/jqm-icon-pack-fa.css"/>
-  <link rel="stylesheet" href="css/index.min.css" />
-</head>
-<body>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title></title>
 
-<div data-role="page" id="main-page" style="display: none">
+    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
 
-  <div data-role="header" id="header" class="ui-bar-c" data-tap-toggle="false">
-    <a href="#left-panel" data-shadow="false" data-icon="reorder" data-iconpos="left" data-iconshadow="false">0</a>
-    <a href="#right-panel" data-shadow="false" data-icon="cogs" data-iconpos="notext" data-iconshadow="false">setări</a>
-    <span class="ui-title" id="header-title"></span>
-  </div>
+    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+    <link href="css/ionic.app.css" rel="stylesheet">
+    -->
 
-  <div data-role="content" class="page" id="body" data-iscroll>
-    <div class="iscroll-pulldown">
-      <span class="iscroll-pull-icon"></span>
-      <span class="iscroll-pull-label"
-        data-iscroll-pulled-text="Actualizează ştirile"
-        data-iscroll-loading-text="Se încarcă...">
-        Trage pentru a actualiza ştirile
-      </span>
-    </div>
-    <div class="container" data-role="listview"></div>
-    <div class="iscroll-pullup">
-      <span class="iscroll-pull-icon"></span>
-      <span class="iscroll-pull-label"
-        data-iscroll-pulled-text="Încarcă mai multe ştiri"
-        data-iscroll-loading-text="Se încarcă...">
-        Trage pentru a încărca mai multe ştiri
-      </span>
-    </div>
-  </div>
+    <!-- ionic/angularjs js -->
+    <script src="lib/ionic/js/ionic.bundle.js"></script>
 
-  <div data-role="panel" id="left-panel" data-display="overlay">
-    <form id="left-form" data-iscroll>
-      <fieldset id="categories" data-role="controlgroup" data-iconpos="right">
-        <legend>Categorie</legend>
-      </fieldset>
-      <fieldset id="sources" data-role="controlgroup" data-iconpos="right">
-        <legend>Sursa</legend>
-      </fieldset>
-    </form>
-  </div>
+    <!-- cordova script (this will be a 404 during development) -->
+    <script src="cordova.js"></script>
 
-  <div data-role="panel" id="right-panel" data-position="right" data-display="overlay">
-    <form id="right-form" data-iscroll>
-      <div class="settings-header">Setări</div>
+    <!-- your app's js -->
+    <script src="js/app.js"></script>
+    <script src="js/controllers.js"></script>
+  </head>
 
-      <label for="showImages">Imagini în listă</label>
-      <div class="formHelp">Util dacă sunteţi conectat la internet prin 3G şi doriţi să limitaţi traficul de date</div>
-      <select name="showImages" id="showImages" data-role="slider">
-        <option value="off">Nu</option>
-        <option value="on" selected="">Da</option>
-      </select>
-
-      <label for="showImages">Imagini în articol</label>
-      <div class="formHelp">Util dacă sunteţi conectat la internet prin 3G şi doriţi să limitaţi traficul de date</div>
-      <select name="showImagesArticle" id="showImagesArticle" data-role="slider">
-        <option value="off">Nu</option>
-        <option value="on" selected="">Da</option>
-      </select>
-
-      <label for="fontSize">Font titlu</label>
-      <div class="formHelp">Ajustaţi mărimea fontului titlului articolului (în %)</div>
-      <input type="number" data-type="range" name="fontSize" id="fontSize" value="100" min="50" max="200" step="10" data-highlight="true"/>
-
-      <label for="fontSize">Font descriere</label>
-      <div class="formHelp">Ajustaţi mărimea fontului sumarului articolului (în %)</div>
-      <input type="number" data-type="range" name="fontSizeDescription" id="fontSizeDescription" value="100" min="50" max="200" step="10" data-highlight="true"/>
-
-      <label for="fontSize">Font conţinut</label>
-      <div class="formHelp">Ajustaţi mărimea fontului conţinutului articolului (în %)</div>
-      <input type="number" data-type="range" name="fontSizeArticle" id="fontSizeArticle" value="100" min="50" max="200" step="10" data-highlight="true"/>
-
-      <label for="theme" class="select">Temă</label>
-      <div class="formHelp">Schimbaţi tema de culori a aplicaţiei</div>
-      <select name="theme" id="theme" data-native-menu="false">
-          <option value="a">Neagră</option>
-          <option value="b">Albastră</option>
-          <option value="c">Albă</option>
-          <option value="d">Gri</option>
-          <option value="e">Galbenă</option>
-          <option value="f" selected="">Verde</option>
-      </select>
-
-    </form>
-  </div>
-
-</div>
-
-<div data-role="page" id="article-page" style="display: none">
-  <div data-role="header" id="article-header" class="ui-bar-c" data-tap-toggle="false">
-    <a href="#" id="article-back" data-rel="back" data-shadow="false" data-icon="reply" data-iconpos="notext" data-iconshadow="false" class="ui-btn-left">înapoi</a>
-    <a href="#" id="article-share" data-shadow="false" data-icon="share-alt" data-iconpos="notext" data-iconshadow="false" class="ui-btn-right">distribuie</a>
-    <span class="ui-title" id="article-header-titlte"></span>
-  </div>
-  <div data-role="content" id="article-details" data-iscroll>
-    <div class="container" data-role="listview">
-      <img class="loading" src="css/images/ajax-loader-2.gif" alt="Se incarca..." title="Se incarca..."/>
-    </div>
-  </div>
-</div>
-
-<script src="cordova.js"></script>
-<script type="text/javascript" src="js/jquery.min.js"></script>
-<script type="text/javascript" src="js/jquery.mobile.min.js"></script>
-<script type="text/javascript" src="js/jquery.masonry.min.js"></script>
-<script type="text/javascript" src="js/jquery.lazyload.min.js"></script>
-<script type="text/javascript" src="js/iscroll.min.js"></script>
-<script type="text/javascript" src="js/jquery.mobile.iscrollview.min.js"></script>
-<script type="text/javascript" src="js/index.min.js"></script>
-<script type="text/javascript">
-// Browser analytics
-if(document.URL.indexOf("http://") != -1) {
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-  ga('create', "UA-44152722-1");
-}
-</script>
-</body>
+  <body ng-app="starter">
+    <ion-nav-view></ion-nav-view>
+  </body>
 </html>
