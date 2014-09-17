@@ -42,5 +42,16 @@ module.exports = [
             "plugins"
         ]
     }
-]
+];
+module.exports.metadata = 
+// TOP OF METADATA
+{
+    "org.apache.cordova.core.splashscreen": "0.2.0",
+    "com.phonegap.plugins.GAPlugin": "2.1.3",
+    "org.apache.cordova.device": "0.2.3",
+    "org.apache.cordova.inappbrowser": "0.2.2",
+    "com.phonegap.TapToScroll": "0.1.0",
+    "me.apla.cordova.share-social": "0.1.0"
+}
+// BOTTOM OF METADATA
 });

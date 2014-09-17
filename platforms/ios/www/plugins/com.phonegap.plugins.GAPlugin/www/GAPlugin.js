@@ -1,4 +1,4 @@
-cordova.define("com.phonegap.plugins.GAPlugin.GAPlugin", function(require, exports, module) {(function(){
+cordova.define("com.phonegap.plugins.GAPlugin.GAPlugin", function(require, exports, module) { (function(){
     var cordovaRef = window.PhoneGap || window.Cordova || window.cordova;
 
     function GAPlugin() { }
@@ -56,4 +56,5 @@ cordova.define("com.phonegap.plugins.GAPlugin.GAPlugin", function(require, expor
         });
     }
 })(); /* End of Temporary Scope. */
+
 });

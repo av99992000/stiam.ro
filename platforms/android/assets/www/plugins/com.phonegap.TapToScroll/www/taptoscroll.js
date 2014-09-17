@@ -1,4 +1,4 @@
-cordova.define("com.phonegap.TapToScroll.TapToScroll", function(require, exports, module) {
+cordova.define("com.phonegap.TapToScroll.TapToScroll", function(require, exports, module) { 
 
 var exec = require('cordova/exec');
 
@@ -7,4 +7,5 @@ var TapToScroll = function() {
 }
 
 module.exports = new TapToScroll();
+
 });
