@@ -1,9 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="ro.stiam.stiri" version="2.3" versionCode="11" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+<widget android-versionCode="12" id="ro.stiam.stiri" version="2.4.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
     <preference name="loglevel" value="DEBUG" />
-    <preference name="AndroidLaunchMode" value="singleTop" />
-    <feature name="App">
-        <param name="android-package" value="org.apache.cordova.App" />
+    <feature name="GAPlugin">
+        <param name="android-package" value="com.adobe.plugins.GAPlugin" />
+    </feature>
+    <feature name="ShareSocial" value="me.apla.cordova.ShareSocial">
+        <param name="android-package" value="me.apla.cordova.ShareSocial" />
     </feature>
     <feature name="Device">
         <param name="android-package" value="org.apache.cordova.device.Device" />
@@ -11,9 +13,20 @@
     <feature name="InAppBrowser">
         <param name="android-package" value="org.apache.cordova.inappbrowser.InAppBrowser" />
     </feature>
-    <feature name="ShareSocial" value="me.apla.cordova.ShareSocial">
-        <param name="android-package" value="me.apla.cordova.ShareSocial" />
+    <feature name="SplashScreen">
+        <param name="android-package" value="org.apache.cordova.splashscreen.SplashScreen" />
     </feature>
+    <icon src="res/icon/android/icon.png" />
+    <icon density="ldpi" src="res/icon/android/ldpi.png" />
+    <icon density="mdpi" src="res/icon/android/mdpi.png" />
+    <icon density="hdpi" src="res/icon/android/hdpi.png" />
+    <icon density="xhdpi" src="res/icon/android/xhdpi.png" />
+    <icon density="xxhdpi" src="res/icon/android/xxhdpi.png" />
+    <splash density="hdpi" src="res/screen/android/drawable-hdpi/splash.9.png" />
+    <splash density="ldpi" src="res/screen/android/drawable-ldpi/splash.9.png" />
+    <splash density="mdpi" src="res/screen/android/drawable-mdpi/splash.9.png" />
+    <splash density="xhdpi" src="res/screen/android/drawable-xhdpi/splash.9.png" />
+    <splash density="xxhdpi" src="res/screen/android/drawable-xxhdpi/splash.9.png" />
     <name>stiam.ro</name>
     <description>
     Stiri si atat
@@ -21,14 +34,17 @@
     <author email="contact@stiam.ro" href="http://stiam.ro">
     stiam.ro
   </author>
-    <preference name="phonegap-version" value="3.0.8" />
+    <preference name="phonegap-version" value="4.2.0" />
     <preference name="target-device" value="universal" />
     <preference name="fullscreen" value="false" />
     <preference name="auto-hide-splash-screen" value="false" />
-    <feature name="http://api.phonegap.com/1.0/network" />
     <gap:plugin name="com.adobe.plugins.gaplugin" />
     <preference name="android-installLocation" value="preferExternal" />
+    <preference name="SplashScreen" value="screen" />
+    <preference name="SplashScreenDelay" value="30000" />
     <access origin="http://127.0.0.1*" />
+    <access origin="http://stiam.ro/*" />
+    <access origin="http://www.stiam.ro/*" />
     <access origin="*" />
     <content src="index.html" />
 </widget>

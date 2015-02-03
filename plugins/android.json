@@ -9,6 +9,14 @@
                 "parents": {
                     "/*": [
                         {
+                            "xml": "<feature name=\"GAPlugin\"><param name=\"android-package\" value=\"com.adobe.plugins.GAPlugin\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"ShareSocial\" value=\"me.apla.cordova.ShareSocial\"><param name=\"android-package\" value=\"me.apla.cordova.ShareSocial\" /></feature>",
+                            "count": 1
+                        },
+                        {
                             "xml": "<feature name=\"Device\"><param name=\"android-package\" value=\"org.apache.cordova.device.Device\" /></feature>",
                             "count": 1
                         },
@@ -17,7 +25,7 @@
                             "count": 1
                         },
                         {
-                            "xml": "<feature name=\"ShareSocial\" value=\"me.apla.cordova.ShareSocial\"><param name=\"android-package\" value=\"me.apla.cordova.ShareSocial\" /></feature>",
+                            "xml": "<feature name=\"SplashScreen\"><param name=\"android-package\" value=\"org.apache.cordova.splashscreen.SplashScreen\" /></feature>",
                             "count": 1
                         }
                     ]
@@ -26,10 +34,10 @@
         }
     },
     "installed_plugins": {
-        "org.apache.cordova.core.splashscreen": {
+        "com.adobe.plugins.GAPlugin": {
             "PACKAGE_NAME": "ro.stiam.stiri"
         },
-        "com.phonegap.plugins.GAPlugin": {
+        "me.apla.cordova.share-social": {
             "PACKAGE_NAME": "ro.stiam.stiri"
         },
         "org.apache.cordova.device": {
@@ -38,10 +46,7 @@
         "org.apache.cordova.inappbrowser": {
             "PACKAGE_NAME": "ro.stiam.stiri"
         },
-        "com.phonegap.TapToScroll": {
-            "PACKAGE_NAME": "ro.stiam.stiri"
-        },
-        "me.apla.cordova.share-social": {
+        "org.apache.cordova.splashscreen": {
             "PACKAGE_NAME": "ro.stiam.stiri"
         }
     },

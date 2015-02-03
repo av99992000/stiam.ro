@@ -55,6 +55,9 @@ img.loading {
   margin: 0.2em;
   padding: 1em;
   border: none;
+  max-width: 530px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 #article-details .article-thumb {
@@ -197,20 +200,8 @@ a[data-icon="refresh"] {
   font-size: 0.8rem;
 }
 
-.article-brick {
-  opacity: 0
-}
-
-.masonry-brick {
-  opacity: 1;
-}
-
 .ui-checkbox input, .ui-radio input {
   visibility: hidden;
-}
-
-.article-brick {
-  width: 400px;
 }
 
 .notification {
@@ -373,6 +364,10 @@ a[data-icon="refresh"] {
   background-image: url('images/icons-18-white-pack.png') !important;
 }
 
+.ui-icon-checkbox-on, .ui-icon-arrow-d {
+  background-image: url('images/icons-18-white-pack.png') !important;
+}
+
 .ui-btn-icon-notext {
   min-width: 40px;
 }
@@ -382,27 +377,58 @@ a[data-icon="refresh"] {
   height: 40px;
 }
 
-
-@media all and (max-width: 599px){
-  .article-brick {
-    width: 95%;
-  }
+.iscroll-scroller {
+  width: 100%;
 }
 
-@media all and (min-width: 600px) and (max-width: 1023px){
-  .article-brick {
-    width: 47%;
-  }
+.article-brick {
+  width: 95%;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 600px;
 }
 
-@media all and (min-width: 1024px) and (max-width: 1279px){
-  .article-brick {
-    width: 31%;
-  }
-}
+/* default, 1 column */
+/*body:after { content: 'default' }*/
+/*.article-brick { width: 95%; }*/
 
-@media all and (min-width: 1280px){
-  .article-brick {
-    width: 23.5%;
-  }
-}
+/* phone, 2 columns */
+/*@media screen and ( min-width: 600px ) {*/
+  /*body:after { content: 'phone'; }*/
+  /*.article-brick { width: 47%; }*/
+/*}*/
+
+/* tablet, 3 columns */
+/*@media screen and ( min-width: 1024px ) {*/
+  /*body:after { content: 'tablet'; }*/
+  /*.article-brick { width: 31%; }*/
+/*}*/
+/* widescreen, 4 columns */
+/*@media screen and ( min-width: 1280px ) {*/
+  /*body:after { content: 'widescreen'; }*/
+  /*.article-brick { width: 23.5%; }*/
+/*}*/
+
+/*@media all and (max-width: 599px){*/
+  /*.article-brick {*/
+    /*width: 95%;*/
+  /*}*/
+/*}*/
+
+/*@media all and (min-width: 600px) and (max-width: 1023px){*/
+  /*.article-brick {*/
+    /*width: 47%;*/
+  /*}*/
+/*}*/
+
+/*@media all and (min-width: 1024px) and (max-width: 1279px){*/
+  /*.article-brick {*/
+    /*width: 31%;*/
+  /*}*/
+/*}*/
+
+/*@media all and (min-width: 1280px){*/
+  /*.article-brick {*/
+    /*width: 23.5%;*/
+  /*}*/
+/*}*/

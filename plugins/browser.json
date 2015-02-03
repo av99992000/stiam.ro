@@ -1,0 +1,38 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {
+            "config.xml": {
+                "parents": {
+                    "/*": [
+                        {
+                            "xml": "<feature name=\"Device\"><param name=\"browser-package\" value=\"Device\" /></feature>",
+                            "count": 1
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "installed_plugins": {
+        "me.apla.cordova.share-social": {
+            "PACKAGE_NAME": "ro.stiam.stiri"
+        },
+        "org.apache.cordova.device": {
+            "PACKAGE_NAME": "ro.stiam.stiri"
+        },
+        "org.apache.cordova.inappbrowser": {
+            "PACKAGE_NAME": "ro.stiam.stiri"
+        },
+        "org.apache.cordova.splashscreen": {
+            "PACKAGE_NAME": "ro.stiam.stiri"
+        },
+        "com.adobe.plugins.GAPlugin": {
+            "PACKAGE_NAME": "ro.stiam.stiri"
+        }
+    },
+    "dependent_plugins": {}
+}

@@ -715,9 +715,6 @@ Stiam.Listing.prototype = {
     var self = this;
 
     self.container = $('.container', self.context);
-    self.container.masonry({
-      itemSelector: '.article-brick'
-    });
 
     // Events
     $(document).unbind('.StiamListing');
@@ -805,9 +802,6 @@ Stiam.Listing.prototype = {
         self.click($(this), item);
       });
 
-      if(!refresh){
-        self.container.masonry('appended', html, true);
-      }
     });
 
     $('.rodate', self.context).rodate();
@@ -833,12 +827,6 @@ Stiam.Listing.prototype = {
       $('button', html).click(function(evt){
         $(document).trigger(Stiam.Events.reset);
       });
-
-      self.container.masonry('appended', html, true);
-    }
-
-    if(refresh){
-      self.container.masonry('reload');
     }
   },
 
@@ -954,7 +942,7 @@ Stiam.Listing.prototype = {
           return self.error(data.error, true);
         }
 
-        var text = data.text;
+        var text = data.text ? data.text : "";
         text = text.replace(/\n/g, '</p><p>');
         var div = $('<div class="documentDetails" style="font-size: ' + Stiam.Storage.getItem('fontSizeArticle') + '%">').html(text);
         details.html(div);
@@ -1026,6 +1014,7 @@ Stiam.InfiniteScroll = {
 Stiam.Refresh = {
   initialize: function(){
     var self = this;
+    self.fixedHeight = false;
 
     // Main page
     $("#main-page").find(".page.iscroll-wrapper").bind({
@@ -1064,6 +1053,11 @@ Stiam.Refresh = {
       $('#body').iscrollview('refresh');
       $('#body').iscrollview('refresh', 500);
       $('#body').iscrollview('refresh', 2000);
+      if(!self.fixedHeight) {
+        var height = $('#body').height();
+        $('#body').height(height - 2);
+        self.fixedHeight = true;
+      }
     });
 
     $(document).bind(Stiam.Events.panelUpdated + '.StiamRefresh', function(evt, data){
